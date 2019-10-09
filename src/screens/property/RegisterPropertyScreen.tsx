@@ -2,49 +2,54 @@ import * as React from 'react';
 import { Component } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { Input, Button } from 'react-native-elements';
-import { Property } from 'common/models/property';
+import { PropertyInterface } from './../../common/models/property';
 
 interface State {
-  propertdy: Property
+  property: PropertyInterface
 }
 
 
-export default class LoginScreen extends Component {
+export default class RegisterPropertyScreen extends Component {
   readonly state: State = {
-      
+      property:  {
+        address: "",
+        description: "",
+        id: "-1"
+      }
   }
 
   constructor(props: any) {
     super(props);
-    this.handleEmailChange = this.handleEmailChange.bind(this);
-    this.handleLoginPress = this.handleLoginPress.bind(this);
-    this.handlePasswordChange = this.handlePasswordChange.bind(this);
-  }
-
-  handleEmailChange(email: string) {
-    this.setState({ email: email });
-  }
-
-  handlePasswordChange(password: string) {
-    this.setState({ password: password });
+    this.handlePropertyChange = this.handlePropertyChange.bind(this);
   }
 
   handleLoginPress() {
-    console.log(this.state.email + "FUCKIN LAZERS");
+  }
+
+  handlePropertyChange(name: string, input: any) {
+    var prop = this.state.property
+    if ("address" == name)
+      prop.address = input
+    if ("description" == name)
+      prop.description = input
+
+    this.setState({ property: prop})
+    
+    console.log("[" +input + "] [" + name + "]")
+    console.log("[" +this.state.property.address + "] [" + this.state.property.description + "]")
   }
 
   render() {
     return (
-      <View style={looking_fresh.container}>
-        <Input value={ this.state.email }
-          onChangeText={ this.handleEmailChange }
-          placeholder="email"
+      <View>
+        <Input value={ this.state.property.address }
+          onChangeText={(txt) => this.handlePropertyChange("address", txt)}
+          placeholder="address"
           returnKeyType="next"/>
-        <Input value={ this.state.password }
-          onChangeText={ this.handlePasswordChange }
-          placeholder="password"
-          returnKeyType="go"
-          secureTextEntry={ true }/>
+        <Input value={ this.state.property.description }
+          onChangeText={(txt) => this.handlePropertyChange("description", txt)}
+          placeholder="description"
+          returnKeyType="next"/>
         <Button onPress={ this.handleLoginPress }
           title="Login"/>
       </View>

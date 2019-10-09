@@ -16,21 +16,16 @@ export default class LoginScreen extends Component {
 
   constructor(props: any) {
     super(props);
-    this.handleEmailChange = this.handleEmailChange.bind(this);
+    this.handleStateChange = this.handleStateChange.bind(this);
     this.handleLoginPress = this.handleLoginPress.bind(this);
-    this.handlePasswordChange = this.handlePasswordChange.bind(this);
-  }
-
-  handleEmailChange(email: string) {
-    this.setState({ email: email });
-  }
-
-  handlePasswordChange(password: string) {
-    this.setState({ password: password });
   }
 
   handleLoginPress() {
-    console.log(this.state.email + "FUCKIN LAZERS");
+    console.log(this.state.email + " FUCKIN LAZERS " + this.state.password);
+  }
+
+  handleStateChange(name: string, input: string) {
+    this.setState(() => ({ [name]: input }));
   }
 
   render() {
@@ -38,11 +33,11 @@ export default class LoginScreen extends Component {
       <View style={looking_fresh.container}>
         <View style={looking_fresh.form}>
           <Input value={ this.state.email }
-            onChangeText={ this.handleEmailChange }
+            onChangeText={(txt) => this.handleStateChange("email", txt)}
             placeholder="email"
             returnKeyType="next"/>
           <Input value={ this.state.password }
-            onChangeText={ this.handlePasswordChange }
+            onChangeText={(txt) => this.handleStateChange("password", txt)}
             placeholder="password"
             returnKeyType="go"
             secureTextEntry={ true }/>
@@ -63,7 +58,7 @@ const looking_fresh = StyleSheet.create({
   logo: {
     flex: 1,
     width: "80%",
-    resizeMode: "cotain",
+    resizeMode: "contain",
     alignSelf: "center",
   },
   form: {
