@@ -1,0 +1,3 @@
+interface property {
+    address: string
+}
