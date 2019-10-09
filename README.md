@@ -21,6 +21,12 @@ yarn add react-native-vector-icons
 
 # link
 react-native link react-native-vector-icons
+
+#react navigation 
+npm install --save react-navigation
+yarn add react-native-gesture-handler
+yarn add react-navigation-stack
+
 ```
 
 Setup React native CLI: 
