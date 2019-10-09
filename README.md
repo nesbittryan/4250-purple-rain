@@ -10,7 +10,8 @@ start by installing these dependencies using brew.
 brew install node
 brew install watchman
 brew tap AdoptOpenJDK/openjdk
-brew cask install adoptopenjdk8```
+brew cask install adoptopenjdk8
+```
 
 Setup React native CLI: 
 
@@ -24,5 +25,4 @@ You will also need to install the Xcode Command Line Tools. Open Xcode, then cho
 
 You'll be able to use macs iPhone simulators that come with Xcode. From the project run
 
-`react-native run-ios` 
-
+`react-native run-ios`
