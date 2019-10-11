@@ -21,9 +21,11 @@ export default class RegisterPropertyScreen extends Component {
   constructor(props: any) {
     super(props);
     this.handlePropertyChange = this.handlePropertyChange.bind(this);
+    this.handleRegisterProperty = this.handleRegisterProperty.bind(this);
+
   }
 
-  handleLoginPress() {
+  handleRegisterProperty() {
   }
 
   handlePropertyChange(name: string, input: any) {
@@ -34,9 +36,6 @@ export default class RegisterPropertyScreen extends Component {
       prop.description = input
 
     this.setState({ property: prop})
-    
-    console.log("[" +input + "] [" + name + "]")
-    console.log("[" +this.state.property.address + "] [" + this.state.property.description + "]")
   }
 
   render() {
@@ -50,8 +49,8 @@ export default class RegisterPropertyScreen extends Component {
           onChangeText={(txt) => this.handlePropertyChange("description", txt)}
           placeholder="description"
           returnKeyType="next"/>
-        <Button onPress={ this.handleLoginPress }
-          title="Login"/>
+        <Button onPress={ this.handleRegisterProperty }
+          title="Register Property"/>
       </View>
     );
   }
