@@ -22,10 +22,10 @@ export default class RegisterPropertyScreen extends Component {
     super(props);
     this.handlePropertyChange = this.handlePropertyChange.bind(this);
     this.handleRegisterProperty = this.handleRegisterProperty.bind(this);
-
   }
 
   handleRegisterProperty() {
+    //send api call with (this.state.property)
   }
 
   handlePropertyChange(name: string, input: any) {
