@@ -10,7 +10,7 @@ export default class HomeScreen extends Component {
   render() {
     return (
       <View>
-        <h2>Welcome you've made it!</h2>
+        <Text>Hello</Text>
       </View>
     );
   }

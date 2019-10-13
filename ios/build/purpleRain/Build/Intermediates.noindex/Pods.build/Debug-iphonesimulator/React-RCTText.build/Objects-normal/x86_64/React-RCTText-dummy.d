@@ -1,3 +1,3 @@
 dependencies: \
-  /Users/colinmoffat/Dev/school/4250/purple-rain/ios/Pods/Target\ Support\ Files/React-RCTText/React-RCTText-dummy.m \
-  /Users/colinmoffat/Dev/school/4250/purple-rain/ios/Pods/Target\ Support\ Files/React-RCTText/React-RCTText-prefix.pch
+  /Users/nesbittr/Desktop/CIS4250/purple-rain/ios/Pods/Target\ Support\ Files/React-RCTText/React-RCTText-dummy.m \
+  /Users/nesbittr/Desktop/CIS4250/purple-rain/ios/Pods/Target\ Support\ Files/React-RCTText/React-RCTText-prefix.pch

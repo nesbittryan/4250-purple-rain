@@ -17,6 +17,12 @@ const default_style = StyleSheet.create({
       justifyContent: "center",
       width: "80%",
     },
+    button: {
+      margin: "8%"
+    },
+    input: {
+      margin: "8%"
+    }
   })
 
 export { default_style }
