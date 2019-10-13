@@ -22,7 +22,8 @@ export default class LoginScreen extends Component {
   }
 
   handleLoginPress() {
-    console.log(this.state.email + " FUCKIN LAZERS " + this.state.password);
+    console.log("Logging in");
+    this.props.navigation.navigate("Home", { email: this.state.email })
   }
 
   handleStateChange(name: string, input: string) {
