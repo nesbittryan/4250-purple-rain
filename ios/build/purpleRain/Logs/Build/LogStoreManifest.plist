@@ -5,6 +5,41 @@
 	<key>logFormatVersion</key>
 	<integer>10</integer>
 	<key>logs</key>
-	<dict/>
+	<dict>
+		<key>F4C7E48A-BEBA-43E0-8BC1-83BAA478D0BB</key>
+		<dict>
+			<key>className</key>
+			<string>IDECommandLineBuildLog</string>
+			<key>documentTypeString</key>
+			<string>&lt;nil&gt;</string>
+			<key>domainType</key>
+			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
+			<key>fileName</key>
+			<string>F4C7E48A-BEBA-43E0-8BC1-83BAA478D0BB.xcactivitylog</string>
+			<key>hasPrimaryLog</key>
+			<true/>
+			<key>primaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>W</string>
+			</dict>
+			<key>schemeIdentifier-containerName</key>
+			<string>purpleRain project</string>
+			<key>schemeIdentifier-schemeName</key>
+			<string>purpleRain</string>
+			<key>schemeIdentifier-sharedScheme</key>
+			<integer>1</integer>
+			<key>signature</key>
+			<string>Building workspace purpleRain with scheme purpleRain and configuration Debug</string>
+			<key>timeStartedRecording</key>
+			<real>592673627.53820801</real>
+			<key>timeStoppedRecording</key>
+			<real>592673628.81143105</real>
+			<key>title</key>
+			<string>Building workspace purpleRain with scheme purpleRain and configuration Debug</string>
+			<key>uniqueIdentifier</key>
+			<string>F4C7E48A-BEBA-43E0-8BC1-83BAA478D0BB</string>
+		</dict>
+	</dict>
 </dict>
 </plist>

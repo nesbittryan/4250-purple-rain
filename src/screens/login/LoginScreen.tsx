@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { Input, Button } from 'react-native-elements';
+import { default_style } from '../../styles/views';
 
 interface State {
   email: string,
@@ -30,8 +31,8 @@ export default class LoginScreen extends Component {
 
   render() {
     return (
-      <View style={looking_fresh.container}>
-        <View style={looking_fresh.form}>
+      <View style={default_style.container}>
+        <View style={default_style.form}>
           <Input value={ this.state.email }
             onChangeText={(txt) => this.handleStateChange("email", txt)}
             placeholder="email"
@@ -48,22 +49,3 @@ export default class LoginScreen extends Component {
     );      
   }
 }
-
-const looking_fresh = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  logo: {
-    flex: 1,
-    width: "80%",
-    resizeMode: "contain",
-    alignSelf: "center",
-  },
-  form: {
-    flex: 1,
-    justifyContent: "center",
-    width: "80%",
-  },
-})

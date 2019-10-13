@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import { PropertyInterface } from './../../common/models/property';
+import { default_style } from '../../styles/views';
 
 interface State {
   property: PropertyInterface
 }
-
 
 export default class RegisterPropertyScreen extends Component {
   readonly state: State = {
@@ -22,10 +22,10 @@ export default class RegisterPropertyScreen extends Component {
     super(props);
     this.handlePropertyChange = this.handlePropertyChange.bind(this);
     this.handleRegisterProperty = this.handleRegisterProperty.bind(this);
-
   }
 
   handleRegisterProperty() {
+    //send api call with (this.state.property)
   }
 
   handlePropertyChange(name: string, input: any) {
@@ -40,17 +40,26 @@ export default class RegisterPropertyScreen extends Component {
 
   render() {
     return (
-      <View>
-        <Input value={ this.state.property.address }
-          onChangeText={(txt) => this.handlePropertyChange("address", txt)}
-          placeholder="address"
-          returnKeyType="next"/>
-        <Input value={ this.state.property.description }
-          onChangeText={(txt) => this.handlePropertyChange("description", txt)}
-          placeholder="description"
-          returnKeyType="next"/>
-        <Button onPress={ this.handleRegisterProperty }
-          title="Register Property"/>
+      <View style={ default_style.container }>
+        <View style={ default_style.form }>
+          <Text>Property Registration</Text>
+          <Input 
+            style= { default_style.input }
+            value={ this.state.property.address }
+            onChangeText={(txt) => this.handlePropertyChange("address", txt)}
+            placeholder="address"
+            returnKeyType="next"/>
+          <Input 
+            style= { default_style.input }
+            value={ this.state.property.description }
+            onChangeText={(txt) => this.handlePropertyChange("description", txt)}
+            placeholder="description"
+            returnKeyType="next"/>
+          <Button 
+            style= { default_style.button }
+            onPress={ this.handleRegisterProperty }
+            title="Register Property"/>
+        </View>
       </View>
     );
   }
