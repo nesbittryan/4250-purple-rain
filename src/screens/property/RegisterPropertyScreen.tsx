@@ -10,6 +10,10 @@ interface State {
 }
 
 export default class RegisterPropertyScreen extends Component {
+  static navigationOptions = {
+    headerTitle: 'Register Property',
+  };
+  
   readonly state: State = {
       property:  {
         address: "",
