@@ -91,3 +91,5 @@ RNTester/Pods/*
 /schema-rncore.json
 
 /stuff
+/node_modules/*
+/ios/*

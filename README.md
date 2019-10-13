@@ -6,11 +6,27 @@
 
 start by installing these dependencies using brew. 
 
-```brew install yarn
+```
+brew install yarn
 brew install node
 brew install watchman
 brew tap AdoptOpenJDK/openjdk
 brew cask install adoptopenjdk8
+yarn add react-native-elements
+
+# use react native elements ui kit
+npm i react-native-elements --save
+# yarn
+yarn add react-native-vector-icons
+
+# link
+react-native link react-native-vector-icons
+
+#react navigation 
+npm install --save react-navigation
+yarn add react-native-gesture-handler
+yarn add react-navigation-stack
+
 ```
 
 Setup React native CLI: 
