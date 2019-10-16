@@ -3,6 +3,7 @@ import { Component } from 'react';
 import { View } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import { default_style } from '../../styles/views';
+import { onLogIn } from '../../Auth'
 
 interface State {
   email: string,
@@ -16,14 +17,20 @@ export default class LoginScreen extends Component {
   }
 
   constructor(props: any) {
-    super(props);
-    this.handleStateChange = this.handleStateChange.bind(this);
-    this.handleLoginPress = this.handleLoginPress.bind(this);
+    super(props)
+
+    this.handleStateChange = this.handleStateChange.bind(this)
+    this.handleLoginPress = this.handleLoginPress.bind(this)
+    this.handleSignupPress = this.handleSignupPress.bind(this)
   }
 
   handleLoginPress() {
-    console.log("Logging in");
+    onLogIn()
     this.props.navigation.navigate("Home", { email: this.state.email })
+  }
+
+  handleSignupPress() {
+    this.props.navigation.navigate("SignUp", { })
   }
 
   handleStateChange(name: string, input: string) {
@@ -45,6 +52,8 @@ export default class LoginScreen extends Component {
             secureTextEntry={ true }/>
           <Button onPress={ this.handleLoginPress }
             title="Login"/>
+          <Button onPress={ this.handleSignupPress }
+            title="Sign Up"/>
         </View>
       </View>
     );      
