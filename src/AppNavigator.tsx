@@ -1,21 +1,24 @@
 
 import { createAppContainer } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
+
 import HomeScreen from './screens/home/HomeScreen'
 import LoginScreen from './screens/login/LoginScreen'
 import RegisterPropertyScreen from './screens/property/RegisterPropertyScreen'
-import { Button } from 'react-native-elements';
-import React from 'react'
+import SignUpScreen from './screens/sign-up/SignUpScreen'
 
-const AppNavigator = createStackNavigator(
+const AppStack = createStackNavigator(
     {
+        SignUp: {
+            screen: SignUpScreen
+        },
         Home: {
             screen: HomeScreen,
         },
         Login: {
             screen: LoginScreen,
             navigationOptions: {
-                headerTitle: 'Purple Rain'
+                headerTitle: 'Log In'
             },
         },
         RegisterProperty: {
@@ -27,4 +30,4 @@ const AppNavigator = createStackNavigator(
     }
 );
 
-export default createAppContainer(AppNavigator)
+export default createAppContainer(AppStack)
