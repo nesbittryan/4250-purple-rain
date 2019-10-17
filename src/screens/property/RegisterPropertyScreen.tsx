@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component } from 'react';
 import { Text, View } from 'react-native';
 import { Input, Button } from 'react-native-elements';
-import { PropertyInterface } from './../../common/models/property';
+import { PropertyInterface } from '../../common/models/Property';
 import { default_style } from '../../styles/views';
 
 interface State {

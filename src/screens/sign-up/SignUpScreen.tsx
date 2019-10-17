@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { Text, View } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import { default_style } from '../../styles/views'
-import { onSignUp } from '../../Auth'
+import { APIService } from '../../service/APIService'
 
 interface State {
   name: string,
@@ -35,27 +35,16 @@ export default class AccountCreationScreen extends Component {
   }
 
   handleCreateAccountPress() {
-    if (this.state.password.valueOf() != this.state.confirmPassword.valueOf()) {
-      alert("Please confirm the passwords you have provided match")
+    if (!this.validateFields()) {
       return
     }
-    if (this.state.email.length < 1) {
-      alert("Please fill in an email")
+    
+    let response = APIService.createUser(this.state.email, this.state.password, this.state.name)
+    if (response.code != 201) {
+      alert("Account was unable to be created, please try again")
       return
-    }
-    if (this.state.name.length < 1) {
-      alert("Please input a name")
-      return
-    }
-    if (this.state.password.length < 8) {
-      alert("Please make sure your password is longer than 8 characters")
-      return
-    }
-
-    let response = onSignUp(this.state.name, this.state.email, this.state.password)
-    if (!response.isSuccess) {
-      alert("Account Creation Error: Try Again")
-      return
+    } else {
+      alert("Account successfully created! Please login to continue")
     }
     
     this.props.navigation.popToTop()
@@ -73,31 +62,58 @@ export default class AccountCreationScreen extends Component {
             <Input style={ default_style.input }
                 value={ this.state.name }
                 onChangeText={(txt) => this.handleStateChange("name", txt)}
-                placeholder="name"
+                placeholder="Full Name"
                 returnKeyType="next"/>
             <Input style={ default_style.input }
                 value={ this.state.email }
                 onChangeText={(txt) => this.handleStateChange("email", txt)}
-                placeholder="email"
+                placeholder="Email"
                 returnKeyType="next"/>
             <Input style={ default_style.input }
                 value={ this.state.password }
                 onChangeText={(txt) => this.handleStateChange("password", txt)}
-                placeholder="password"
+                placeholder="Password"
                 returnKeyType="next"
                 secureTextEntry={ true }/>
             <Text>Must be longer than 8 characters</Text>
             <Input style={ default_style.input }
                 value={ this.state.confirmPassword }
                 onChangeText={(txt) => this.handleStateChange("confirmPassword", txt)}
-                placeholder="confirm password"
+                placeholder="Confirm Password"
                 returnKeyType="go"
                 secureTextEntry={ true }/>
             <Button style={ default_style.button }
                 onPress={ this.handleCreateAccountPress }
-                title="Create Account"/>
+                title="Sign Up"/>
         </View>
       </View>
     );      
+  }
+
+  validateFields() : boolean {
+
+    let nameRegex = /^([A-z]+(\s)?){2,}$/
+    if (!nameRegex.test(this.state.name)) {
+      alert("Please provide a valid name")
+      return false
+    }
+
+    let emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+    if (!emailRegex.test(this.state.email)) {
+      alert("Please provide a valid email")
+      return false
+    }
+
+    if (this.state.password.length < 8) {
+      alert("Password must be at least 8 characters")
+      return false
+    }
+
+    if (this.state.password != this.state.confirmPassword) {
+      alert("Passwords do not match")
+      return false
+    }
+
+    return true
   }
 }

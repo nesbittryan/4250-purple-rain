@@ -3,11 +3,11 @@ import { Component } from 'react';
 import { Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
 import { default_style } from '../../styles/views';
-import { onLogOut } from '../../Auth'
+import { AuthService } from '../../service/AuthService'
 
 const logOut = (navigation) => {
-  onLogOut()
-  navigation.popToTop()
+  if (AuthService.logout())
+    navigation.popToTop()
 }
 export default class HomeScreen extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -28,7 +28,7 @@ export default class HomeScreen extends Component {
     return (
       <View>
         <Text>Home page { JSON.stringify(this.props.navigation.getParam('email', 'UNKNOWN'))}</Text>
-        <Button title="Register New Property" onPress={ () => { navigation.navigate("RegisterProperty") }}></Button>
+        <Button title="Register New Property" onPress={ () => { this.props.navigation.navigate("RegisterProperty") }}></Button>
       </View>
     );
   }

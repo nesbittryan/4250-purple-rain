@@ -2,20 +2,20 @@
 export interface UserInterface {
     email: string
     firstName: string
-    id: string
     lastName: string
+    token: string
     
 }
-export class user implements UserInterface {
+export class User implements UserInterface {
     email: string
     firstName: string
-    id: string
     lastName: string
+    token: string
 
     constructor() {
         this.firstName= ""
         this.lastName= ""
         this.email= ""
-        this.id=""
+        this.token=""
     }
 }
