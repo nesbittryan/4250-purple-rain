@@ -17,8 +17,7 @@ function createUser(username: string, password: string, name: string) : Response
         })
         .catch((error) => {
             console.log(error)
-            alert(error)
-            r = new Response(500, "INTERNAL_SERVER_ERROR", error)
+            r = new Response(500, error, null)
         })
 
         return r
@@ -34,8 +33,7 @@ function loginUser(username: string, password: string) : Response {
         })
         .catch((error) => {
             console.log(error)
-            alert(error)
-            r = new Response(500, "INTERNAL_SERVER_ERROR", error)
+            r = new Response(500, error, null)
         })
 
     return r
