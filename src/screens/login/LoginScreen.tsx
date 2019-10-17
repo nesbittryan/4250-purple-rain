@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { View } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import { default_style } from '../../styles/views';
-import { onLogIn } from '../../Auth'
+import { AuthService } from '../../service/AuthService'
 
 interface State {
   email: string,
@@ -25,8 +25,8 @@ export default class LoginScreen extends Component {
   }
 
   handleLoginPress() {
-    onLogIn()
-    this.props.navigation.navigate("Home", { email: this.state.email })
+    if (AuthService.login(this.state.email, this.state.password))
+      this.props.navigation.navigate("Home", { email: this.state.email })
   }
 
   handleSignupPress() {
