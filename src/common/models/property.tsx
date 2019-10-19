@@ -13,10 +13,10 @@ export class Property {
     id: string
     //owner: user
 
-    constructor(property: PropertyInterface) {
-        this.address = property.address
-        this.description = property.description
-        this.id = property.id
+    constructor(propInterface: PropertyInterface) {
+        this.address = propInterface.address
+        this.description = propInterface.description
+        this.id = propInterface.id
         //this.owner = property.owner
     }
 }
