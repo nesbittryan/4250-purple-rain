@@ -1,8 +1,10 @@
 import * as React from 'react';
-import { Component } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, TouchableHighlight } from 'react-native';
 import { Input, Button } from 'react-native-elements';
+
 import { default_style } from '../../styles/views'
+import { header_style } from '../../styles/header'
+
 import { APIService } from '../../service/APIService'
 
 interface State {
@@ -12,15 +14,20 @@ interface State {
   confirmPassword: string
 }
 
-export default class AccountCreationScreen extends Component {
+export default class AccountCreationScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
         headerTitle: 'Sign Up',
         headerLeft: (
-            <Button title="Cancel" onPress={ () => navigation.popToTop() }/>
+          <TouchableHighlight style={ header_style.button } onPress={ () => navigation.popToTop() } underlayColor="white">
+            <View>
+              <Text>Cancel</Text>
+            </View>
+          </TouchableHighlight>
         )
     }
   }
+  
   readonly state: State = {
     name: "",
     email: "",
