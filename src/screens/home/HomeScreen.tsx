@@ -24,12 +24,12 @@ export default class HomeScreen extends Component {
   }
 
   properties:Property[] = new Array()
-  
+
   constructor(props: any) {
     super(props)
     let userId = "1"
     let p = APIService.getPropertiesByUserId(userId)
-    
+
     if (p.code == 200 && p.data.length > 0) {
       p.data.forEach((element: Property) => {
         this.properties.push(element)
@@ -41,9 +41,9 @@ export default class HomeScreen extends Component {
     return (
       <View>
         <Text>Home page { JSON.stringify(this.props.navigation.getParam('email', 'UNKNOWN'))}</Text>
-        <FlatList 
-          data={ this.properties } 
-          renderItem={({item}) => <PropertyButton property={ item }></PropertyButton> }>
+        <FlatList
+          data={ this.properties }
+          renderItem={({item}) => <PropertyButton property={ item } navigation={this.props.navigation} ></PropertyButton> }>
         </FlatList>
         <Button title="Register New Property" onPress={ () => { this.props.navigation.navigate("RegisterProperty") }}></Button>
       </View>

@@ -6,6 +6,7 @@ import HomeScreen from './screens/home/HomeScreen'
 import LoginScreen from './screens/login/LoginScreen'
 import RegisterPropertyScreen from './screens/property/RegisterPropertyScreen'
 import SignUpScreen from './screens/sign-up/SignUpScreen'
+import ViewPropertyScreen from './screens/property/ViewPropertyScreen'
 
 const AppStack = createStackNavigator(
     {
@@ -24,6 +25,9 @@ const AppStack = createStackNavigator(
         RegisterProperty: {
             screen: RegisterPropertyScreen,
         },
+        ViewProperty: {
+            screen: ViewPropertyScreen,
+        }
     },
     {
         initialRouteName: 'Login',

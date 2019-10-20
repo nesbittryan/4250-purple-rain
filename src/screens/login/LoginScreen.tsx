@@ -56,6 +56,6 @@ export default class LoginScreen extends Component {
             title="Sign Up"/>
         </View>
       </View>
-    );      
+    );
   }
 }
