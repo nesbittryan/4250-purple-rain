@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Property, PropertyInterface } from '../common/models/Property';
+import { Property, PropertyInterface } from '../common/models/property';
 
 const url = "http://localhost:2020"
 
