@@ -1,5 +1,8 @@
 import { APIService } from './APIService'
+import { BehaviorSubject } from 'rxjs'
+import {AsyncStorage} from 'react-native'
 
+//const currentUserSubject = new BehaviorSubject(JSON.parse(AsyncStorage.cd getItem("token")));
 export const AuthService = {
     login,
     logout,
@@ -13,6 +16,7 @@ function login(email: string, password: string) : boolean {
         return false
     } else {
         localStorage.setItem('token', JSON.stringify(response.data.token))
+        AsyncStorage.setItem('@MySuperStore:key', 'I like to save it.');
         return true
     }
 }

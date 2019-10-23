@@ -28,13 +28,11 @@ export default class HomeScreen extends Component {
   constructor(props: any) {
     super(props)
     let userId = "1"
-    let p = APIService.getPropertiesByUserId(userId)
-
-    if (p.code == 200 && p.data.length > 0) {
-      p.data.forEach((element: Property) => {
-        this.properties.push(element)
-      });
-    }
+    let propertyList = APIService.getPropertiesByUserId(userId).then((propertyList: any)  => {
+      this.properties = propertyList
+      this.forceUpdate();
+    })
+   
   }
 
   render() {

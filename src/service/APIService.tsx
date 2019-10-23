@@ -1,7 +1,9 @@
+import npm from 'axios';
 import axios from 'axios';
 import { Property, PropertyInterface } from '../common/models/property';
+import { resolvePlugin } from '@babel/core';
 
-const url = "http://localhost:2020"
+const url = "http://ec2-18-234-27-166.compute-1.amazonaws.com"
 
 export const APIService =  {
     createUser,
@@ -11,14 +13,14 @@ export const APIService =  {
 }
 
 function createUser(username: string, password: string, name: string) : Response {
-    let endpoint = url + '/users/create'
+    let endpoint = url + '/user/create'
     let r = uninitializedResponse()
 
-    axios.post(endpoint, { username: username, password: password, name: name })
-        .then((response) => {
+    axios.post(endpoint, { email: username, password: password, username: name })
+        .then((response: { status: number; statusText: string; data: any; }) => {
             r = new Response(response.status, response.statusText, response.data)
         })
-        .catch((error) => {
+        .catch((error: string) => {
             console.log(error)
             r = new Response(500, error, null)
         })
@@ -32,26 +34,44 @@ function createProperty(property: Property) : Response {
     return r
 }
 
-function getPropertiesByUserId(userId: string) : Response {
+function getPropertiesByUserId(userId: string) : any {
     let r = uninitializedResponse()
-    var list:Property[] = new Array(2)
+    let endpoint = url + '/property/'
+    var propertyList:Property[] = new Array()
+    return axios.get(endpoint)
+    .then(function (response) {
+        response.data.forEach((house: { street_address: string; id: string; description: string; }) => {
+            propertyList.push(new Property({
+                address : house.street_address,
+                id : house.id,
+                description : house.description
+            }))
+        });
+        return propertyList
+    })
+    .catch(function (error) {
+        // handle error
+        console.log(error)
+    })
+    
+   /* var list:Property[] = new Array(2)
     list[0] = new Property({ address: "301 McConnell St", id: "-1", description:"My parents house"})
     list[1] = new Property({ address: "807 Gordon St", id: "-2", description:"My guelph house"})
     r.code = 200
     r.status = 'SUCCESS'
     r.data = list
-    return r
+    return r */
 }
 
 function loginUser(username: string, password: string) : Response {
-    let endpoint = url + '/users/login'
+    let endpoint = url + '/user/login'
     let r = uninitializedResponse()
 
     axios.post(endpoint, { username: username, password: password })
-        .then((response) => {
+        .then((response: { status: number; statusText: string; data: any; }) => {
             r = new Response(response.status, response.statusText, response.data)
         })
-        .catch((error) => {
+        .catch((error: string) => {
             console.log(error)
             r = new Response(500, error, null)
         })

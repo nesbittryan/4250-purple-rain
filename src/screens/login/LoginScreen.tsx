@@ -4,6 +4,7 @@ import { View } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import { default_style } from '../../styles/views';
 import { AuthService } from '../../service/AuthService'
+import { APIService } from '../../service/APIService'
 
 interface State {
   email: string,
