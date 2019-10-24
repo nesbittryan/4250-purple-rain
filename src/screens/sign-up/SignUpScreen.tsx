@@ -8,7 +8,8 @@ import { header_style } from '../../styles/header'
 import { APIService } from '../../service/APIService'
 
 interface State {
-  name: string,
+  firstName: string,
+  lastName: string,
   email: string,
   password: string,
   confirmPassword: string
@@ -29,7 +30,8 @@ export default class AccountCreationScreen extends React.Component {
   }
   
   readonly state: State = {
-    name: "",
+    firstName: "",
+    lastName:"",
     email: "",
     password: "",
     confirmPassword: ""
@@ -46,15 +48,18 @@ export default class AccountCreationScreen extends React.Component {
       return
     }
     
-    let response = APIService.createUser(this.state.email, this.state.password, this.state.name)
-    if (response.code != 201) {
-      alert("Account was unable to be created, please try again")
-      return
-    } else {
-      alert("Account successfully created! Please login to continue")
-    }
+    let response = APIService
+      .createUser(this.state.email, this.state.password, this.state.firstName, this.state.lastName)
+      .then((response: any) => {
+        if (response.code != 201) {
+          alert("Account was unable to be created, please try again")
+          return
+        } else {
+          alert("Account successfully created! Please login to continue")
+          this.props.navigation.popToTop()
+        }  
+    })
     
-    this.props.navigation.popToTop()
   }
 
   handleStateChange(name: string, input: string) {
@@ -67,9 +72,14 @@ export default class AccountCreationScreen extends React.Component {
         <View style={ default_style.form }>
             <Text>Account Creation</Text>
             <Input style={ default_style.input }
-                value={ this.state.name }
-                onChangeText={(txt) => this.handleStateChange("name", txt)}
-                placeholder="Full Name"
+                value={ this.state.firstName }
+                onChangeText={(txt) => this.handleStateChange("firstName", txt)}
+                placeholder="First Name"
+                returnKeyType="next"/>
+            <Input style={ default_style.input }
+                value={ this.state.lastName }
+                onChangeText={(txt) => this.handleStateChange("lastName", txt)}
+                placeholder="Last Name"
                 returnKeyType="next"/>
             <Input style={ default_style.input }
                 value={ this.state.email }
@@ -99,13 +109,13 @@ export default class AccountCreationScreen extends React.Component {
 
   validateFields() : boolean {
 
-    let nameRegex = /^([A-z]+(\s)?){2,}$/
-    if (!nameRegex.test(this.state.name)) {
-      alert("Please provide a valid name")
+    let nameRegex = /^([A-z]+){2,}$/
+    if (!nameRegex.test(this.state.firstName) || !nameRegex.test(this.state.lastName)) {
+      alert("Please provide both name fields")
       return false
     }
 
-    let emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+    let emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/
     if (!emailRegex.test(this.state.email)) {
       alert("Please provide a valid email")
       return false

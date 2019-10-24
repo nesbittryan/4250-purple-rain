@@ -1,9 +1,11 @@
-import npm from 'axios';
 import axios from 'axios';
 import { Property, PropertyInterface } from '../common/models/property';
-import { resolvePlugin } from '@babel/core';
 
 const url = "http://ec2-18-234-27-166.compute-1.amazonaws.com"
+const endpoints = {
+    user: "/user/",
+    property: "/property/"
+}
 
 export const APIService =  {
     createUser,
@@ -12,20 +14,25 @@ export const APIService =  {
     loginUser,
 }
 
-function createUser(username: string, password: string, name: string) : Response {
-    let endpoint = url + '/user/create'
-    let r = uninitializedResponse()
+function createUser(email: string, password: string, firstName: string, lastName: string) : any {
+    let endpoint = url + endpoints.user + 'create'
+    
+    let body = new FormData()
+    body.append("email", email)
+    body.append("first_name", firstName)
+    body.append("last_name", lastName)
+    body.append("password", password)
 
-    axios.post(endpoint, { email: username, password: password, username: name })
+    return axios.post(endpoint, body, { headers: {'Content-Type': 'multipart/form-data' }})
         .then((response: { status: number; statusText: string; data: any; }) => {
-            r = new Response(response.status, response.statusText, response.data)
+            return new Response(response.status, response.statusText, response.data)
         })
         .catch((error: string) => {
             console.log(error)
-            r = new Response(500, error, null)
+            return new Response(500, error, null)
         })
 
-        return r
+    return uninitializedResponse()
 }
 
 function createProperty(property: Property) : Response {
@@ -36,7 +43,7 @@ function createProperty(property: Property) : Response {
 
 function getPropertiesByUserId(userId: string) : any {
     let r = uninitializedResponse()
-    let endpoint = url + '/property/'
+    let endpoint = url + endpoints.property
     var propertyList:Property[] = new Array()
     return axios.get(endpoint)
     .then(function (response) {
@@ -53,18 +60,10 @@ function getPropertiesByUserId(userId: string) : any {
         // handle error
         console.log(error)
     })
-    
-   /* var list:Property[] = new Array(2)
-    list[0] = new Property({ address: "301 McConnell St", id: "-1", description:"My parents house"})
-    list[1] = new Property({ address: "807 Gordon St", id: "-2", description:"My guelph house"})
-    r.code = 200
-    r.status = 'SUCCESS'
-    r.data = list
-    return r */
 }
 
 function loginUser(username: string, password: string) : Response {
-    let endpoint = url + '/user/login'
+    let endpoint = url + endpoints.user + 'login'
     let r = uninitializedResponse()
 
     axios.post(endpoint, { username: username, password: password })
@@ -80,7 +79,7 @@ function loginUser(username: string, password: string) : Response {
 }
 
 function uninitializedResponse() : Response {
-    return new Response (500, "INTERNAL_SERVER_ERROR", null)
+    return new Response (500, "UNITIALIZED_RESPONSE", null)
 }
 
 export class Response {
