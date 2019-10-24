@@ -27,7 +27,7 @@ export default class LoginScreen extends Component {
 
   handleLoginPress() {
     if (AuthService.login(this.state.email, this.state.password))
-      this.props.navigation.navigate("Home", { email: this.state.email })
+      this.props.navigation.navigate("Tabs", { email: this.state.email })
   }
 
   handleSignupPress() {

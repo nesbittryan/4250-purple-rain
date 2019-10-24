@@ -15,11 +15,20 @@ function login(email: string, password: string) : boolean {
         alert("Login attempt failed: " + response.status)
         return false
     } else {
-        localStorage.setItem('token', JSON.stringify(response.data.token))
-        AsyncStorage.setItem('@MySuperStore:key', 'I like to save it.');
+        //await AsyncStorage.setItem('token', JSON.stringify(response.data.token))
         return true
     }
 }
+
+/*function getSessionToken(): string {
+    //return token = AsyncStorage.getItem('token').then((token: string)  => {
+    //        return token
+    //  })
+}
+
+public isLoggedIn(): boolean {
+    return !!this.getSessionToken()
+}*/
 
 function logout() : boolean {
     //localStorage.removeItem('token')
