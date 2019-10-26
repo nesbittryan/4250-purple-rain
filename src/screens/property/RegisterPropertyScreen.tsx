@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { Text, View } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import { PropertyInterface } from '../../common/models/Property';
-import { default_style } from '../../styles/views';
+import { MainApp } from '../../styles/Styles';
 
 interface State {
   property: PropertyInterface
@@ -44,23 +44,23 @@ export default class RegisterPropertyScreen extends Component {
 
   render() {
     return (
-      <View style={ default_style.container }>
-        <View style={ default_style.form }>
+      <View style={ MainApp.container }>
+        <View style={ MainApp.form }>
           <Text>Property Registration</Text>
           <Input 
-            style= { default_style.input }
+            style= { MainApp.input }
             value={ this.state.property.address }
             onChangeText={(txt) => this.handlePropertyChange("address", txt)}
             placeholder="address"
             returnKeyType="next"/>
           <Input 
-            style= { default_style.input }
+            style= { MainApp.input }
             value={ this.state.property.description }
             onChangeText={(txt) => this.handlePropertyChange("description", txt)}
             placeholder="description"
             returnKeyType="next"/>
           <Button 
-            style= { default_style.button }
+            style= { MainApp.button }
             onPress={ this.handleRegisterProperty }
             title="Register Property"/>
         </View>

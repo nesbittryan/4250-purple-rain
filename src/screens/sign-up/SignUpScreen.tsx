@@ -2,8 +2,7 @@ import * as React from 'react';
 import { Text, View, TouchableHighlight } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 
-import { default_style } from '../../styles/views'
-import { header_style } from '../../styles/header'
+import { MainApp } from '../../styles/Styles'
 
 import { APIService } from '../../service/APIService'
 
@@ -20,7 +19,7 @@ export default class AccountCreationScreen extends React.Component {
     return {
         headerTitle: 'Sign Up',
         headerLeft: (
-          <TouchableHighlight style={ header_style.button } onPress={ () => navigation.popToTop() } underlayColor="white">
+          <TouchableHighlight style={ MainApp.button } onPress={ () => navigation.popToTop() } underlayColor="white">
             <View>
               <Text>Cancel</Text>
             </View>
@@ -48,8 +47,7 @@ export default class AccountCreationScreen extends React.Component {
       return
     }
     
-    let response = APIService
-      .createUser(this.state.email, this.state.password, this.state.firstName, this.state.lastName)
+    APIService.createUser(this.state.email, this.state.password, this.state.firstName, this.state.lastName)
       .then((response: any) => {
         if (response.code != 201) {
           alert("Account was unable to be created, please try again")
@@ -59,7 +57,6 @@ export default class AccountCreationScreen extends React.Component {
           this.props.navigation.popToTop()
         }  
     })
-    
   }
 
   handleStateChange(name: string, input: string) {
@@ -68,38 +65,38 @@ export default class AccountCreationScreen extends React.Component {
 
   render() {
     return (
-      <View style={ default_style.container } >
-        <View style={ default_style.form }>
+      <View style={ MainApp.container } >
+        <View style={ MainApp.form }>
             <Text>Account Creation</Text>
-            <Input style={ default_style.input }
+            <Input style={ MainApp.input }
                 value={ this.state.firstName }
                 onChangeText={(txt) => this.handleStateChange("firstName", txt)}
                 placeholder="First Name"
                 returnKeyType="next"/>
-            <Input style={ default_style.input }
+            <Input style={ MainApp.input }
                 value={ this.state.lastName }
                 onChangeText={(txt) => this.handleStateChange("lastName", txt)}
                 placeholder="Last Name"
                 returnKeyType="next"/>
-            <Input style={ default_style.input }
+            <Input style={ MainApp.input }
                 value={ this.state.email }
                 onChangeText={(txt) => this.handleStateChange("email", txt)}
                 placeholder="Email"
                 returnKeyType="next"/>
-            <Input style={ default_style.input }
+            <Input style={ MainApp.input }
                 value={ this.state.password }
                 onChangeText={(txt) => this.handleStateChange("password", txt)}
                 placeholder="Password"
                 returnKeyType="next"
                 secureTextEntry={ true }/>
             <Text>Must be longer than 8 characters</Text>
-            <Input style={ default_style.input }
+            <Input style={ MainApp.input }
                 value={ this.state.confirmPassword }
                 onChangeText={(txt) => this.handleStateChange("confirmPassword", txt)}
                 placeholder="Confirm Password"
                 returnKeyType="go"
                 secureTextEntry={ true }/>
-            <Button style={ default_style.button }
+            <Button style={ MainApp.button }
                 onPress={ this.handleCreateAccountPress }
                 title="Sign Up"/>
         </View>
@@ -109,7 +106,7 @@ export default class AccountCreationScreen extends React.Component {
 
   validateFields() : boolean {
 
-    let nameRegex = /^([A-z]+){2,}$/
+    let nameRegex = /^([A-z]+){1,}$/
     if (!nameRegex.test(this.state.firstName) || !nameRegex.test(this.state.lastName)) {
       alert("Please provide both name fields")
       return false
