@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { Property, PropertyInterface } from '../common/models/property';
 
 const url = "http://ec2-18-234-27-166.compute-1.amazonaws.com"
@@ -31,8 +31,6 @@ function createUser(email: string, password: string, firstName: string, lastName
             console.log(error)
             return new Response(500, error, null)
         })
-
-    return uninitializedResponse()
 }
 
 function createProperty(property: Property) : Response {
@@ -62,20 +60,21 @@ function getPropertiesByUserId(userId: string) : any {
     })
 }
 
-function loginUser(username: string, password: string) : Response {
+function loginUser(email: string, password: string) : Promise<Response> {
     let endpoint = url + endpoints.user + 'login'
-    let r = uninitializedResponse()
 
-    axios.post(endpoint, { username: username, password: password })
+    let body = new FormData()
+    body.append("email", email)
+    body.append("password", password)
+
+    return axios.post(endpoint, body, { headers: {'Content-Type': 'multipart/form-data' }})
         .then((response: { status: number; statusText: string; data: any; }) => {
-            r = new Response(response.status, response.statusText, response.data)
+            return new Response(response.status, response.statusText, response.data)
         })
         .catch((error: string) => {
             console.log(error)
-            r = new Response(500, error, null)
+            return new Response(500, error, null)
         })
-
-    return r
 }
 
 function uninitializedResponse() : Response {

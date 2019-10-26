@@ -26,7 +26,7 @@ export default class PropertyButton extends Component {
           <View style={{ flex:0.5 }}>
           <Button
           title="View Property"
-          onPress={ () => { this.props.navigation.navigate("ViewProperty", {
+          onPress={ () => { this.props.navigation.navigate("View", {
             property: this.property,
           }) }}/>
         </View>

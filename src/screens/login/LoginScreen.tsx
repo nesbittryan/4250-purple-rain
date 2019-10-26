@@ -2,8 +2,7 @@ import * as React from 'react';
 import { Component } from 'react';
 import { View } from 'react-native';
 import { Input, Button } from 'react-native-elements';
-import { default_style } from '../../styles/views';
-import { AuthService } from '../../service/AuthService'
+import { MainApp } from '../../styles/Styles';
 import { APIService } from '../../service/APIService'
 
 interface State {
@@ -26,12 +25,21 @@ export default class LoginScreen extends Component {
   }
 
   handleLoginPress() {
-    if (AuthService.login(this.state.email, this.state.password))
-      this.props.navigation.navigate("Tabs", { email: this.state.email })
-  }
+    this.props.navigation.navigate("Tabs")
+
+    /*APIService.loginUser(this.state.email, this.state.password)
+      .then((response) => {
+        if (response.code != 200) {
+          alert("Please check your email and password are correct")
+        } else {
+          this.props.navigation.navigate("Tabs")
+          // user response.data to get token when it comes back and save it somewhere
+        }
+      })*/
+    }
 
   handleSignupPress() {
-    this.props.navigation.navigate("SignUp", { })
+    this.props.navigation.navigate("SignUp")
   }
 
   handleStateChange(name: string, input: string) {
@@ -40,8 +48,8 @@ export default class LoginScreen extends Component {
 
   render() {
     return (
-      <View style={default_style.container}>
-        <View style={default_style.form}>
+      <View style={ MainApp.container }>
+        <View style={ MainApp.form }>
           <Input value={ this.state.email }
             onChangeText={(txt) => this.handleStateChange("email", txt)}
             placeholder="email"
