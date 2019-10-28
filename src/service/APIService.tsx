@@ -34,10 +34,26 @@ function createUser(email: string, password: string, firstName: string, lastName
         })
 }
 
-function createProperty(property: Property) : Response {
-    let r = uninitializedResponse()
+function createProperty(property: PropertyInterface) : Promise<Response> {
+    let endpoint = url + endpoints.property + 'create'
+    
+    let body = new FormData()
+    body.append("street_address", property.address)
+    body.append("city", property.city)
+    body.append("state", property.state)
+    body.append("country", property.country)
+    body.append("landlord_id", property.landlordId)
+    body.append("max_occupancy", property.maxOccupancy.toString())
+    body.append("description", property.description)
 
-    return r
+    return axios.post(endpoint, body, { headers: {'Content-Type': 'multipart/form-data' }})
+        .then((response: { status: number; statusText: string; data: any; }) => {
+            return new Response(response.status, response.statusText, response.data)
+        })
+        .catch((error: string) => {
+            console.log(error)
+            return new Response(500, error, null)
+        })
 }
 
 function getPropertiesByUserId(userId: string) : any {

@@ -7,7 +7,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { APIService } from "../../service/APIService";
 
 import { MainApp } from '../../styles/Styles';
-import { UserInterface } from "../../common/models/user";
 
 interface State {
   firstName: string,
