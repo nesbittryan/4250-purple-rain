@@ -1,6 +1,6 @@
 import React from 'react';
 import { Component } from 'react';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, AsyncStorage } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Button } from 'react-native-elements';
 import { Property } from '../../common/models/Property';
@@ -17,11 +17,25 @@ export default class PropertyHomeScreen extends Component {
     }
   }
   properties:Property[] = new Array()
+  userId:string
 
   constructor(props: any) {
     super(props)
-    let userId = "1"
-    let propertyList = APIService.getPropertiesByUserId(userId).then((propertyList: any)  => {
+    this.userId = ""
+
+    AsyncStorage.getItem("user")
+      .then((response: any) => {
+        this.userId = response.id
+      })
+
+    let propertyList = APIService.getPropertiesByUserId(this.userId).then((propertyList: any)  => {
+      this.properties = propertyList
+      this.forceUpdate();
+    })
+  }
+
+  componentDidMount() {
+    APIService.getPropertiesByUserId(this.userId).then((propertyList: any)  => {
       this.properties = propertyList
       this.forceUpdate();
     })
