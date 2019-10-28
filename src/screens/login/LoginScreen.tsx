@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { View } from 'react-native';
+import { View, AsyncStorage } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import { MainApp } from '../../styles/Styles';
 import { APIService } from '../../service/APIService'
@@ -25,17 +25,17 @@ export default class LoginScreen extends Component {
   }
 
   handleLoginPress() {
-    this.props.navigation.navigate("Tabs")
     APIService.loginUser(this.state.email, this.state.password)
       .then((response) => {
         if (response.code != 200) {
           alert("Please check your email and password are correct")
         } else {
           this.props.navigation.navigate("Tabs")
-          // user response.data to get token when it comes back and save it somewhere
+          AsyncStorage.setItem("user", JSON.stringify(response.data))
         }
-      })
-    }
+      }
+    )
+  }
 
   handleSignupPress() {
     this.props.navigation.navigate("SignUp")
