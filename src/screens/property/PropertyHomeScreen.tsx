@@ -32,7 +32,10 @@ export default class PropertyHomeScreen extends Component {
       <View>
         <FlatList
           data={ this.properties }
-          renderItem={({item}) => <PropertyButton property={ item } navigation={ this.props.navigation } ></PropertyButton> }>
+          style={{
+            
+          }}
+          renderItem={({item}) => <PropertyButton property={ item } navigation={this.props.navigation} ></PropertyButton> }>
         </FlatList>
         <Button title="Register New Property" onPress={ () => { this.props.navigation.navigate("Register") }}></Button>
       </View>
