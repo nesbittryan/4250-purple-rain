@@ -1,6 +1,6 @@
 import React from 'react';
 import { Component } from 'react';
-import { Text, View, FlatList } from 'react-native';
+import { View, FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Button } from 'react-native-elements';
 import { Property } from '../../common/models/Property';

@@ -12,6 +12,7 @@ export const APIService =  {
     createProperty,
     getPropertiesByUserId,
     loginUser,
+    updateUser
 }
 
 function createUser(email: string, password: string, firstName: string, lastName: string) : any {
@@ -75,6 +76,10 @@ function loginUser(email: string, password: string) : Promise<Response> {
             console.log(error)
             return new Response(500, error, null)
         })
+}
+
+function updateUser(id: string, email: string, password: string, firstName: string, lastName: string) : any {
+
 }
 
 function uninitializedResponse() : Response {

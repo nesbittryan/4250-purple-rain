@@ -1,9 +1,12 @@
 import React from "react";
 import { Component } from "react";
-import { Button, Input } from 'react-native-elements';
 import { View } from "react-native";
-import { MainApp } from '../../styles/Styles';
+import { Button, Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
+
+import { APIService } from "../../service/APIService";
+
+import { MainApp } from '../../styles/Styles';
 
 interface State {
   firstName: string,
@@ -33,6 +36,7 @@ export default class ViewUserScreen extends Component {
   constructor(props: any) {
     super(props)
     this.handleStateChange = this.handleStateChange.bind(this)
+    this.handleUserUpdate = this.handleUserUpdate.bind(this)
 
     const user =  this.props.navigation.getParam('user', 'error')
     
@@ -44,6 +48,18 @@ export default class ViewUserScreen extends Component {
 
   handleStateChange(name: string, input: string) {
     this.setState(() => ({ [name]: input }));
+  }
+
+  handleUserUpdate() {
+    APIService.updateUser(this.state.id, this.state.email, this.state.password, this.state.firstName, this.state.lastName)
+    .then((response: any) => {
+      if (response.code != 200) {
+        alert("User profile was unable to be updated")
+        return
+      } else {
+        alert("Account updated")
+      }  
+    })
   }
 
   render() {
@@ -71,7 +87,7 @@ export default class ViewUserScreen extends Component {
               returnKeyType="go"/>
           </View>
           <Button
-            title="Update Address"
+            title="Update Profile" onPress={ () => { this.handleUserUpdate } }
           />
         </View>
       </View>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, View, TouchableHighlight } from 'react-native';
+import { Text, View } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 
 import { MainApp } from '../../styles/Styles'
@@ -17,14 +17,7 @@ interface State {
 export default class AccountCreationScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
-        headerTitle: 'Sign Up',
-        headerLeft: (
-          <TouchableHighlight style={ MainApp.button } onPress={ () => navigation.popToTop() } underlayColor="white">
-            <View>
-              <Text>Cancel</Text>
-            </View>
-          </TouchableHighlight>
-        )
+      headerTitle: 'Sign Up',
     }
   }
   
