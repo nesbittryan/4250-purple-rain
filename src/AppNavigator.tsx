@@ -16,6 +16,7 @@ import ViewUserScreen from './screens/user/ViewUserScreen';
 
 import { AppColours } from './styles/AppColours'
 import { MainApp } from './styles/Styles';
+import { User } from './common/models/user';
 
 const PropertyNavStack = createStackNavigator(
     {
