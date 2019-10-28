@@ -41,6 +41,9 @@ export default class HomeScreen extends Component {
         <Text>Home page { JSON.stringify(this.props.navigation.getParam('email', 'UNKNOWN'))}</Text>
         <FlatList
           data={ this.properties }
+          style={{
+            
+          }}
           renderItem={({item}) => <PropertyButton property={ item } navigation={this.props.navigation} ></PropertyButton> }>
         </FlatList>
         <Button title="Register New Property" onPress={ () => { this.props.navigation.navigate("RegisterProperty") }}></Button>
