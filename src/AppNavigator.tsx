@@ -1,18 +1,21 @@
 import React from 'react';
+import { View, Text } from 'react-native';
 import { createAppContainer } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
+import { createBottomTabNavigator } from 'react-navigation-tabs';
+import { TouchableHighlight } from 'react-native-gesture-handler';
 
 import PropertyHomeScreen from './screens/property/PropertyHomeScreen'
-import LoginScreen from './screens/login/LoginScreen'
 import RegisterPropertyScreen from './screens/property/RegisterPropertyScreen'
-import SignUpScreen from './screens/sign-up/SignUpScreen'
 import ViewPropertyScreen from './screens/property/ViewPropertyScreen'
-import { createBottomTabNavigator } from 'react-navigation-tabs';
+
+import LoginScreen from './screens/login/LoginScreen'
+import SignUpScreen from './screens/sign-up/SignUpScreen'
+
 import ViewUserScreen from './screens/user/ViewUserScreen';
-import { TouchableHighlight } from 'react-native-gesture-handler';
-import { MainApp } from './styles/Styles';
-import { View, Text } from 'react-native';
+
 import { AppColours } from './styles/AppColours'
+import { MainApp } from './styles/Styles';
 
 const PropertyNavStack = createStackNavigator(
     {
@@ -47,28 +50,9 @@ const MainTabNav = createBottomTabNavigator(
 
 const MainAppStack = createStackNavigator(
     {
-        Tabs: {
-            screen: MainTabNav,
-            navigationOptions: ({ navigation }) => ({
-                headerTitle: "Purple Rain",
-                headerLeft: (
-                <TouchableHighlight style={ MainApp.button } onPress={ () => { navigation.popToTop(); } } underlayColor="white">
-                    <View>
-                        <Text>Sign Out</Text>
-                    </View>
-                </TouchableHighlight>
-                )
-            }),
-        },
-        Login: {
-            screen: LoginScreen,
-            navigationOptions: {
-                headerTitle: 'Log In'
-            },
-        },
-        SignUp: {
-            screen: SignUpScreen
-        },
+        Tabs: MainTabNav,
+        Login: LoginScreen,
+        SignUp: SignUpScreen,
     },
     {
         initialRouteName: 'Login',
