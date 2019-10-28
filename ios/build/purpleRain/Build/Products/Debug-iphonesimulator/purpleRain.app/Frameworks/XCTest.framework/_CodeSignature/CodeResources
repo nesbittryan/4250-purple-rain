@@ -14,7 +14,7 @@
 		</data>
 		<key>Headers/XCTAttachment.h</key>
 		<data>
-		Oj+TPGqNugq6OdGTXp+pv8RABrw=
+		D+igalTdqMWvG/cB1056ns8u3B8=
 		</data>
 		<key>Headers/XCTAttachmentLifetime.h</key>
 		<data>
@@ -32,14 +32,6 @@
 		<data>
 		lFyxpAOexy4I0FeOWpffoTT8it0=
 		</data>
-		<key>Headers/XCTMeasureOptions.h</key>
-		<data>
-		ibArYCN2zdKhgx+eBgBCBNDAXwk=
-		</data>
-		<key>Headers/XCTMetric.h</key>
-		<data>
-		0ajIZMxTB6Ui2i7sW317ciFSITk=
-		</data>
 		<key>Headers/XCTNSNotificationExpectation.h</key>
 		<data>
 		GgPD0VxAR13kxU718XyIoANRFnI=
@@ -54,11 +46,11 @@
 		</data>
 		<key>Headers/XCTest.apinotes</key>
 		<data>
-		rdxiCOk1+8LS5qAXN2bvobJDFFQ=
+		h2FXjh7pQmglBtwravcVLzcHREk=
 		</data>
 		<key>Headers/XCTest.h</key>
 		<data>
-		bQFfKucFGBSbvIYCB0BZ5s/oxjc=
+		vyHRJ5iIHDimvUMhPRtMJzhrlW4=
 		</data>
 		<key>Headers/XCTestAssertions.h</key>
 		<data>
@@ -66,19 +58,15 @@
 		</data>
 		<key>Headers/XCTestAssertionsImpl.h</key>
 		<data>
-		T99AMAYulUY/rC8Jm3f2wue/NwQ=
+		FMlfpxJpHMUMoOhkV78DHSY1H74=
 		</data>
 		<key>Headers/XCTestCase+AsynchronousTesting.h</key>
 		<data>
 		rWTz3GJooC6B9F2UuPe8rraZ3co=
 		</data>
-		<key>Headers/XCTestCase+XCUIInterruptionMonitoring.h</key>
-		<data>
-		HshK97GInp8BY09Lz+IOOiSjMLw=
-		</data>
 		<key>Headers/XCTestCase.h</key>
 		<data>
-		cMytFl3o1iFwLUyeTTEODEj9URQ=
+		/ESphKpDe7ioUoyZBP5KMUsepcs=
 		</data>
 		<key>Headers/XCTestCaseRun.h</key>
 		<data>
@@ -86,7 +74,7 @@
 		</data>
 		<key>Headers/XCTestDefines.h</key>
 		<data>
-		Am3+DsqkiGWVQdMxbvP+PnX1GEc=
+		po6ETUvux87Rma0YA5sp9vfGHSs=
 		</data>
 		<key>Headers/XCTestErrors.h</key>
 		<data>
@@ -94,7 +82,7 @@
 		</data>
 		<key>Headers/XCTestExpectation.h</key>
 		<data>
-		KhXKWvul02bgmcJVo8Ndr6k6XGc=
+		Y/ssvPOSAIHfa/G1pVREFYwgDq8=
 		</data>
 		<key>Headers/XCTestLog.h</key>
 		<data>
@@ -130,19 +118,19 @@
 		</data>
 		<key>Headers/XCUIApplication.h</key>
 		<data>
-		KRfS5tDZSII6EIDyPAL3+83RDuE=
+		3xPGyAQELvSZZ4RHMwhQEnlzFhg=
 		</data>
 		<key>Headers/XCUICoordinate.h</key>
 		<data>
-		KH9oPuVEvERZxuUq0MRGlJmp92I=
+		ISpzcCIN+bNtcvHSlqKq3H0dHAA=
 		</data>
 		<key>Headers/XCUIDevice.h</key>
 		<data>
-		U+d9WpjjRCjLiLvCZfzVvHgwSac=
+		U+IJR8s7rG6nhUTZUDzWW/erNGI=
 		</data>
 		<key>Headers/XCUIElement.h</key>
 		<data>
-		kik/CdE89CdCkfNcElgLOL/fEfY=
+		25uxff90oirJoEGqmcoId+OQAJU=
 		</data>
 		<key>Headers/XCUIElementAttributes.h</key>
 		<data>
@@ -182,11 +170,11 @@
 		</data>
 		<key>Headers/XCUISiriService.h</key>
 		<data>
-		dHcrL5GzEWnfAVIIdfMRtkHKRh8=
+		NtIeUU61kDhd8LGgBr1FjKXe6JQ=
 		</data>
 		<key>Info.plist</key>
 		<data>
-		MkLBcTrGZP0m49TO8MT9Kpg2XvA=
+		ZYYXrlSp6znc2cHkHxyB8TaaHBs=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -203,7 +191,7 @@
 		</dict>
 		<key>version.plist</key>
 		<data>
-		cX36RXdDl3EMAMV0lOhi0RGEkTc=
+		jbKC2b+KYpjXh2qm/yVPxp6oxXU=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -234,11 +222,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			Oj+TPGqNugq6OdGTXp+pv8RABrw=
+			D+igalTdqMWvG/cB1056ns8u3B8=
 			</data>
 			<key>hash2</key>
 			<data>
-			sPKuJRf7076bHZkdcyw9yIODM7cLQgzwVepIaxfKcwg=
+			5aviQX7pgXyeS3UISWFOjiiUf8kPCzFtPNnk08B2rrQ=
 			</data>
 		</dict>
 		<key>Headers/XCTAttachmentLifetime.h</key>
@@ -285,28 +273,6 @@
 			0LwmSqNDabujMjFkD4VsuBrVvpDiagCmMT7+TrOMQJ8=
 			</data>
 		</dict>
-		<key>Headers/XCTMeasureOptions.h</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			ibArYCN2zdKhgx+eBgBCBNDAXwk=
-			</data>
-			<key>hash2</key>
-			<data>
-			KDHwa5eBjk9vZzDnpRNyoTiLMHC+9NfBU2oMFJTvlmQ=
-			</data>
-		</dict>
-		<key>Headers/XCTMetric.h</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			0ajIZMxTB6Ui2i7sW317ciFSITk=
-			</data>
-			<key>hash2</key>
-			<data>
-			ohpVoJzlGk8aW+Bm+UIJpMN7QLu7ZRCzMw9yK/vngRg=
-			</data>
-		</dict>
 		<key>Headers/XCTNSNotificationExpectation.h</key>
 		<dict>
 			<key>hash</key>
@@ -344,22 +310,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			rdxiCOk1+8LS5qAXN2bvobJDFFQ=
+			h2FXjh7pQmglBtwravcVLzcHREk=
 			</data>
 			<key>hash2</key>
 			<data>
-			d7IpqGCCD0CfwYoa51brylY4fgu3M72FcmaoEnvUdsw=
+			6+EJqSNG7OKdZg7PuWLsN7TOpgUyuRYU8A64i50u9H8=
 			</data>
 		</dict>
 		<key>Headers/XCTest.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			bQFfKucFGBSbvIYCB0BZ5s/oxjc=
+			vyHRJ5iIHDimvUMhPRtMJzhrlW4=
 			</data>
 			<key>hash2</key>
 			<data>
-			lsupTQ3bRsQoIE7MDToK4j69d+bLEn28IJlqk78FmQY=
+			vq64eNbcQBW4F9zCLXsPBM4vawf51Eq6PcVMcSyxLYI=
 			</data>
 		</dict>
 		<key>Headers/XCTestAssertions.h</key>
@@ -377,11 +343,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			T99AMAYulUY/rC8Jm3f2wue/NwQ=
+			FMlfpxJpHMUMoOhkV78DHSY1H74=
 			</data>
 			<key>hash2</key>
 			<data>
-			zNlx0hWK8x8UjUS+KOfeHvvervr/BWjBpV+5mJipE14=
+			HR9g/DQVSYIlmIjN9aQo9QONQPkTY+7GRuFBie/i2so=
 			</data>
 		</dict>
 		<key>Headers/XCTestCase+AsynchronousTesting.h</key>
@@ -395,26 +361,15 @@
 			tJGZbkx6PTinAC1utC38ad/hNBMIojawFdNt3abKvKE=
 			</data>
 		</dict>
-		<key>Headers/XCTestCase+XCUIInterruptionMonitoring.h</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			HshK97GInp8BY09Lz+IOOiSjMLw=
-			</data>
-			<key>hash2</key>
-			<data>
-			bQ07uLDQQVxFhGMZVX2mEVx0PcELxAp83yWtTivdhY4=
-			</data>
-		</dict>
 		<key>Headers/XCTestCase.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			cMytFl3o1iFwLUyeTTEODEj9URQ=
+			/ESphKpDe7ioUoyZBP5KMUsepcs=
 			</data>
 			<key>hash2</key>
 			<data>
-			yswC/H8HQQONXgDwc7kA0veuoTP0vr9nKShnoBPShXg=
+			Yz9u1weetIdRWsNGJo4sZSkBn3n7VTttoiuIgsUdssw=
 			</data>
 		</dict>
 		<key>Headers/XCTestCaseRun.h</key>
@@ -432,11 +387,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			Am3+DsqkiGWVQdMxbvP+PnX1GEc=
+			po6ETUvux87Rma0YA5sp9vfGHSs=
 			</data>
 			<key>hash2</key>
 			<data>
-			zuT+9hJS0Gkek0vsBM0QbHA2iRIwxHkAVlflT6Dl5Cs=
+			XEUB26q3NNiOejd2zU8pAaf6LXWLdjEN4SgBi/oEHfU=
 			</data>
 		</dict>
 		<key>Headers/XCTestErrors.h</key>
@@ -454,11 +409,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			KhXKWvul02bgmcJVo8Ndr6k6XGc=
+			Y/ssvPOSAIHfa/G1pVREFYwgDq8=
 			</data>
 			<key>hash2</key>
 			<data>
-			mAYhxq+bEQg5FJhqAi4Cub/7+mMl0pLWISlW4pdh3p0=
+			bzHkvrq2f+1FFP3qie5fF78p6scQOnD/r7WYoDW764A=
 			</data>
 		</dict>
 		<key>Headers/XCTestLog.h</key>
@@ -553,44 +508,44 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			KRfS5tDZSII6EIDyPAL3+83RDuE=
+			3xPGyAQELvSZZ4RHMwhQEnlzFhg=
 			</data>
 			<key>hash2</key>
 			<data>
-			ZcQ8tkNuRMWSj71jyx56Uc/drEs5EQzV/1jFn/fCc8E=
+			c5JhLgu1HF3BRKMZa+lW3Uv/rhC85w7hROiHmgBDw8k=
 			</data>
 		</dict>
 		<key>Headers/XCUICoordinate.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			KH9oPuVEvERZxuUq0MRGlJmp92I=
+			ISpzcCIN+bNtcvHSlqKq3H0dHAA=
 			</data>
 			<key>hash2</key>
 			<data>
-			+0+WTr805cIzOsY72c8KSuWA6SUFtagukcxOv0ili5g=
+			WqIHIIX29PruSt0Ux3ajf2d2Ya6W7ES85APt7RfZEUQ=
 			</data>
 		</dict>
 		<key>Headers/XCUIDevice.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			U+d9WpjjRCjLiLvCZfzVvHgwSac=
+			U+IJR8s7rG6nhUTZUDzWW/erNGI=
 			</data>
 			<key>hash2</key>
 			<data>
-			VW3IwP1TYREPNB2r2kMjYcDRy4pIEIanLPXa2Q6103I=
+			21p3sZRJyboIhJGBQVEL2/M1VzF/rywzEY17ETdqXck=
 			</data>
 		</dict>
 		<key>Headers/XCUIElement.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			kik/CdE89CdCkfNcElgLOL/fEfY=
+			25uxff90oirJoEGqmcoId+OQAJU=
 			</data>
 			<key>hash2</key>
 			<data>
-			Fy65/sTJUEiV0ngzbtJLFKs9c0kPw/E9TxgozUurqbM=
+			tcQVVPrLnGHtpuOYH54AchAIAxphDf4BcsEKEIh9CVU=
 			</data>
 		</dict>
 		<key>Headers/XCUIElementAttributes.h</key>
@@ -696,11 +651,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			dHcrL5GzEWnfAVIIdfMRtkHKRh8=
+			NtIeUU61kDhd8LGgBr1FjKXe6JQ=
 			</data>
 			<key>hash2</key>
 			<data>
-			3sM9IB3tMtnQkwtK6ml+Cyc98wfQkjwaoA/cdI7i500=
+			6JTR/e2zA54rVmT1cblklOkL8LFXaYg81YGhVhoagsw=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
@@ -731,17 +686,17 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			cX36RXdDl3EMAMV0lOhi0RGEkTc=
+			jbKC2b+KYpjXh2qm/yVPxp6oxXU=
 			</data>
 			<key>hash2</key>
 			<data>
-			LJGBUe6yDOXNn8XrkeMKS8lRIc3fsgjTGuMvwbVbIMg=
+			Q7ZYLt2wkcLeyL+1t2D9/nX047oeBQP5aoTBux/xecU=
 			</data>
 		</dict>
 	</dict>
 	<key>rules</key>
 	<dict>
-		<key>^.*</key>
+		<key>^</key>
 		<true/>
 		<key>^.*\.lproj/</key>
 		<dict>
@@ -772,12 +727,24 @@
 			<key>weight</key>
 			<real>11</real>
 		</dict>
+		<key>^</key>
+		<dict>
+			<key>weight</key>
+			<real>20</real>
+		</dict>
 		<key>^(.*/)?\.DS_Store$</key>
 		<dict>
 			<key>omit</key>
 			<true/>
 			<key>weight</key>
 			<real>2000</real>
+		</dict>
+		<key>^(Frameworks|SharedFrameworks|PlugIns|Plug-ins|XPCServices|Helpers|MacOS|Library/(Automator|Spotlight|LoginItems))/</key>
+		<dict>
+			<key>nested</key>
+			<true/>
+			<key>weight</key>
+			<real>10</real>
 		</dict>
 		<key>^.*</key>
 		<true/>
@@ -813,6 +780,13 @@
 			<true/>
 			<key>weight</key>
 			<real>20</real>
+		</dict>
+		<key>^[^/]+$</key>
+		<dict>
+			<key>nested</key>
+			<true/>
+			<key>weight</key>
+			<real>10</real>
 		</dict>
 		<key>^embedded\.provisionprofile$</key>
 		<dict>
