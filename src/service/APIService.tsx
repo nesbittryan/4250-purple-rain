@@ -22,15 +22,16 @@ export const APIService =  {
 /* returns true if user is landlord of a property */
 function isLandlordByPropertyId(userId: string, propertyId: string): any {
     let endpoint = url + endpoints.landlord + userId
+    let final = false
     return axios.get(endpoint)
     .then(function (response) {
-        response.data.forEach((house: any) => {
-            if (house.id = propertyId) 
+        response.data.property_id.forEach((id: any) => {
+            if (id == propertyId) 
             {
-                return true
+                final = true
             }
         });
-        return false
+        return final
     })
     .catch(function (error) {
         // handle error
