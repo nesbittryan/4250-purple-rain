@@ -8,6 +8,8 @@ import { TouchableHighlight } from 'react-native-gesture-handler';
 import HomeScreen from './screens/property/HomeScreen'
 import RegisterPropertyScreen from './screens/property/RegisterPropertyScreen'
 import ViewPropertyScreen from './screens/property/ViewPropertyScreen'
+import LandlordOptionsScreen from './screens/property/LandlordOptionsScreen'
+import TenantOptionsScreen from './screens/property/TenantOptionsScreen'
 
 import LoginScreen from './screens/login/LoginScreen'
 import SignUpScreen from './screens/sign-up/SignUpScreen'
@@ -23,11 +25,12 @@ const PropertyNavStack = createStackNavigator(
         Home: HomeScreen,
         Register: RegisterPropertyScreen,
         View: ViewPropertyScreen,
-        Info: PropertyInfoScreen
+        Info: PropertyInfoScreen,
+        LandlordOptions: LandlordOptionsScreen,
+        TenantOptions: TenantOptionsScreen
     },
     { 
         initialRouteName: 'Home',
-
     }
 )
 
