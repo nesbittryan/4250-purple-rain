@@ -57,22 +57,18 @@ export default class ViewPropertyScreen extends Component {
             <Button
               style={ViewPropertyStyles.optionButtons}
               title="Landlord Options" 
-<<<<<<< HEAD
+
               onPress={ () => { this.props.navigation.navigate("LandlordOptions", {
                 property: this.property,
               }) }}
-=======
->>>>>>> 55d8087b0854040674742993b25085c6ea0cd762
             />
             <Button
               style={ViewPropertyStyles.optionButtons}
               title="Tenant Options"
-<<<<<<< HEAD
+
               onPress={ () => { this.props.navigation.navigate("TenantOptions", {
                 property: this.property,
               }) }}
-=======
->>>>>>> 55d8087b0854040674742993b25085c6ea0cd762
             />
             <Button
               style={ViewPropertyStyles.optionButtons}
