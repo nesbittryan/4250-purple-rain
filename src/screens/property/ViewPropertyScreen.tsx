@@ -1,10 +1,13 @@
 import React from "react";
 import { Component } from "react";
 import { Button, Input } from 'react-native-elements';
-import { View, ImageBackground } from "react-native";
+import { View, ImageBackground, AsyncStorage } from "react-native";
 import { MainApp } from '../../styles/Styles';
 import { StyleSheet } from 'react-native';
 import { Property } from "../../common/models/property";
+import { bool } from "prop-types";
+import { User } from "../../common/models/user";
+import { APIService } from '../../service/APIService';
 
 
 interface State {
@@ -14,7 +17,8 @@ interface State {
   description: string,
   id: string,
   maxOccupancy: number,
-  state: string
+  state: string,
+  isLandlord: any
 }
 
 export default class ViewPropertyScreen extends Component {
@@ -25,16 +29,27 @@ export default class ViewPropertyScreen extends Component {
     description: "",
     id: "",
     maxOccupancy: 1,
-    state: ""
+    state: "",
+    isLandlord: false
   }
+  user: User | any
   property: Property
   constructor(props: any) {
     super(props)
+    AsyncStorage.getItem("user")
+      .then((response: any) => {
+        this.user = JSON.parse(response)
+        APIService.isLandlordByPropertyId( this.user.id,this.property.id).then((isLandlord: boolean)  => {
+          this.state.isLandlord = isLandlord
+        })
+        console.log(this.state.isLandlord)
+      })
     this.handleStateChange = this.handleStateChange.bind(this)
     this.property =  this.props.navigation.getParam('property', 'error')
     this.state.address = this.property.address
     this.state.description = this.property.description
     this.state.id = this.property.id
+    
   }
 
   handleStateChange(name: string, input: string) {
@@ -43,7 +58,7 @@ export default class ViewPropertyScreen extends Component {
   handleOptionsPress(){
     //this.props.navigation.navigate(PropertyInfoScreen)
   }
-
+  
   render() {
     return (
       <View style={MainApp.container}>
@@ -54,14 +69,15 @@ export default class ViewPropertyScreen extends Component {
             </ImageBackground>
           </View>
           <View style={ViewPropertyStyles.options}>
-            <Button
+            {this.state.isLandlord && <Button
               style={ViewPropertyStyles.optionButtons}
               title="Landlord Options" 
 
               onPress={ () => { this.props.navigation.navigate("LandlordOptions", {
                 property: this.property,
               }) }}
-            />
+            />}
+            
             <Button
               style={ViewPropertyStyles.optionButtons}
               title="Tenant Options"

@@ -5,7 +5,9 @@ const url = "http://ec2-18-234-27-166.compute-1.amazonaws.com"
 
 const endpoints = {
     user: "/user/",
-    property: "/property/"
+    property: "/property/",
+    landlord: "/landlord/",
+    tenant: "/tenant/"
 }
 
 export const APIService =  {
@@ -14,7 +16,26 @@ export const APIService =  {
     getPropertiesByUserId,
     loginUser,
     updateUser,
-    updateUserPassword
+    updateUserPassword,
+    isLandlordByPropertyId
+}
+/* returns true if user is landlord of a property */
+function isLandlordByPropertyId(userId: string, propertyId: string): any {
+    let endpoint = url + endpoints.landlord + userId
+    return axios.get(endpoint)
+    .then(function (response) {
+        response.data.forEach((house: any) => {
+            if (house.id = propertyId) 
+            {
+                return true
+            }
+        });
+        return false
+    })
+    .catch(function (error) {
+        // handle error
+        console.log(error)
+    })
 }
 
 function createUser(email: string, password: string, firstName: string, lastName: string) : any {
@@ -100,6 +121,9 @@ function loginUser(email: string, password: string) : Promise<Response> {
             return new Response(500, error, null)
         })
 }
+
+
+
 
 function updateUser(id: string, email: string, firstName: string, lastName: string) : any {
 
