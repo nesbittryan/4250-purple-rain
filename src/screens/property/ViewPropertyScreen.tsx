@@ -36,14 +36,7 @@ export default class ViewPropertyScreen extends Component {
   property: Property
   constructor(props: any) {
     super(props)
-    AsyncStorage.getItem("user")
-      .then((response: any) => {
-        this.user = JSON.parse(response)
-        APIService.isLandlordByPropertyId( this.user.id,this.property.id).then((isLandlord: boolean)  => {
-          this.state.isLandlord = isLandlord
-        })
-        console.log(this.state.isLandlord)
-      })
+    
     this.handleStateChange = this.handleStateChange.bind(this)
     this.property =  this.props.navigation.getParam('property', 'error')
     this.state.address = this.property.address
@@ -51,7 +44,19 @@ export default class ViewPropertyScreen extends Component {
     this.state.id = this.property.id
     
   }
-
+  componentDidMount(){
+    AsyncStorage.getItem("user")
+      .then((response: any) => {
+        this.user = JSON.parse(response)
+        
+      }).then(() => {
+        APIService.isLandlordByPropertyId( this.user.id,this.property.id).then((isLandlord: boolean)  => {
+          this.setState({
+            isLandlord: isLandlord
+          })
+        })
+      })
+  }
   handleStateChange(name: string, input: string) {
     this.setState(() => ({ [name]: input }));
   }
