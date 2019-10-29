@@ -33,6 +33,13 @@ export default class AccountCreationScreen extends React.Component {
     super(props)
     this.handleStateChange = this.handleStateChange.bind(this)
     this.handleCreateAccountPress = this.handleCreateAccountPress.bind(this)
+    this.handleToLoginPress = this.handleToLoginPress.bind(this)
+
+  }
+  
+  
+  handleToLoginPress(){
+    this.props.navigation.popToTop()
   }
 
   handleCreateAccountPress() {
@@ -92,6 +99,9 @@ export default class AccountCreationScreen extends React.Component {
             <Button style={ MainApp.button }
                 onPress={ this.handleCreateAccountPress }
                 title="Sign Up"/>
+            <Button style={ MainApp.button }
+            onPress={ this.handleToLoginPress }
+            title="Back"/>
         </View>
       </View>
     );      
