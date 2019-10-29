@@ -1,8 +1,11 @@
 import React from "react";
 import { Component } from "react";
-import { Button, Input, Text } from 'react-native-elements';
-import { View, Picker } from "react-native";
+import { Button, Input } from 'react-native-elements';
+import { View, ImageBackground } from "react-native";
 import { MainApp } from '../../styles/Styles';
+import { StyleSheet } from 'react-native';
+import { Property } from "../../common/models/property";
+
 
 interface State {
   address: string,
@@ -24,84 +27,87 @@ export default class ViewPropertyScreen extends Component {
     maxOccupancy: 1,
     state: ""
   }
-
+  property: Property
   constructor(props: any) {
     super(props)
     this.handleStateChange = this.handleStateChange.bind(this)
-    const property =  this.props.navigation.getParam('property', 'error')
-    this.state.address = property.address
-    this.state.description = property.description
-    this.state.id = property.id
+    this.property =  this.props.navigation.getParam('property', 'error')
+    this.state.address = this.property.address
+    this.state.description = this.property.description
+    this.state.id = this.property.id
   }
 
   handleStateChange(name: string, input: string) {
     this.setState(() => ({ [name]: input }));
   }
+  handleOptionsPress(){
+    //this.props.navigation.navigate(PropertyInfoScreen)
+  }
 
   render() {
     return (
       <View style={MainApp.container}>
-        <View style={MainApp.form}>
-          <View style= {{ borderBottomWidth: 40, borderBottomColor: 'transparent' }}>
-            <Input 
-              style={ MainApp.input }
-              value={ this.state.address }
-              onChangeText={(txt) => this.handleStateChange("address", txt)}
-              returnKeyType="next"/>
-            <Input 
-              style={ MainApp.input }
-              value={ this.state.city }
-              onChangeText={(txt) => this.handleStateChange("city", txt)}
-              returnKeyType="next"/>
-            <Input 
-              style={ MainApp.input }
-              value={ this.state.state }
-              onChangeText={(txt) => this.handleStateChange("state", txt)}
-              returnKeyType="next"/>
-            <Input 
-              style={ MainApp.input }
-              value={ this.state.country }
-              onChangeText={(txt) => this.handleStateChange("country", txt)}
-              returnKeyType="next"/>
-            <Input 
-              style={ MainApp.input }
-              value={ this.state.description }
-              onChangeText={(txt) => this.handleStateChange("description", txt)}
-              returnKeyType="next"/>
-            <Input 
-              style={ MainApp.input }
-              value={ this.state.id }
-              onChangeText={(txt) => this.handleStateChange("id", txt)}
-              returnKeyType="go"/>
-            <Input 
-              style={ MainApp.input }
-              value={ this.state.address }
-              onChangeText={(txt) => this.handleStateChange("address", txt)}
-              returnKeyType="next"/>
-            <Text>Max Occupancy:</Text>
-          <Picker
-            selectedValue={ this.state.maxOccupancy}
-            onValueChange={(num) => this.handleStateChange("maxOccupancy", num)}>
-              <Picker.Item label="1" value="1"></Picker.Item>
-              <Picker.Item label="2" value="2"></Picker.Item>
-              <Picker.Item label="3" value="3"></Picker.Item>
-              <Picker.Item label="4" value="4"></Picker.Item>
-              <Picker.Item label="5" value="5"></Picker.Item>
-              <Picker.Item label="6" value="6"></Picker.Item>
-              <Picker.Item label="7" value="7"></Picker.Item>
-              <Picker.Item label="8" value="8"></Picker.Item>
-              <Picker.Item label="9" value="9"></Picker.Item>
-              <Picker.Item label="10" value="10"></Picker.Item>
-          </Picker>
+        <View style={ViewPropertyStyles.form}>
+          <View style={ViewPropertyStyles.imageContainer}>
+            <ImageBackground source={require('../../res/img/house1.jpg')} style={ViewPropertyStyles.imageHeader}>
+            
+            </ImageBackground>
           </View>
-          <Button
-            style={ MainApp.button }
-            title="Update Property" />
-          <Button 
-            style={ MainApp.button }
-            title="Delete Property" />
+          <View style={ViewPropertyStyles.options}>
+            <Button
+              style={ViewPropertyStyles.optionButtons}
+              title="Landlord Options" 
+            />
+            <Button
+              style={ViewPropertyStyles.optionButtons}
+              title="Tenant Options"
+            />
+            <Button
+              style={ViewPropertyStyles.optionButtons}
+              title="Messages Options"
+            />
+            <Button
+              style={ViewPropertyStyles.optionButtons}
+              title="Payment Options"
+            />
+            <Button
+              style={ViewPropertyStyles.optionButtons}
+              title="Property Info"
+              onPress={ () => { this.props.navigation.navigate("Info", {
+                property: this.property,
+              }) }}
+            />
+          </View>
         </View>
       </View>
     );
   }
 }
+
+const ViewPropertyStyles = StyleSheet.create({
+  header: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  form: {
+    flex: 1,
+    justifyContent: "flex-start",
+    width: "95%",
+  },
+  imageHeader: {
+    height: "100%",
+    width: "100%",
+    resizeMode: "cover",
+    alignItems: "flex-start"
+  },
+  imageContainer: {
+    maxHeight: 200,
+  },
+  options: {
+
+  },
+  optionButtons: {
+    marginBottom: 20,
+  }
+})
