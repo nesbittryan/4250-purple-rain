@@ -7,12 +7,14 @@ import SignUpScreen from '../screens/sign-up/SignUpScreen'
 
 import UserNavigator from './UserNavigator'
 import PropertyNavigator from './PropertyNavigator'
+import MessagesNavigator from './MessagesNavigator';
 
 import { AppColours } from '../styles/AppColours'
 
 const MainTabNav = createBottomTabNavigator(
     {
         Property: PropertyNavigator,
+        Messages: MessagesNavigator,
         User: UserNavigator,
     },
     {
@@ -44,4 +46,4 @@ const MainAppStack = createStackNavigator(
 
 const AppContainer = createAppContainer(MainAppStack)
 
-export default AppContainer 
+export default AppContainer

@@ -15,16 +15,16 @@ export default class PropertyButton extends Component {
   render() {
     return (
       <View style={{
-        flexDirection:'',
-        borderWidth:5,
-        borderColor:'transparent',
-        width:'100%',
+          flexDirection:'',
+          borderWidth:5,
+          borderColor:'transparent',
+          width:'100%',
         }}>
-          
+
         <View style={{ flex:1 }}>
           <Image
             style={{
-              width: '100%', 
+              width: '100%',
               height: 50,
             }}
             source={require('../../res/img/house1.jpg')}
