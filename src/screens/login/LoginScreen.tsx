@@ -12,8 +12,8 @@ interface State {
 
 export default class LoginScreen extends Component {
   readonly state: State = {
-    email: "",
-    password: ""
+    email: "Ryannesb@gmail.com",
+    password: "12121212"
   }
 
   constructor(props: any) {
@@ -49,18 +49,26 @@ export default class LoginScreen extends Component {
     return (
       <View style={ MainApp.container }>
         <View style={ MainApp.form }>
-          <Input value={ this.state.email }
+          <Input 
+            style={ MainApp.input }
+            value={ this.state.email }
             onChangeText={(txt) => this.handleStateChange("email", txt)}
             placeholder="email"
             returnKeyType="next"/>
-          <Input value={ this.state.password }
+          <Input 
+            style={ MainApp.input }
+            value={ this.state.password }
             onChangeText={(txt) => this.handleStateChange("password", txt)}
             placeholder="password"
             returnKeyType="go"
             secureTextEntry={ true }/>
-          <Button onPress={ this.handleLoginPress }
+          <Button 
+            style={ MainApp.button } 
+            onPress={ this.handleLoginPress }
             title="Login"/>
-          <Button onPress={ this.handleSignupPress }
+          <Button 
+            style={ MainApp.button } 
+            onPress={ this.handleSignupPress }
             title="Sign Up"/>
         </View>
       </View>

@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import { Property, PropertyInterface } from '../common/models/property';
 
 const url = "http://ec2-18-234-27-166.compute-1.amazonaws.com"
+
 const endpoints = {
     user: "/user/",
     property: "/property/"
@@ -12,7 +13,8 @@ export const APIService =  {
     createProperty,
     getPropertiesByUserId,
     loginUser,
-    updateUser
+    updateUser,
+    updateUserPassword
 }
 
 function createUser(email: string, password: string, firstName: string, lastName: string) : any {
@@ -62,11 +64,16 @@ function getPropertiesByUserId(userId: string) : any {
     var propertyList:Property[] = new Array()
     return axios.get(endpoint)
     .then(function (response) {
-        response.data.forEach((house: { street_address: string; id: string; description: string; }) => {
+        response.data.forEach((house: any) => {
             propertyList.push(new Property({
-                address : house.street_address,
-                id : house.id,
-                description : house.description
+                address: house.street_address,
+                city: house.city,
+                country: house.country,
+                state: house.state,
+                id: house.id,
+                landlordId: house.landlord_id,
+                maxOccupancy: house.max_occupancy,
+                description: house.description
             }))
         });
         return propertyList
@@ -94,7 +101,11 @@ function loginUser(email: string, password: string) : Promise<Response> {
         })
 }
 
-function updateUser(id: string, email: string, password: string, firstName: string, lastName: string) : any {
+function updateUser(id: string, email: string, firstName: string, lastName: string) : any {
+
+}
+
+function updateUserPassword(id: string, password: string) : any {
 
 }
 

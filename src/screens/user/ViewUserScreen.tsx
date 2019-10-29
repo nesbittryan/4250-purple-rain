@@ -12,7 +12,6 @@ interface State {
   firstName: string,
   lastName: string,
   email: string,
-  password: string,
   id: string,
 }
 
@@ -29,7 +28,6 @@ export default class ViewUserScreen extends Component {
     firstName: "",
     lastName: "",
     email: "",
-    password: "",
     id: "",
   }
 
@@ -53,7 +51,7 @@ export default class ViewUserScreen extends Component {
   }
 
   handleUserUpdate() {
-    APIService.updateUser(this.state.id, this.state.email, this.state.password, this.state.firstName, this.state.lastName)
+    APIService.updateUser(this.state.id, this.state.email, this.state.firstName, this.state.lastName)
     .then((response: any) => {
       if (response.code != 200) {
         alert("User profile was unable to be updated")
@@ -68,31 +66,34 @@ export default class ViewUserScreen extends Component {
     return (
       <View style={ MainApp.container }>
         <View style={ MainApp.form }>
-          <View style= {{
-            borderBottomWidth: 40,
-            borderBottomColor: 'transparent',
-          }}>
+          <View style= {{ borderBottomWidth: 40, borderBottomColor: 'transparent' }}>
             <Text>First Name</Text>
-            <Input value={ this.state.firstName }
-              onChangeText={(txt) => this.handleStateChange("address", txt)}
+            <Input 
+              style={ MainApp.input }
+              value={ this.state.firstName }
+              onChangeText={(txt) => this.handleStateChange("firstName", txt)}
               returnKeyType="next"/>
             <Text>Last Name</Text>
-            <Input value={ this.state.lastName }
-              onChangeText={(txt) => this.handleStateChange("description", txt)}
+            <Input 
+              style={ MainApp.input }
+              value={ this.state.lastName }
+              onChangeText={(txt) => this.handleStateChange("lastName", txt)}
               returnKeyType="next"/>
             <Text>Email</Text>
-            <Input value={ this.state.email }
-              onChangeText={(txt) => this.handleStateChange("description", txt)}
+            <Input 
+              style={ MainApp.input }
+              value={ this.state.email }
+              onChangeText={(txt) => this.handleStateChange("email", txt)}
               returnKeyType="next"/>
-            <Text>Password</Text>
-            <Input value={ this.state.password }
-              onChangeText={(txt) => this.handleStateChange("description", txt)}
-              returnKeyType="next"/>
-            <Text>ID: { this.state.id}</Text>
           </View>
-          <Button
-            title="Update Profile" onPress={ () => { this.handleUserUpdate } }
-          />
+          <Button 
+            style={ MainApp.button } 
+            title="Update Profile" 
+            onPress={ () => { this.handleUserUpdate } } />
+          <Button 
+            style={ MainApp.button } 
+            title="Change Password" 
+            onPress={ () => { this.props.navigation.navigate("ChangePassword", { user_id: this.state.id })} }/>
         </View>
       </View>
     );

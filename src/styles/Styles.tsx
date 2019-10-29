@@ -18,10 +18,10 @@ const MainApp = StyleSheet.create({
       width: "80%",
     },
     button: {
-      margin: "8%"
+      margin: "0.5%"
     },
     input: {
-      margin: "8%"
+      margin: "0.5%"
     }
   })
 
