@@ -82,7 +82,6 @@ function createProperty(property: PropertyInterface) : Promise<Response> {
 }
 
 function getPropertiesByUserId(userId: string) : any {
-    let r = uninitializedResponse()
     let endpoint = url + endpoints.property + "user/" + userId
     console.log(endpoint)
     var propertyList:Property[] = new Array()
@@ -115,7 +114,6 @@ function getPropertiesByUserId(userId: string) : any {
         return propertyList
     })
     .catch(function (error) {
-        // handle error
         console.log(error)
     })
 }
@@ -134,7 +132,6 @@ function getTenantsInProperty(propertyId: string) {
         return final
     })
     .catch(function (error) {
-        // handle error
         console.log(error)
     })
 }
@@ -156,19 +153,26 @@ function loginUser(email: string, password: string) : Promise<Response> {
         })
 }
 
-
-
-
 function updateUser(id: string, email: string, firstName: string, lastName: string) : any {
+    let endpoint = url + endpoints.user + 'update/' + id
+    
+    let body = new FormData()
+    body.append("email", email)
+    body.append("first_name", firstName)
+    body.append("last_name", lastName)
 
+    return axios.post(endpoint, body, { headers: {'Content-Type': 'multipart/form-data' }})
+        .then((response: { status: number; statusText: string; data: any; }) => {
+            return new Response(response.status, response.statusText, response.data)
+        })
+        .catch((error: string) => {
+            console.log(error)
+            return new Response(500, error, null)
+        })
 }
 
 function updateUserPassword(id: string, password: string) : any {
 
-}
-
-function uninitializedResponse() : Response {
-    return new Response (500, "UNITIALIZED_RESPONSE", null)
 }
 
 export class Response {
