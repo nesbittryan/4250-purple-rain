@@ -4,6 +4,7 @@ import { Button, Input } from 'react-native-elements';
 import { Text, View, ImageBackground, Picker } from "react-native";
 import { MainApp } from '../../styles/Styles';
 import { StyleSheet } from 'react-native';
+import { Property } from "../../common/models/Property";
 
 
 interface State {
@@ -17,40 +18,51 @@ interface State {
   }
 
 export default class LandlordOptionsScreen extends Component {
-    readonly state: State = {
-        address: "",
-        city: "",
-        country: "",
-        description: "",
-        id: "",
-        maxOccupancy: 1,
-        state: ""
-    }
-
+  readonly state: State = {
+    address: "",
+    city: "",
+    country: "",
+    description: "",
+    id: "",
+    maxOccupancy: 1,
+    state: ""
+  }
+  property : Property
   constructor(props: any) {
     super(props)
     this.handleStateChange = this.handleStateChange.bind(this)
-    const property =  this.props.navigation.getParam('property', 'error')
-    this.state.address = property.address
-    this.state.description = property.description
-    this.state.id = property.id
+    this.property =  this.props.navigation.getParam('property', 'error')
+    this.state.address = this.property.address
+    this.state.description = this.property.description
+    this.state.id = this.property.id
   }
 
+  componentDidMount() {
+    console.log(this.property)
+    
+  }
   handleStateChange(name: string, input: string) {
     this.setState(() => ({ [name]: input }));
   }
 
   render() {
     return (
-      <View style={MainApp.container}>
-        <View style={MainApp.form}>
-          
+      <View style={LandLordOptionsStyles.container}>
+        <View style={LandLordOptionsStyles.form}>
+          <Text>Tenants in Property</Text>
+
         </View>
       </View>
     );
   }
 }
 
-const ViewPropertyStyles = StyleSheet.create({
-  
+const LandLordOptionsStyles = StyleSheet.create({
+  container: {
+    alignItems: "flex-start"
+  },
+  form: {
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
+  }
 })
