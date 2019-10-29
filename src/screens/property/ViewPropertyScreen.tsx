@@ -42,29 +42,40 @@ export default class ViewPropertyScreen extends Component {
     return (
       <View style={MainApp.container}>
         <View style={MainApp.form}>
-          <View style= {{
-            borderBottomWidth: 40,
-            borderBottomColor: 'transparent',
-          }}>
-            <Input value={ this.state.address }
+          <View style= {{ borderBottomWidth: 40, borderBottomColor: 'transparent' }}>
+            <Input 
+              style={ MainApp.input }
+              value={ this.state.address }
               onChangeText={(txt) => this.handleStateChange("address", txt)}
               returnKeyType="next"/>
-            <Input value={ this.state.city }
+            <Input 
+              style={ MainApp.input }
+              value={ this.state.city }
               onChangeText={(txt) => this.handleStateChange("city", txt)}
               returnKeyType="next"/>
-            <Input value={ this.state.state }
+            <Input 
+              style={ MainApp.input }
+              value={ this.state.state }
               onChangeText={(txt) => this.handleStateChange("state", txt)}
               returnKeyType="next"/>
-            <Input value={ this.state.country }
+            <Input 
+              style={ MainApp.input }
+              value={ this.state.country }
               onChangeText={(txt) => this.handleStateChange("country", txt)}
               returnKeyType="next"/>
-            <Input value={ this.state.description }
+            <Input 
+              style={ MainApp.input }
+              value={ this.state.description }
               onChangeText={(txt) => this.handleStateChange("description", txt)}
               returnKeyType="next"/>
-            <Input value={ this.state.id }
+            <Input 
+              style={ MainApp.input }
+              value={ this.state.id }
               onChangeText={(txt) => this.handleStateChange("id", txt)}
               returnKeyType="go"/>
-            <Input value={ this.state.address }
+            <Input 
+              style={ MainApp.input }
+              value={ this.state.address }
               onChangeText={(txt) => this.handleStateChange("address", txt)}
               returnKeyType="next"/>
             <Text>Max Occupancy:</Text>
@@ -84,11 +95,11 @@ export default class ViewPropertyScreen extends Component {
           </Picker>
           </View>
           <Button
-            title="Update Property"
-          />
+            style={ MainApp.button }
+            title="Update Property" />
           <Button 
-            title="Delete Property"
-          />
+            style={ MainApp.button }
+            title="Delete Property" />
         </View>
       </View>
     );

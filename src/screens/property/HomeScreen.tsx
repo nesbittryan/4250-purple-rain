@@ -8,7 +8,7 @@ import PropertyButton from '../../common/components/PropertyButton'
 import { APIService } from '../../service/APIService';
 
 
-export default class PropertyHomeScreen extends Component {
+export default class HomeScreen extends Component {
   static navigationOptions = {
     tabBarLabel: 'Properties',
     tabBarIcon: ({ }) => {
@@ -44,6 +44,7 @@ export default class PropertyHomeScreen extends Component {
   render() {
     return (
       <View>
+        <Button title="Register New Property" onPress={ () => { this.props.navigation.navigate("Register") }}></Button>
         <FlatList
           data={ this.properties }
           style={{
@@ -51,7 +52,6 @@ export default class PropertyHomeScreen extends Component {
           }}
           renderItem={({item}) => <PropertyButton property={ item } navigation={this.props.navigation} ></PropertyButton> }>
         </FlatList>
-        <Button title="Register New Property" onPress={ () => { this.props.navigation.navigate("Register") }}></Button>
       </View>
     );
   }
