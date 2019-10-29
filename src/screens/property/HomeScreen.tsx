@@ -6,6 +6,7 @@ import { Button } from 'react-native-elements';
 import { Property } from '../../common/models/Property';
 import PropertyButton from '../../common/components/PropertyButton'
 import { APIService } from '../../service/APIService';
+import { User } from '../../common/models/user';
 
 
 export default class HomeScreen extends Component {
@@ -17,28 +18,25 @@ export default class HomeScreen extends Component {
     }
   }
   properties:Property[] = new Array()
-  userId:string
+  user: User | any
 
   constructor(props: any) {
     super(props)
-    this.userId = ""
-
-    AsyncStorage.getItem("user")
-      .then((response: any) => {
-        this.userId = response.id
-      })
-
-    let propertyList = APIService.getPropertiesByUserId(this.userId).then((propertyList: any)  => {
-      this.properties = propertyList
-      this.forceUpdate();
-    })
+    
   }
 
   componentDidMount() {
-    APIService.getPropertiesByUserId(this.userId).then((propertyList: any)  => {
-      this.properties = propertyList
-      this.forceUpdate();
-    })
+    //console.log(this.user.id)
+    AsyncStorage.getItem("user")
+      .then((response: any) => {
+        this.user = JSON.parse(response)
+      }).then(() => {
+        APIService.getPropertiesByUserId(this.user.id).then((propertyList: any)  => {
+          this.properties = propertyList
+          this.forceUpdate();
+        })
+      })
+      
   }
 
   render() {

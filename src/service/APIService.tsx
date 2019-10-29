@@ -17,7 +17,8 @@ export const APIService =  {
     loginUser,
     updateUser,
     updateUserPassword,
-    isLandlordByPropertyId
+    isLandlordByPropertyId,
+    getTenantsInProperty
 }
 /* returns true if user is landlord of a property */
 function isLandlordByPropertyId(userId: string, propertyId: string): any {
@@ -82,11 +83,24 @@ function createProperty(property: PropertyInterface) : Promise<Response> {
 
 function getPropertiesByUserId(userId: string) : any {
     let r = uninitializedResponse()
-    let endpoint = url + endpoints.property
+    let endpoint = url + endpoints.property + "user/" + userId
+    console.log(endpoint)
     var propertyList:Property[] = new Array()
     return axios.get(endpoint)
     .then(function (response) {
-        response.data.forEach((house: any) => {
+        response.data.landlord.forEach((house: any) => {
+            propertyList.push(new Property({
+                address: house.street_address,
+                city: house.city,
+                country: house.country,
+                state: house.state,
+                id: house.id,
+                landlordId: house.landlord_id,
+                maxOccupancy: house.max_occupancy,
+                description: house.description
+            }))
+        });
+        response.data.tenant.forEach((house: any) => {
             propertyList.push(new Property({
                 address: house.street_address,
                 city: house.city,
@@ -99,6 +113,25 @@ function getPropertiesByUserId(userId: string) : any {
             }))
         });
         return propertyList
+    })
+    .catch(function (error) {
+        // handle error
+        console.log(error)
+    })
+}
+
+function getTenantsInProperty(propertyId: string) {
+    let endpoint = url + endpoints.user + "property/" + propertyId
+    let final = false
+    return axios.get(endpoint)
+    .then(function (response) {
+        response.data.property_id.forEach((id: any) => {
+            if (id == propertyId) 
+            {
+                final = true
+            }
+        });
+        return final
     })
     .catch(function (error) {
         // handle error
