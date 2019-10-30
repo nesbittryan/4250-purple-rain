@@ -39,6 +39,7 @@ export default class LandlordOptionsScreen extends Component {
   constructor(props: any) {
     super(props)
     this.handleStateChange = this.handleStateChange.bind(this)
+    this.HandleAddTenant = this.HandleAddTenant.bind(this)
     this.property =  this.props.navigation.getParam('property', 'error')
     this.state.address = this.property.address
     this.state.description = this.property.description
@@ -51,7 +52,20 @@ export default class LandlordOptionsScreen extends Component {
       console.log(this.tenants)
       this.forceUpdate();
     })
-    
+  }
+
+  HandleAddTenant()
+  {
+    /*console.log("Here")
+    console.log(this.property.id)
+    console.log(this.state.newTenant)*/
+    APIService.addTenantToPropertyByEmail(this.property.id, this.state.newTenant).then((response) => {
+      if (response.code != 200) {
+        alert("error adding tenant")
+      } else {
+        alert("tenant has been added please refresh")
+      }
+    })
   }
 
   handleStateChange(name: string, input: string) {
@@ -80,7 +94,7 @@ export default class LandlordOptionsScreen extends Component {
             />
             <Button
               style={ MainApp.button }
-              onpress
+              onPress={this.HandleAddTenant}
               title="Add New Tenant" />
           </View>       
          
