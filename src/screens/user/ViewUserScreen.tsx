@@ -3,6 +3,7 @@ import { Component } from "react";
 import { View, AsyncStorage } from "react-native";
 import { Button, Input, Text } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
+Icon.loadFont()
 
 import { APIService } from "../../service/APIService";
 
@@ -19,8 +20,7 @@ export default class ViewUserScreen extends Component {
     static navigationOptions = {
         tabBarLabel: 'Profile',
         tabBarIcon: ({ }) => {
-          Icon.loadFont()
-          return<Icon name="user-circle" size={33} color="#554971" />
+          return<Icon name="user" size={33} color="#554971" />
         }
     }
 

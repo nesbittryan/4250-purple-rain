@@ -32,8 +32,12 @@ export default class ViewPropertyScreen extends Component {
     this.handleStateChange = this.handleStateChange.bind(this)
     const property =  this.props.navigation.getParam('property', 'error')
     this.state.address = property.address
+    this.state.city = property.city
+    this.state.country = property.country
     this.state.description = property.description
     this.state.id = property.id
+    this.state.maxOccupancy = property.maxOccupancy
+    this.state.state = property.state
   }
 
   handleStateChange(name: string, input: string) {

@@ -22,11 +22,9 @@ export default class HomeScreen extends Component {
 
   constructor(props: any) {
     super(props)
-    
   }
 
   componentDidMount() {
-    //console.log(this.user.id)
     AsyncStorage.getItem("user")
       .then((response: any) => {
         this.user = JSON.parse(response)
