@@ -1,10 +1,11 @@
 import { StyleSheet } from 'react-native';
-
+import { AppColours } from './AppColours'
+ 
 const MainApp = StyleSheet.create({
     container: {
-      flex: 1,
       alignItems: "center",
-      justifyContent: "center"
+      flex: 1,
+      justifyContent: "center",
     },
     checkbox: {
       height:30,
@@ -28,7 +29,7 @@ const MainApp = StyleSheet.create({
       width: "80%",
     },
     button: {
-      margin: "0.5%"
+      margin: "0.5%",
     },
     input: {
       margin: "0.5%"

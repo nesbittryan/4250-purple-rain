@@ -90,18 +90,21 @@ export default class AccountCreationScreen extends React.Component {
                 returnKeyType="next"
                 secureTextEntry={ true }/>
             <Text>Must be longer than 8 characters</Text>
-            <Input style={ MainApp.input }
+            <Input 
+                style={ MainApp.input }
                 value={ this.state.confirmPassword }
                 onChangeText={(txt) => this.handleStateChange("confirmPassword", txt)}
                 placeholder="Confirm Password"
                 returnKeyType="go"
                 secureTextEntry={ true }/>
-            <Button style={ MainApp.button }
+            <Button 
+                style={ MainApp.button }
                 onPress={ this.handleCreateAccountPress }
                 title="Sign Up"/>
-            <Button style={ MainApp.button }
-            onPress={ this.handleToLoginPress }
-            title="Back"/>
+            <Button 
+                style={ MainApp.button }
+                onPress={ this.handleToLoginPress }
+                title="Cancel"/>
         </View>
       </View>
     );      
