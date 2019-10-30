@@ -74,7 +74,7 @@ function createProperty(property: PropertyInterface, isLandlord: boolean, userId
     body.append("description", property.description)
     body.append("assign_as", isLandlord ? "landlord" : "tenant")
     body.append("user_id", userId)
-
+    console.log(body)
     return axios.post(endpoint, body, { headers: {'Content-Type': 'multipart/form-data' }})
         .then((response: { status: number; statusText: string; data: any; }) => {
             return new Response(response.status, response.statusText, response.data)
@@ -99,7 +99,6 @@ function getPropertiesByUserId(userId: string) : any {
                 country: house.country,
                 state: house.state,
                 id: house.id,
-                landlordId: house.landlord_id,
                 maxOccupancy: house.max_occupancy,
                 description: house.description
             }))
@@ -111,7 +110,6 @@ function getPropertiesByUserId(userId: string) : any {
                 country: house.country,
                 state: house.state,
                 id: house.id,
-                landlordId: house.landlord_id,
                 maxOccupancy: house.max_occupancy,
                 description: house.description
             }))
@@ -185,7 +183,7 @@ function updateUser(id: string, email: string, firstName: string, lastName: stri
 function updateUserPassword(id: string, email: string, password: string, oldPassword: string) : any {
     let endpoint = url + endpoints.user + 'update/password/' + id
     let body = new FormData()
-    
+
     body.append("email", email)
     body.append("password", oldPassword)
     body.append("new_password", password)

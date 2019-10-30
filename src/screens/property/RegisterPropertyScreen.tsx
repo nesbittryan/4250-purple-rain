@@ -39,9 +39,10 @@ export default class RegisterPropertyScreen extends React.Component {
     this.handlePropertyChange = this.handlePropertyChange.bind(this);
     this.handleRegisterProperty = this.handleRegisterProperty.bind(this);
 
-    AsyncStorage.getItem("user")
+    AsyncStorage.getItem("user")  
       .then((response: any) => {
-        this.state.userId = JSON.parse(response).id
+        let r = JSON.parse(response)
+        this.setState({ userId: r.id })
     })
   }
 
@@ -64,7 +65,7 @@ export default class RegisterPropertyScreen extends React.Component {
   }
 
   handleRegisterProperty() {
-    APIService.createProperty(this.state.property, this.state.isLandlord, this.s)
+    APIService.createProperty(this.state.property, this.state.isLandlord, this.state.userId)
     this.props.navigation.navigate("Home")
   }
 
