@@ -183,13 +183,13 @@ function updateUser(id: string, email: string, firstName: string, lastName: stri
 
 function updateUserPassword(id: string, email: string, password: string, oldPassword: string) : any {
     let endpoint = url + endpoints.user + 'update/password/' + id
-    
     let body = new FormData()
+    
     body.append("email", email)
     body.append("password", oldPassword)
     body.append("new_password", password)
 
-    return axios.post(endpoint, body, { headers: {'Content-Type': 'multipart/form-data' }})
+    return axios.put(endpoint, body, { headers: {'Content-Type': 'multipart/form-data' }})
         .then((response: { status: number; statusText: string; data: any; }) => {
             return new Response(response.status, response.statusText, response.data)
         })

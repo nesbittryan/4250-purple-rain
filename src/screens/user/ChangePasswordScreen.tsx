@@ -30,10 +30,10 @@ export default class ChangePasswordScreen extends React.Component {
     }
 
     handlePasswordChange() {
-        if (this.state.password == this.state.confirmPassword && this.state.password.length > 7) {
-            APIService.updateUserPassword(this.state.userId,this.state.email, this.state.password, this.state.oldPassword)
-            this.props.navigation.goBack()
-        }
+      if (this.state.password == this.state.confirmPassword && this.state.password.length > 7) {
+          APIService.updateUserPassword(this.state.userId,this.state.email, this.state.password, this.state.oldPassword)
+          this.props.navigation.goBack()
+      }
     }
 
     handleStateChange(name: string, input: string) {
