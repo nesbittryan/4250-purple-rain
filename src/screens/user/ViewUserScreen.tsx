@@ -18,11 +18,12 @@ interface State {
 
 export default class ViewUserScreen extends Component {
     static navigationOptions = {
+        headerTitle: 'Profile',
         tabBarLabel: 'Profile',
         tabBarIcon: ({ }) => {
           return<Icon name="user" size={33} color="#554971" />
         }
-    }
+    };
 
   readonly state: State = {
     firstName: "",
@@ -35,7 +36,7 @@ export default class ViewUserScreen extends Component {
     super(props)
     this.handleStateChange = this.handleStateChange.bind(this)
     this.handleUserUpdate = this.handleUserUpdate.bind(this)
-     
+
     AsyncStorage.getItem("user")
       .then((response: any) => {
         let user = JSON.parse(response)
@@ -58,7 +59,7 @@ export default class ViewUserScreen extends Component {
         return
       } else {
         alert("Account updated")
-      }  
+      }
     })
   }
 
@@ -68,31 +69,31 @@ export default class ViewUserScreen extends Component {
         <View style={ MainApp.form }>
           <View style= {{ borderBottomWidth: 40, borderBottomColor: 'transparent' }}>
             <Text>First Name</Text>
-            <Input 
+            <Input
               style={ MainApp.input }
               value={ this.state.firstName }
               onChangeText={(txt) => this.handleStateChange("firstName", txt)}
               returnKeyType="next"/>
             <Text>Last Name</Text>
-            <Input 
+            <Input
               style={ MainApp.input }
               value={ this.state.lastName }
               onChangeText={(txt) => this.handleStateChange("lastName", txt)}
               returnKeyType="next"/>
             <Text>Email</Text>
-            <Input 
+            <Input
               style={ MainApp.input }
               value={ this.state.email }
               onChangeText={(txt) => this.handleStateChange("email", txt)}
               returnKeyType="next"/>
           </View>
-          <Button 
-            style={ MainApp.button } 
-            title="Update Profile" 
+          <Button
+            style={ MainApp.button }
+            title="Update Profile"
             onPress={ () => { this.handleUserUpdate } } />
-          <Button 
-            style={ MainApp.button } 
-            title="Change Password" 
+          <Button
+            style={ MainApp.button }
+            title="Change Password"
             onPress={ () => { this.props.navigation.navigate("ChangePassword", { user_id: this.state.id, email: this.state.email })} }/>
         </View>
       </View>

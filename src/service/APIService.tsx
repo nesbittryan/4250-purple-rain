@@ -96,7 +96,7 @@ function getPropertiesByUserId(userId: string) : any {
                 city: house.city,
                 country: house.country,
                 state: house.state,
-                id: house.id,
+                id: house.id.toString(),
                 maxOccupancy: house.max_occupancy,
                 description: house.description
             }))
@@ -107,7 +107,7 @@ function getPropertiesByUserId(userId: string) : any {
                 city: house.city,
                 country: house.country,
                 state: house.state,
-                id: house.id,
+                id: house.id.toString(),
                 maxOccupancy: house.max_occupancy,
                 description: house.description
             }))
