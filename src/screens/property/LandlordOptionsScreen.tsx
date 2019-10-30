@@ -49,16 +49,12 @@ export default class LandlordOptionsScreen extends Component {
   componentDidMount() {
     APIService.getTenantsInProperty(this.property.id).then((users: any)  => {
       this.tenants = users
-      console.log(this.tenants)
       this.forceUpdate();
     })
   }
 
   HandleAddTenant()
   {
-    /*console.log("Here")
-    console.log(this.property.id)
-    console.log(this.state.newTenant)*/
     APIService.addTenantToPropertyByEmail(this.property.id, this.state.newTenant).then((response) => {
       if (response.code != 200) {
         alert("error adding tenant")

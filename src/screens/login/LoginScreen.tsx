@@ -30,8 +30,8 @@ export default class LoginScreen extends Component {
         if (response.code != 200) {
           alert("Please check your email and password are correct")
         } else {
-          this.props.navigation.navigate("Tabs")
           AsyncStorage.setItem("user", JSON.stringify(response.data))
+          this.props.navigation.navigate("Tabs")
         }
       }
     )

@@ -33,7 +33,6 @@ export default class TenantListItem extends Component {
   componentDidMount() {  
     this.setState({propertyId: this.property.id})
     this.setState({userId : this.user.id})
-    //console.log(this.state.propertyId)
   }
 
 
@@ -46,9 +45,6 @@ export default class TenantListItem extends Component {
         alert("tenant has been removed please refresh")
       }
     })
-    //console.log(this.user)
-    //console.log(this.state.userId)
-    //console.log(this.state.propertyId)
   }
 
   render() {

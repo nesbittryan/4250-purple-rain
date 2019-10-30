@@ -39,11 +39,6 @@ export default class TenantOptionsScreen extends Component {
     this.state.id = this.property.id
   }
 
-  componentDidMount() {
-    console.log(this.property)
-  }
-
-
   handleStateChange(name: string, input: string) {
     this.setState(() => ({ [name]: input }));
   }

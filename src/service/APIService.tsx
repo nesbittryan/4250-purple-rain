@@ -38,7 +38,6 @@ function isLandlordByPropertyId(userId: string, propertyId: string): any {
         return final
     })
     .catch(function (error) {
-        // handle error
         console.log(error)
     })
 }
@@ -74,7 +73,7 @@ function createProperty(property: PropertyInterface, isLandlord: boolean, userId
     body.append("description", property.description)
     body.append("assign_as", isLandlord ? "landlord" : "tenant")
     body.append("user_id", userId)
-    console.log(body)
+    
     return axios.post(endpoint, body, { headers: {'Content-Type': 'multipart/form-data' }})
         .then((response: { status: number; statusText: string; data: any; }) => {
             return new Response(response.status, response.statusText, response.data)
@@ -86,9 +85,8 @@ function createProperty(property: PropertyInterface, isLandlord: boolean, userId
 }
 
 function getPropertiesByUserId(userId: string) : any {
-    //let r = uninitializedResponse()
     let endpoint = url + endpoints.property + "user/" + userId
-    console.log(endpoint)
+    
     var propertyList:Property[] = new Array()
     return axios.get(endpoint)
     .then(function (response) {
@@ -199,9 +197,6 @@ function updateUserPassword(id: string, email: string, password: string, oldPass
 }
 function removeTenantFromProperty(propertyId : string, userId: string) : Promise<Response>{
     let endpoint = url + endpoints.tenant + 'delete'
-    console.log(endpoint)
-    console.log(propertyId)
-    console.log(userId)
     let body = new FormData()
     body.append("user_id", userId)
     body.append("property_id", propertyId)
