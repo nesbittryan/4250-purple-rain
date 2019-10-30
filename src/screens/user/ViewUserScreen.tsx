@@ -19,7 +19,7 @@ export default class ViewUserScreen extends Component {
     static navigationOptions = {
         tabBarLabel: 'Profile',
         tabBarIcon: ({ }) => {
-          Icon.loadFont();
+          Icon.loadFont()
           return<Icon name="user-circle" size={33} color="#554971" />
         }
     }
