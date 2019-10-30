@@ -6,6 +6,10 @@ const MainApp = StyleSheet.create({
       alignItems: "center",
       justifyContent: "center"
     },
+    checkbox: {
+      height:30,
+      width:30
+    },
     horizontal_container: {
       alignContent: "center",
       alignSelf: "center",

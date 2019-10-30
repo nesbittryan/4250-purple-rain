@@ -1,6 +1,8 @@
 import * as React from 'react';
-import { Text, View, AsyncStorage, Picker, CheckBox } from 'react-native';
-import { Input, Button } from 'react-native-elements';
+import { Text, View, AsyncStorage, Picker } from 'react-native';
+import { Input, Button, CheckBox } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome';
+Icon.loadFont()
 
 import { PropertyInterface } from '../../common/models/Property';
 
@@ -39,10 +41,8 @@ export default class RegisterPropertyScreen extends React.Component {
 
     AsyncStorage.getItem("user")
       .then((response: any) => {
-        let user = JSON.parse(response)
-        this.state.userId
+        this.state.userId = JSON.parse(response).id
     })
-    
   }
 
   handlePropertyChange(name: string, input: any) {
@@ -122,10 +122,10 @@ export default class RegisterPropertyScreen extends React.Component {
               <Picker.Item label="9" value="9"></Picker.Item>
               <Picker.Item label="10" value="10"></Picker.Item>
           </Picker>
-          <Text>Are you the landlord: </Text>
           <CheckBox
-            value= { this.state.isLandlord }
-            onChange={ (check) => this.handleStateChange("isLandlord", check) }></CheckBox>
+            title="Are you the landlord?"
+            onPress={ () => this.setState({ isLandlord: !this.state.isLandlord }) }
+            checked={ this.state.isLandlord}></CheckBox>
           <Button 
             style= { MainApp.button }
             onPress={ this.handleRegisterProperty }
