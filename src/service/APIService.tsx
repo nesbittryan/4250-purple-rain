@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { Property, PropertyInterface } from '../common/models/property';
+import { User } from '../common/models/user';
 
 const url = "http://ec2-18-234-27-166.compute-1.amazonaws.com"
 
@@ -18,7 +19,8 @@ export const APIService =  {
     updateUser,
     updateUserPassword,
     isLandlordByPropertyId,
-    getTenantsInProperty
+    getTenantsInProperty,
+    removeTenantFromProperty
 }
 /* returns true if user is landlord of a property */
 function isLandlordByPropertyId(userId: string, propertyId: string): any {
@@ -82,6 +84,7 @@ function createProperty(property: PropertyInterface) : Promise<Response> {
 }
 
 function getPropertiesByUserId(userId: string) : any {
+    //let r = uninitializedResponse()
     let endpoint = url + endpoints.property + "user/" + userId
     console.log(endpoint)
     var propertyList:Property[] = new Array()
@@ -118,20 +121,26 @@ function getPropertiesByUserId(userId: string) : any {
     })
 }
 
-function getTenantsInProperty(propertyId: string) {
+
+function getTenantsInProperty(propertyId: string) : any {
     let endpoint = url + endpoints.user + "property/" + propertyId
-    let final = false
+    var userList:User[] = new Array()
     return axios.get(endpoint)
     .then(function (response) {
-        response.data.property_id.forEach((id: any) => {
-            if (id == propertyId) 
-            {
-                final = true
-            }
+        response.data.tenant.forEach((user: any) => {
+            userList.push(new User({
+                email: user.email,
+                firstName: user.first_name,
+                id: user.id,
+                lastName: user.last_name,
+                password: "",
+                token: ""
+            }))     
         });
-        return final
+        return userList
     })
     .catch(function (error) {
+        // handle error
         console.log(error)
     })
 }
@@ -174,6 +183,24 @@ function updateUser(id: string, email: string, firstName: string, lastName: stri
 function updateUserPassword(id: string, password: string) : any {
 
 }
+function removeTenantFromProperty(propertyId : string, userId: string) : Promise<Response>{
+    let endpoint = url + endpoints.tenant + 'delete'
+    console.log(endpoint)
+    console.log(propertyId)
+    console.log(userId)
+    let body = new FormData()
+    body.append("user_id", userId)
+    body.append("property_id", propertyId)
+
+    return axios.post(endpoint, body, { headers: {'Content-Type': 'multipart/form-data' }})
+        .then((response: { status: number; statusText: string; data: any; }) => {
+            return new Response(response.status, response.statusText, response.data)
+        })
+        .catch((error: string) => {
+            console.log(error)
+            return new Response(500, error, null)
+        })
+}
 
 export class Response {
     code: number
@@ -186,3 +213,4 @@ export class Response {
         this.data = data
     }
 }
+
