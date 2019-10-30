@@ -20,7 +20,8 @@ export const APIService =  {
     updateUserPassword,
     isLandlordByPropertyId,
     getTenantsInProperty,
-    removeTenantFromProperty
+    removeTenantFromProperty,
+    addTenantToPropertyByEmail
 }
 /* returns true if user is landlord of a property */
 function isLandlordByPropertyId(userId: string, propertyId: string): any {
@@ -205,6 +206,24 @@ function removeTenantFromProperty(propertyId : string, userId: string) : Promise
     console.log(userId)
     let body = new FormData()
     body.append("user_id", userId)
+    body.append("property_id", propertyId)
+
+    return axios.post(endpoint, body, { headers: {'Content-Type': 'multipart/form-data' }})
+        .then((response: { status: number; statusText: string; data: any; }) => {
+            return new Response(response.status, response.statusText, response.data)
+        })
+        .catch((error: string) => {
+            console.log(error)
+            return new Response(500, error, null)
+        })
+}
+
+function addTenantToPropertyByEmail(propertyId: string, userEmail: string): Promise<Response> {
+    //let r = uninitializedResponse()
+    let endpoint = url + '/invite/tenant'
+    let body = new FormData()
+    
+    body.append("email", userEmail)
     body.append("property_id", propertyId)
 
     return axios.post(endpoint, body, { headers: {'Content-Type': 'multipart/form-data' }})
