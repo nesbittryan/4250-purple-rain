@@ -1,10 +1,15 @@
 import React from "react";
 import { Component } from "react";
 import { Button, Input } from 'react-native-elements';
-import { Text, View, ImageBackground, Picker } from "react-native";
+import { Text, View, ImageBackground, Picker, FlatList, TextInput } from "react-native";
 import { MainApp } from '../../styles/Styles';
 import { StyleSheet } from 'react-native';
 import { Property } from "../../common/models/Property";
+import { User } from "../../common/models/user";
+import { APIService } from "../../service/APIService";
+import TenantOptionsScreen from "./TenantOptionsScreen";
+import TenantListItem from "../../common/components/TenantListItem";
+
 
 
 interface State {
@@ -14,7 +19,8 @@ interface State {
     description: string,
     id: string,
     maxOccupancy: number,
-    state: string
+    state: string,
+    newTenant: string,
   }
 
 export default class LandlordOptionsScreen extends Component {
@@ -25,9 +31,11 @@ export default class LandlordOptionsScreen extends Component {
     description: "",
     id: "",
     maxOccupancy: 1,
-    state: ""
+    state: "",
+    newTenant: ""
   }
   property : Property
+  tenants:User[] = new Array()
   constructor(props: any) {
     super(props)
     this.handleStateChange = this.handleStateChange.bind(this)
@@ -38,9 +46,14 @@ export default class LandlordOptionsScreen extends Component {
   }
 
   componentDidMount() {
-    console.log(this.property)
+    APIService.getTenantsInProperty(this.property.id).then((users: any)  => {
+      this.tenants = users
+      console.log(this.tenants)
+      this.forceUpdate();
+    })
     
   }
+
   handleStateChange(name: string, input: string) {
     this.setState(() => ({ [name]: input }));
   }
@@ -49,8 +62,28 @@ export default class LandlordOptionsScreen extends Component {
     return (
       <View style={LandLordOptionsStyles.container}>
         <View style={LandLordOptionsStyles.form}>
-          <Text>Tenants in Property</Text>
-
+          <Text style={LandLordOptionsStyles.heading}>Tenants in Property</Text>
+          <FlatList
+            data={ this.tenants }
+            style={{
+              
+            }}
+            renderItem={({item}) => <TenantListItem user={ item } property={this.property} navigation={this.props.navigation}></TenantListItem> }>
+          </FlatList>     
+          <View style={LandLordOptionsStyles.form}>
+            <Input 
+                style={ LandLordOptionsStyles.input }
+                value={ this.state.newTenant }
+                returnKeyType="next"
+                placeholder="new tenant email"
+                onChangeText={(txt) => this.handleStateChange("newTenant", txt)}
+            />
+            <Button
+              style={ MainApp.button }
+              onpress
+              title="Add New Tenant" />
+          </View>       
+         
         </View>
       </View>
     );
@@ -59,10 +92,27 @@ export default class LandlordOptionsScreen extends Component {
 
 const LandLordOptionsStyles = StyleSheet.create({
   container: {
-    alignItems: "flex-start"
+    alignItems: "flex-start",
   },
   form: {
-    alignItems: "flex-start",
-    justifyContent: "flex-start",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "90%",
+    
+    paddingTop: 30
+  },
+  heading: {
+    textAlign: "left",
+    fontSize: 30,
+    width: "100%"
+  },
+  input :{
+    width: 300,
+    height: 30
+
+  }, 
+  formContainer: {
+    alignItems: "flex-end",
+    justifyContent: "flex-end"
   }
 })

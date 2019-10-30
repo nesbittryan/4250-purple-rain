@@ -5,6 +5,7 @@ import { Text, View, ImageBackground, Picker } from "react-native";
 import { MainApp } from '../../styles/Styles';
 import { StyleSheet } from 'react-native';
 import { Property } from "../../common/models/Property";
+import { User } from "../../common/models/user";
 
 
 interface State {
@@ -27,6 +28,7 @@ export default class TenantOptionsScreen extends Component {
     maxOccupancy: 1,
     state: ""
   }
+ 
   property : Property
   constructor(props: any) {
     super(props)
@@ -39,7 +41,6 @@ export default class TenantOptionsScreen extends Component {
 
   componentDidMount() {
     console.log(this.property)
-    
   }
 
 
