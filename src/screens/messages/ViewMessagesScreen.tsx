@@ -10,6 +10,10 @@ export default class ViewMessagesScreen extends Component {
 
   contacts:Contact[] = new Array()
 
+  static navigationOptions = {
+    headerTitle: 'Messages',
+  };
+
   constructor(props:  any) {
     super(props)
 
@@ -50,12 +54,6 @@ export default class ViewMessagesScreen extends Component {
   render() {
     return (
       <View>
-        <View style={styles.topbox}>
-          <Text style={styles.title}>
-            Messages
-          </Text>
-        </View>
-      <View>
         <FlatList
           data={this.contacts}
           renderItem={({item}) =>
@@ -67,28 +65,13 @@ export default class ViewMessagesScreen extends Component {
               <ListItem
                 title={item.name}
                 subtitle={item.relationship}
-                leftAvatar={{source: require("../../res/img/house4.jpg")}}
+                leftAvatar={{source: {uri: 'https://placeimg.com/180/180/animals'}}}
               />
             </TouchableOpacity>
           }
           keyExtractor={item=>item.id}
         />
       </View>
-    </View>
     )
   }
 }
-
-var styles = StyleSheet.create({
-  topbox: {
-    alignItems: "center",
-    justifyContent: "center",
-    borderBottomWidth: 2,
-  },
-
-  title:{
-    marginTop: 10,
-    marginBottom:10,
-    fontSize: 22,
-  }
-})
