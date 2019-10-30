@@ -58,10 +58,16 @@ export default class ViewConversationScreen extends Component {
     messages: []
   }
 
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: navigation.getParam('title', ''),
+    };
+  };
+
   constructor(props: any) {
     super(props)
     this.contact = this.props.navigation.getParam('contact', 'error')
-    console.log(this.contact)
+    this.props.navigation.setParams({ title: this.contact.name })
     this.state.messages = this.contact.relationship === 'Tennant' ? this.nice_messages : this.mean_messages
   }
 
@@ -75,14 +81,6 @@ export default class ViewConversationScreen extends Component {
   render() {
     return (
       <View style = {{ flex:1 }}>
-        <View style={styles.topbox}>
-          <Text style={styles.title}>
-            {this.contact.name}
-          </Text>
-          <Text style={styles.subtitle}>
-            {this.contact.relationship}
-          </Text>
-        </View>
         <GiftedChat
           messages={ this.state.messages }
           onSend={ messages => this.onSend(messages) }

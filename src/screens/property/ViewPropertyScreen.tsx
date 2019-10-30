@@ -34,21 +34,29 @@ export default class ViewPropertyScreen extends Component {
   }
   user: User | any
   property: Property
+
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: navigation.getParam('title', ''),
+    };
+  };
+
   constructor(props: any) {
     super(props)
-    
+
     this.handleStateChange = this.handleStateChange.bind(this)
     this.property =  this.props.navigation.getParam('property', 'error')
+    this.props.navigation.setParams({ title: this.property.address })
     this.state.address = this.property.address
     this.state.description = this.property.description
     this.state.id = this.property.id
-    
+
   }
   componentDidMount(){
     AsyncStorage.getItem("user")
       .then((response: any) => {
         this.user = JSON.parse(response)
-        
+
       }).then(() => {
         APIService.isLandlordByPropertyId( this.user.id,this.property.id).then((isLandlord: boolean)  => {
           this.setState({
@@ -63,14 +71,14 @@ export default class ViewPropertyScreen extends Component {
   handleOptionsPress(){
     //this.props.navigation.navigate(PropertyInfoScreen)
   }
-  
+
   render() {
     return (
       <View style={MainApp.container}>
         <View style={ViewPropertyStyles.form}>
           <View style={ViewPropertyStyles.imageContainer}>
             <ImageBackground source={require('../../res/img/house1.jpg')} style={ViewPropertyStyles.imageHeader}>
-            
+
             </ImageBackground>
           </View>
           <View style={ViewPropertyStyles.options}>
@@ -81,7 +89,7 @@ export default class ViewPropertyScreen extends Component {
                 property: this.property,
               }) }}
             />}
-            
+
             <Button
               style={ViewPropertyStyles.optionButtons}
               title="Tenant Options"
@@ -97,7 +105,7 @@ export default class ViewPropertyScreen extends Component {
               style={ViewPropertyStyles.optionButtons}
               title="Payments"
               onPress={ () => { this.props.navigation.navigate("Payment", { 
-                property: this.property, 
+                property: this.property,
               }) }}
             />
             <Button
