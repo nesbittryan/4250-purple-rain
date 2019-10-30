@@ -93,7 +93,7 @@ export default class ViewUserScreen extends Component {
           <Button 
             style={ MainApp.button } 
             title="Change Password" 
-            onPress={ () => { this.props.navigation.navigate("ChangePassword", { user_id: this.state.id })} }/>
+            onPress={ () => { this.props.navigation.navigate("ChangePassword", { user_id: this.state.id, email: this.state.email })} }/>
         </View>
       </View>
     );

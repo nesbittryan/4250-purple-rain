@@ -6,6 +6,12 @@ const MainApp = StyleSheet.create({
       alignItems: "center",
       justifyContent: "center"
     },
+    horizontal_container: {
+      alignContent: "center",
+      alignSelf: "center",
+      flex: 1,
+      flexDirection: 'row',
+    },
     logo: {
       flex: 1,
       width: "80%",

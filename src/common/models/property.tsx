@@ -4,7 +4,6 @@ export interface PropertyInterface {
     country: string
     description: string
     id: string
-    landlordId: string
     maxOccupancy: number
     state: string
 }
@@ -15,7 +14,6 @@ export class Property implements PropertyInterface {
     country: string
     description: string
     id: string
-    landlordId: string
     maxOccupancy: number
     state: string
     
@@ -25,7 +23,6 @@ export class Property implements PropertyInterface {
         this.country = propInterface.country
         this.description = propInterface.description
         this.id = propInterface.id
-        this.landlordId = propInterface.landlordId
         this.maxOccupancy = propInterface.maxOccupancy
         this.state = propInterface.state
     }

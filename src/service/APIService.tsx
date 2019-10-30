@@ -61,7 +61,7 @@ function createUser(email: string, password: string, firstName: string, lastName
         })
 }
 
-function createProperty(property: PropertyInterface) : Promise<Response> {
+function createProperty(property: PropertyInterface, isLandlord: boolean, userId: string) : Promise<Response> {
     let endpoint = url + endpoints.property + 'create'
     
     let body = new FormData()
@@ -69,9 +69,10 @@ function createProperty(property: PropertyInterface) : Promise<Response> {
     body.append("city", property.city)
     body.append("state", property.state)
     body.append("country", property.country)
-    body.append("landlord_id", property.landlordId)
     body.append("max_occupancy", property.maxOccupancy.toString())
     body.append("description", property.description)
+    body.append("assign_as", isLandlord ? "landlord" : "tenant")
+    body.append("user_id", userId)
 
     return axios.post(endpoint, body, { headers: {'Content-Type': 'multipart/form-data' }})
         .then((response: { status: number; statusText: string; data: any; }) => {
@@ -180,8 +181,22 @@ function updateUser(id: string, email: string, firstName: string, lastName: stri
         })
 }
 
-function updateUserPassword(id: string, password: string) : any {
+function updateUserPassword(id: string, email: string, password: string, oldPassword: string) : any {
+    let endpoint = url + endpoints.user + 'update/password/' + id
+    
+    let body = new FormData()
+    body.append("email", email)
+    body.append("password", oldPassword)
+    body.append("new_password", password)
 
+    return axios.post(endpoint, body, { headers: {'Content-Type': 'multipart/form-data' }})
+        .then((response: { status: number; statusText: string; data: any; }) => {
+            return new Response(response.status, response.statusText, response.data)
+        })
+        .catch((error: string) => {
+            console.log(error)
+            return new Response(500, error, null)
+        })
 }
 function removeTenantFromProperty(propertyId : string, userId: string) : Promise<Response>{
     let endpoint = url + endpoints.tenant + 'delete'

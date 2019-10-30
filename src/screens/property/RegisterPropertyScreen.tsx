@@ -10,6 +10,7 @@ import { APIService } from '../../service/APIService';
 interface State {
   property: PropertyInterface
   isLandlord: boolean
+  userId: string
 }
 
 export default class RegisterPropertyScreen extends React.Component {
@@ -24,11 +25,11 @@ export default class RegisterPropertyScreen extends React.Component {
         country: "",
         description: "",
         id: "-1",
-        landlordId: "",
         maxOccupancy: 1,
         state:""
       },
-      isLandlord: true
+      isLandlord: true,
+      userId: ""
   }
 
   constructor(props: any) {
@@ -39,7 +40,7 @@ export default class RegisterPropertyScreen extends React.Component {
     AsyncStorage.getItem("user")
       .then((response: any) => {
         let user = JSON.parse(response)
-        this.state.property.landlordId = user.id
+        this.state.userId
     })
     
   }
@@ -63,7 +64,7 @@ export default class RegisterPropertyScreen extends React.Component {
   }
 
   handleRegisterProperty() {
-    APIService.createProperty(this.state.property)
+    APIService.createProperty(this.state.property, this.state.isLandlord, this.s)
     this.props.navigation.navigate("Home")
   }
 
