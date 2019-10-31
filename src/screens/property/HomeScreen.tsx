@@ -11,7 +11,7 @@ import { ListItem } from 'react-native-elements'
 import { HeaderTitle } from 'react-navigation-stack';
 
 
-export default class HomeScreen extends Component {
+export default class HomeScreen extends Component<{navigation: Navigator,wentBack: boolean}, { properties: Property[]  }>  {
   static navigationOptions = {
     headerTitle: 'Properties',
     tabBarLabel: 'Properties',
@@ -25,43 +25,88 @@ export default class HomeScreen extends Component {
 
   constructor(props: any) {
     super(props)
-    //this.props.navigation.dangerouslyGetParent().getParam("loginResponse")
+    const {navigation} =  this.props //wentBack = navigation.getParam('wentBack', 'whatever default value - should be false');
+    this.fetchData = this.fetchData.bind(this)
+    this.state = {
+      properties: new Array,
+    }
+   
   }
-
-  componentDidMount() {
+  fetchData(){
+    console.log("FETCHING DATA")
     AsyncStorage.getItem("user")
       .then((response: any) => {
         this.user = JSON.parse(response)
       }).then(() => {
         APIService.getPropertiesByUserId(this.user.id).then((propertyList: any)  => {
-          this.properties = propertyList
+          this.setState({properties: propertyList})
+          console.log(this.state.properties)
           this.forceUpdate();
         })
       })
   }
+  componentDidMount() {
+    this.fetchData()
+  }
+  
+
+
+  render() {
+    var fetchData  =   this.fetchData;
+    return (
+      <View>
+        <PropertyList
+          properties={this.state.properties}
+          navigation={this.props.navigation}
+        >
+        </PropertyList>
+        <AddNewPropertyButton
+          navigation={this.props.navigation}
+          fetchData = {this.fetchData}
+        >
+        </AddNewPropertyButton>
+      </View>
+    );
+  }
+}
+
+class AddNewPropertyButton extends React.Component {
 
   render() {
     return (
-      <View>
-        <FlatList
-          data={this.properties}
-          renderItem={({item}) =>
-            <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("View", {
-                property: item,
-              })}
-            >
-              <ListItem
-                title={item.address}
-                subtitle={item.description}
-                leftAvatar={{rounded: false, source: {uri: 'https://i.imgur.com/uZpj0B6.jpg'}}}
-              />
-            </TouchableOpacity>
-          }
-          keyExtractor={item=>item.id}
-        />
-        <Button title="Register New Property" onPress={ () => { this.props.navigation.navigate("Register") }}></Button>
-      </View>
-    );
+      <Button title="Register New Property" onPress={ () => { this.props.navigation.navigate("Register", {onGoBack: () => this.props.fetchData() }) }}></Button>
+    )
+  }
+}
+
+class PropertyList extends React.Component<{properties: Property[]},{}> {
+  constructor(props: any) {
+    super(props)
+  }
+
+  render() {
+    const properties = this.props.properties;
+    return (
+      <FlatList
+        style={{
+          maxHeight: "90%"
+        }}
+        data={properties}
+        renderItem={({item}) =>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate("View", {
+              property: item,
+            })}
+          >
+            <ListItem
+              title={item.address}
+              subtitle={item.description}
+              leftAvatar={{rounded: false, source: {uri: 'https://i.imgur.com/uZpj0B6.jpg'}}}
+            />
+          </TouchableOpacity>
+        }
+        keyExtractor={item=>item.id}
+      />
+    )
   }
 }
