@@ -64,12 +64,13 @@ function isLandlordByPropertyId(userId: string, propertyId: string): any {
 
 function createPayment(payment: CreatePaymentInterface) : Promise<Response> {
     let endpoint = url + endpoints.payment + 'request'
+
     let body = new FormData()
     body.append("payer", payment.payer)
     body.append("requester", payment.requester)
     body.append("description", payment.description)
     body.append("amount", payment.amount)
-
+    
     return axios.post(endpoint, body, { headers: {'Content-Type': 'multipart/form-data' }})
         .then((response: { status: number; statusText: string; data: any; }) => {
             return new Response(response.status, response.statusText, response.data)
@@ -124,7 +125,7 @@ function createUser(email: string, password: string, firstName: string, lastName
 
 function getPaymentsByUserId(userId: string) : Promise<Response> {
     let endpoint = url + endpoints.payment + '?user_id=' + userId
-    
+
     return axios.get(endpoint)
         .then((response: { status: number; statusText: string; data: any; }) => {
             return new Response(response.status, response.statusText, response.data)

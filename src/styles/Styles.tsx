@@ -28,6 +28,9 @@ const MainApp = StyleSheet.create({
       justifyContent: "center",
       width: "80%",
     },
+    picker: {
+      flex: 1
+    },
     button: {
       margin: "0.5%",
     },

@@ -21,10 +21,19 @@ export default class HomeScreen extends React.Component {
         payedPayments: new Array(),
     }
 
+    constructor(props:any) {
+        super(props)
+
+        this.fetchData = this.fetchData.bind(this)
+    }
+
     componentDidMount() {
 
         this.userId = this.props.navigation.dangerouslyGetParent().getParam("user").id
-        
+        this.fetchData()
+    }
+
+    fetchData() {
         APIService.getPaymentsByUserId(this.userId)
             .then((response: Response) => {
                 if (response.code === 200) {
@@ -84,7 +93,7 @@ export default class HomeScreen extends React.Component {
                     <Button 
                         style={ MainApp.button }
                         title="New Payment" 
-                        onPress={ () => { this.props.navigation.navigate("New", { userId: this.state.userId })}}></Button>
+                        onPress={ () => { this.props.navigation.navigate("New", { userId: this.userId, onGoBack: () => this.fetchData() })}}></Button>
                 </View>
             </View>
         )
