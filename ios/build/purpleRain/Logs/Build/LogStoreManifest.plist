@@ -6,7 +6,7 @@
 	<integer>10</integer>
 	<key>logs</key>
 	<dict>
-		<key>F4C7E48A-BEBA-43E0-8BC1-83BAA478D0BB</key>
+		<key>01F8A722-FB5E-4C36-B98E-EDB4560804C4</key>
 		<dict>
 			<key>className</key>
 			<string>IDECommandLineBuildLog</string>
@@ -15,13 +15,13 @@
 			<key>domainType</key>
 			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
 			<key>fileName</key>
-			<string>F4C7E48A-BEBA-43E0-8BC1-83BAA478D0BB.xcactivitylog</string>
+			<string>01F8A722-FB5E-4C36-B98E-EDB4560804C4.xcactivitylog</string>
 			<key>hasPrimaryLog</key>
 			<true/>
 			<key>primaryObservable</key>
 			<dict>
 				<key>highLevelStatus</key>
-				<string>W</string>
+				<string>S</string>
 			</dict>
 			<key>schemeIdentifier-containerName</key>
 			<string>purpleRain project</string>
@@ -32,13 +32,13 @@
 			<key>signature</key>
 			<string>Building workspace purpleRain with scheme purpleRain and configuration Debug</string>
 			<key>timeStartedRecording</key>
-			<real>592673627.53820801</real>
+			<real>594237388.54525101</real>
 			<key>timeStoppedRecording</key>
-			<real>592673628.81143105</real>
+			<real>594237389.89196396</real>
 			<key>title</key>
 			<string>Building workspace purpleRain with scheme purpleRain and configuration Debug</string>
 			<key>uniqueIdentifier</key>
-			<string>F4C7E48A-BEBA-43E0-8BC1-83BAA478D0BB</string>
+			<string>01F8A722-FB5E-4C36-B98E-EDB4560804C4</string>
 		</dict>
 	</dict>
 </dict>

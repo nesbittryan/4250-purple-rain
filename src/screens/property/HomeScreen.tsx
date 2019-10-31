@@ -25,6 +25,7 @@ export default class HomeScreen extends Component {
 
   constructor(props: any) {
     super(props)
+    //this.props.navigation.dangerouslyGetParent().getParam("loginResponse")
   }
 
   componentDidMount() {

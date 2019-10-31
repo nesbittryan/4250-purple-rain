@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { View, AsyncStorage } from 'react-native';
+import { View } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import { MainApp } from '../../styles/Styles';
 import { APIService } from '../../service/APIService'
+import { User } from '../../common/models/user';
 
 interface State {
   email: string,
@@ -30,8 +31,12 @@ export default class LoginScreen extends Component {
         if (response.code != 200) {
           alert("Please check your email and password are correct")
         } else {
-          AsyncStorage.setItem("user", JSON.stringify(response.data))
-          this.props.navigation.navigate("Tabs")
+          this.props.navigation.navigate("Tabs", { user: new User({
+            id: response.data.id,
+            email: response.data.email,
+            firstName: response.data.first_name,
+            lastName: response.data.last_name,
+          }) })
         }
       }
     )

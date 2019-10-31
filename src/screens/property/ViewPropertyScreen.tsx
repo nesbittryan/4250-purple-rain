@@ -103,13 +103,6 @@ export default class ViewPropertyScreen extends Component {
             />
             <Button
               style={ViewPropertyStyles.optionButtons}
-              title="Payments"
-              onPress={ () => { this.props.navigation.navigate("Payment", { 
-                property: this.property,
-              }) }}
-            />
-            <Button
-              style={ViewPropertyStyles.optionButtons}
               title="Property Info"
               onPress={ () => { this.props.navigation.navigate("Info", {
                 property: this.property,
