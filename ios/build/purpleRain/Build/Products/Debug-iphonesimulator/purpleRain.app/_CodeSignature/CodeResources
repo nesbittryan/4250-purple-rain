@@ -10,11 +10,11 @@
 		</data>
 		<key>Base.lproj/LaunchScreen.nib/objects-13.0+.nib</key>
 		<data>
-		EVOcjGYulk/d7Leg03nccBY+UdU=
+		de093XTKL12+e7MQ9y1fmlpAYUw=
 		</data>
 		<key>Base.lproj/LaunchScreen.nib/runtime.nib</key>
 		<data>
-		+caIVsEkrYFFocPzXegaEI+iIKg=
+		yZqn4xHjfq4Cn9Q6LBV4Gh9Zpd4=
 		</data>
 		<key>Entypo.ttf</key>
 		<data>
@@ -103,7 +103,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		feNB7p+ZImOloImvbFU7dXGkGqo=
+		PnYjDOdAY4+FrAtLDoWGh142sfY=
 		</data>
 		<key>Ionicons.ttf</key>
 		<data>
@@ -131,19 +131,19 @@
 		</data>
 		<key>PlugIns/purpleRainTests.xctest.dSYM/Contents/Resources/DWARF/purpleRainTests</key>
 		<data>
-		GjVbthOd94ukj9bmm+WGLrjzM60=
+		GgetmBA6LgiaW7QqpsRlX9K2tJM=
 		</data>
 		<key>PlugIns/purpleRainTests.xctest/Info.plist</key>
 		<data>
-		pJAO1T+rsYgbXFhw0UScv8M1/rs=
+		jX+1JOHuXnkQbBxH7GGAubShudI=
 		</data>
 		<key>PlugIns/purpleRainTests.xctest/_CodeSignature/CodeResources</key>
 		<data>
-		HHU/zjHhBKflvO1BrkwHClnhSDE=
+		QEdGJ0yDk3eu6q0TROGXo4ooZH8=
 		</data>
 		<key>PlugIns/purpleRainTests.xctest/purpleRainTests</key>
 		<data>
-		W57xgCghGBkKyp0AIMg9FOsY+pA=
+		VBM5SlL/VocL4+ivWeec6Utp5rU=
 		</data>
 		<key>SimpleLineIcons.ttf</key>
 		<data>
@@ -171,22 +171,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			EVOcjGYulk/d7Leg03nccBY+UdU=
+			de093XTKL12+e7MQ9y1fmlpAYUw=
 			</data>
 			<key>hash2</key>
 			<data>
-			8YsobZTxV2sqVrVglE0Ln4Ot1i9y9i8OAMfVxBaV79U=
+			bGoggzaDlTfEw6K6ck0Zw1Qx2F8pGUYuHP0wGRHjdTU=
 			</data>
 		</dict>
 		<key>Base.lproj/LaunchScreen.nib/runtime.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			+caIVsEkrYFFocPzXegaEI+iIKg=
+			yZqn4xHjfq4Cn9Q6LBV4Gh9Zpd4=
 			</data>
 			<key>hash2</key>
 			<data>
-			vL9AIcsiDiIpLALxOqSNEuKCuiGnnz3fjR7zRi6TdkU=
+			o8nhgHVjAv76WOpm+7+dRXXLfUMiPe+LdS0lqqSxVpg=
 			</data>
 		</dict>
 		<key>Entypo.ttf</key>
@@ -470,44 +470,44 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			GjVbthOd94ukj9bmm+WGLrjzM60=
+			GgetmBA6LgiaW7QqpsRlX9K2tJM=
 			</data>
 			<key>hash2</key>
 			<data>
-			p3fKvFJ437lrVtBTn0k7EoDyGgivqM/TJ+HkJ05RaUs=
+			7srCvkqlAKU7Cs5yvmk9yP211f/ST0Kq7GTI70P7C88=
 			</data>
 		</dict>
 		<key>PlugIns/purpleRainTests.xctest/Info.plist</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			pJAO1T+rsYgbXFhw0UScv8M1/rs=
+			jX+1JOHuXnkQbBxH7GGAubShudI=
 			</data>
 			<key>hash2</key>
 			<data>
-			6T+262KlF59jySt9iekG8qdU3eTPSiOLrJ9AWAeSsh0=
+			pyHx7/Tzx54IKnneYSzPOMlj095FE0HCI4YtXr1bBik=
 			</data>
 		</dict>
 		<key>PlugIns/purpleRainTests.xctest/_CodeSignature/CodeResources</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			HHU/zjHhBKflvO1BrkwHClnhSDE=
+			QEdGJ0yDk3eu6q0TROGXo4ooZH8=
 			</data>
 			<key>hash2</key>
 			<data>
-			6bgkNQ+Mm0rfi4036v9NROobwv1UmMqn88YOpCWbIEE=
+			+92lnc805BwiRKgsdfbzAXJpV+ONUHKSVikrzyOkUuQ=
 			</data>
 		</dict>
 		<key>PlugIns/purpleRainTests.xctest/purpleRainTests</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			W57xgCghGBkKyp0AIMg9FOsY+pA=
+			VBM5SlL/VocL4+ivWeec6Utp5rU=
 			</data>
 			<key>hash2</key>
 			<data>
-			Sxk7yLmubEb4b1pEzlvaMtY2QYAcNb2hjAMMaRYLfS4=
+			Uq/YxYLW94FyGJOvdMhRZoLfqnxeoy8Cfy8hSznhs9I=
 			</data>
 		</dict>
 		<key>SimpleLineIcons.ttf</key>

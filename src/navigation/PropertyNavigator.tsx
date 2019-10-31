@@ -6,7 +6,6 @@ import PropertyInfoScreen from '../screens/property/PropertyInfoScreen'
 import RegisterPropertyScreen from '../screens/property/RegisterPropertyScreen'
 import TenantOptionsScreen from '../screens/property/TenantOptionsScreen'
 import ViewPropertyScreen from '../screens/property/ViewPropertyScreen'
-import PaymentNavigator from './PaymentNavigator'
 
 const PropertyNavigator = createStackNavigator(
     {
@@ -15,7 +14,6 @@ const PropertyNavigator = createStackNavigator(
         View: ViewPropertyScreen,
         Info: PropertyInfoScreen,
         LandlordOptions: LandlordOptionsScreen,
-        Payment: PaymentNavigator,
         TenantOptions: TenantOptionsScreen
     },
     { 

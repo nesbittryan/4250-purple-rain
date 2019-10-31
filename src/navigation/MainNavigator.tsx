@@ -8,12 +8,14 @@ import SignUpScreen from '../screens/sign-up/SignUpScreen'
 import UserNavigator from './UserNavigator'
 import PropertyNavigator from './PropertyNavigator'
 import MessagesNavigator from './MessagesNavigator';
+import PaymentNavigator from './PaymentNavigator';
 
 import { AppColours } from '../styles/AppColours'
 
 const MainTabNav = createBottomTabNavigator(
     {
         Property: PropertyNavigator,
+        Payment: PaymentNavigator,
         Messages: MessagesNavigator,
         User: UserNavigator,
     },
@@ -21,7 +23,7 @@ const MainTabNav = createBottomTabNavigator(
         tabBarOptions: {
             activeTintColor: '#36213E',
             activeBackgroundColor: '#B8F3FF',
-            inactiveBackgroundColor: AppColours.background,
+            inactiveBackgroundColor: AppColours.blue_purple,
             showIcon: true,
             labelStyle: {
                 fontSize: 20,

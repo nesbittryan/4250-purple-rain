@@ -4,8 +4,8 @@ export interface UserInterface {
     firstName: string
     lastName: string
     id: string,
-    password: string,
-    token: string
+    //password: string,
+   // token: string
     
 }
 export class User implements UserInterface {
@@ -13,15 +13,15 @@ export class User implements UserInterface {
     firstName: string
     lastName: string
     id: string
-    password: string
-    token: string
+    //password: string
+    //token: string
 
     constructor(user: UserInterface) {
         this.email=user.email
         this.firstName=user.firstName
         this.lastName=user.lastName
         this.id=user.id
-        this.password=user.password
-        this.token=user.token
+        //this.password=user.password
+        //this.token=user.token
     }
 }
