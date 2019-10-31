@@ -15,7 +15,7 @@ interface State {
   userId: string
 }
 
-export default class RegisterPropertyScreen extends React.Component {
+export default class RegisterPropertyScreen extends React.Component<{navigation: Navigator},{}> {
   static navigationOptions = {
     headerTitle: 'Register Property',
   };
@@ -66,7 +66,11 @@ export default class RegisterPropertyScreen extends React.Component {
 
   handleRegisterProperty() {
     APIService.createProperty(this.state.property, this.state.isLandlord, this.state.userId)
-    this.props.navigation.navigate("Home")
+    //const { navigation } = this.props;
+    this.props.navigation.state.params.onGoBack({wentBack: true})
+    this.props.navigation.goBack();
+    //this.state.params.onSelect({ selected: true });
+    //this.props.navigation.navigate("Home", {wentBack: true})
   }
 
   handleStateChange(name: string, input: boolean) {

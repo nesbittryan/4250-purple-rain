@@ -30,6 +30,7 @@ export default class ViewPropertyScreen extends Component {
   constructor(props: any) {
     super(props)
     this.handleStateChange = this.handleStateChange.bind(this)
+    this.handlePropertyDelete = this.handlePropertyDelete.bind(this)
     const property =  this.props.navigation.getParam('property', 'error')
     this.state.address = property.address
     this.state.city = property.city
@@ -39,7 +40,9 @@ export default class ViewPropertyScreen extends Component {
     this.state.maxOccupancy = property.maxOccupancy
     this.state.state = property.state
   }
+  handlePropertyDelete() {
 
+  }
   handleStateChange(name: string, input: string) {
     this.setState(() => ({ [name]: input }));
   }
@@ -105,6 +108,7 @@ export default class ViewPropertyScreen extends Component {
             title="Update Property" />
           <Button 
             style={ MainApp.button }
+            onPress={this.handlePropertyDelete}
             title="Delete Property" />
         </View>
       </View>
