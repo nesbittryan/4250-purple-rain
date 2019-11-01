@@ -37,15 +37,12 @@ export default class ViewUserScreen extends Component {
     this.handleStateChange = this.handleStateChange.bind(this)
     this.handleUserUpdate = this.handleUserUpdate.bind(this)
 
-    AsyncStorage.getItem("user")
-      .then((response: any) => {
-        let user = JSON.parse(response)
-        this.handleStateChange("firstName", user.first_name)
-        this.handleStateChange("lastName", user.last_name)
-        this.handleStateChange("email", user.email)
-        this.handleStateChange("id", user.id)
-      })
-  }
+    let user = this.props.navigation.dangerouslyGetParent().getParam("user")
+    this.state.email = user.email
+    this.state.firstName = user.firstName
+    this.state.lastName = user.lastName
+    this.state.id = user.id
+}
 
   handleStateChange(name: string, input: string) {
     this.setState(() => ({ [name]: input }));
