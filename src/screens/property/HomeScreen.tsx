@@ -33,38 +33,27 @@ export default class HomeScreen extends Component<{navigation: Navigator,wentBac
    
   }
   fetchData(){
-    console.log("FETCHING DATA")
-    AsyncStorage.getItem("user")
-      .then((response: any) => {
-        this.user = JSON.parse(response)
-      }).then(() => {
-        APIService.getPropertiesByUserId(this.user.id).then((propertyList: any)  => {
-          this.setState({properties: propertyList})
-          console.log(this.state.properties)
-          this.forceUpdate();
-        })
-      })
+
+    APIService.getPropertiesByUserId(this.user.id).then((propertyList: any)  => {
+      this.setState({properties: propertyList})
+      console.log(this.state.properties)
+      this.forceUpdate();
+    })
   }
   componentDidMount() {
+    this.user = this.props.navigation.dangerouslyGetParent().getParam("user")
     this.fetchData()
   }
-  
-
 
   render() {
-    var fetchData  =   this.fetchData;
     return (
       <View>
         <PropertyList
           properties={this.state.properties}
-          navigation={this.props.navigation}
-        >
-        </PropertyList>
+          navigation={this.props.navigation}/>
         <AddNewPropertyButton
           navigation={this.props.navigation}
-          fetchData = {this.fetchData}
-        >
-        </AddNewPropertyButton>
+          fetchData = {this.fetchData}/>
       </View>
     );
   }

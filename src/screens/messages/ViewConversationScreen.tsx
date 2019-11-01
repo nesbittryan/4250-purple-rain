@@ -66,6 +66,7 @@ export default class ViewConversationScreen extends Component {
 
   constructor(props: any) {
     super(props)
+  
     this.contact = this.props.navigation.getParam('contact', 'error')
     this.props.navigation.setParams({ title: this.contact.name })
     this.state.messages = this.contact.relationship === 'Tennant' ? this.nice_messages : this.mean_messages
