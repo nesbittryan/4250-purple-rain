@@ -35,52 +35,10 @@ export default class HomeScreen extends React.Component {
     }
 
     fetchData() {
-        APIService.getPaymentsByUserId(this.userId)
-            .then((response: Response) => {
-                if (response.code === 200) {
-                    var requested:Payment[] = new Array()
-                    var payed:Payment[] = new Array()
-
-                    console.log(response)
-                    response.data.requested_payments.forEach((payment: any) => {
-                        requested.push(new Payment({
-                            id: payment.id,
-                            amount: payment.amount,
-                            description: payment.description,
-                            payer: payment.payer,
-                            requester: payment.requester,
-                            requested_at: payment.requested_at,
-                            paid_at: payment.paid_at,
-                            received_at: payment.received_at,
-                            status: payment.status
-                        })) 
-                    })
-
-                    response.data.payed_payments.forEach((payment: any) => {
-                        payed.push(new Payment({
-                            id: payment.id,
-                            amount: payment.amount,
-                            description: payment.description,
-                            payer: payment.payer,
-                            requester: payment.requester,
-                            requested_at: payment.requested_at,
-                            paid_at: payment.paid_at,
-                            received_at: payment.received_at,
-                            status: payment.status
-                        }))
-                    })
-                    this.setState({ requestedPayments: requested, payedPayments: payed })
-                }
-            })
-            .catch((error: any) => {
-                alert("Could not complete the request. Please restart the application")
-                console.log(error)
-            })
-
         APIService.getRelatedUsers(this.userId)
         .then((response: Response) => {
             if (response.code === 200) {
-                var users: { id: string, name: string }[]
+                var users = new Array()
 
                 response.data.forEach((user: any) => {
                     users.push({
@@ -89,6 +47,53 @@ export default class HomeScreen extends React.Component {
                     })
                 })
 
+                APIService.getPaymentsByUserId(this.userId)
+                .then((response: Response) => {
+                    if (response.code === 200) {
+                        var requested:Payment[] = new Array()
+                        var payed:Payment[] = new Array()
+
+                        response.data.requested_payments.forEach((payment: any) => {
+                            let user = users.find(user => user.id === payment.payer || user.id === payment.requester)
+                            let p = new Payment({
+                                id: payment.id,
+                                amount: payment.amount,
+                                description: payment.description,
+                                payer: payment.payer,
+                                requester: payment.requester,
+                                requested_at: payment.requested_at,
+                                paid_at: payment.paid_at,
+                                received_at: payment.received_at,
+                                status: payment.status,
+                            })
+                            p.other_name = user.name
+                            requested.push(p) 
+                        })
+
+                        response.data.payed_payments.forEach((payment: any) => {
+                            let user = users.find(user => user.id === payment.payer || user.id === payment.requester)
+                            let p = new Payment({
+                                id: payment.id,
+                                amount: payment.amount,
+                                description: payment.description,
+                                payer: payment.payer,
+                                requester: payment.requester,
+                                requested_at: payment.requested_at,
+                                paid_at: payment.paid_at,
+                                received_at: payment.received_at,
+                                status: payment.status,
+                            })
+                            p.other_name = user.name
+                            payed.push(p) 
+                        })
+                        this.setState({ requestedPayments: requested, payedPayments: payed })
+                    }
+                })
+                .catch((error: any) => {
+                    alert("Could not complete the request. Please restart the application")
+                    console.log(error)
+                })
+                
                 this.setState({ userIdList: users })
             }
         })
@@ -110,7 +115,7 @@ export default class HomeScreen extends React.Component {
                     <Button 
                         style={ MainApp.button }
                         title="New Payment" 
-                        onPress={ () => { this.props.navigation.navigate("New", { userId: this.userId, onGoBack: () => this.fetchData() })}}></Button>
+                        onPress={ () => { this.props.navigation.navigate("New", { userId: this.userId, onGoBack: () => this.fetchData(), connectedUsers: this.state.userIdList })}}></Button>
                 </View>
             </View>
         )
