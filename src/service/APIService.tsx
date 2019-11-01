@@ -173,7 +173,7 @@ function getPropertiesByUserId(userId: string) : any {
 }
 
 function getRelatedUsers(userId: string) : Promise<Response> {
-    let endpoint = endpoints.user + "related/" + userId
+    let endpoint = url + endpoints.user + "related/" + userId
 
     return axios.get(endpoint)
         .then((response: { status: number; statusText: string; data: any; }) => {
@@ -228,9 +228,9 @@ function loginUser(email: string, password: string) : Promise<Response> {
 function markPaymentPayed(paymentId: string, userId: string) : Promise<Response> {
     let endpoint = url + endpoints.payment + 'pay'
     let body = new FormData()
-
+    
     body.append("payment_id", paymentId)
-    body.append("user_id", paymentId)
+    body.append("user_id", userId)
 
     return axios.put(endpoint, body, { headers: {'Content-Type': 'multipart/form-data' }})
         .then((response: { status: number; statusText: string; data: any; }) => {
@@ -247,7 +247,7 @@ function markPaymentReceived(paymentId: string, userId: string) : Promise<Respon
     let body = new FormData()
 
     body.append("payment_id", paymentId)
-    body.append("user_id", paymentId)
+    body.append("user_id", userId)
 
     return axios.put(endpoint, body, { headers: {'Content-Type': 'multipart/form-data' }})
         .then((response: { status: number; statusText: string; data: any; }) => {

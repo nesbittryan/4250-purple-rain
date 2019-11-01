@@ -28,6 +28,7 @@ export class Payment implements PaymentInterface {
     received_at: string
     description: string
     status: string
+    other_name = ''
 
     constructor(payment: PaymentInterface) {
         this.id=payment.id

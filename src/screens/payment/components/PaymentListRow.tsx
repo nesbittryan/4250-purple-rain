@@ -40,7 +40,7 @@ export default class PaymentListRow extends React.Component<{userId:string, paym
             if (this.props.payment.payer === this.props.userId)
                 button = <Button title="Mark Payed" onPress={ () => this.handleMarkPayed() }></Button>
         }
-        if(this.props.payment.status === 'payed') {
+        if(this.props.payment.status === 'paid') {
             if (this.props.payment.requester === this.props.userId)
                 button = <Button title="Mark Recieved" onPress={ () => this.handleMarkedRecieved() }></Button>
         }
@@ -50,6 +50,7 @@ export default class PaymentListRow extends React.Component<{userId:string, paym
                 <Text>{this.props.payment.description}</Text>
                 <Text>{this.props.payment.amount}</Text>
                 <Text>{this.props.payment.status}</Text>
+                <Text>{this.props.payment.other_name}</Text>
                 {button}
             </View>
         )
