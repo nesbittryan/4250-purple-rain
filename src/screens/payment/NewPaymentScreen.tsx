@@ -1,6 +1,6 @@
 import React from 'react'
-import { View, Picker } from 'react-native';
-import { Button, Input, Text } from 'react-native-elements';
+import { View, Picker, PickerItem } from 'react-native';
+import { Button, Input, Text, ButtonGroup } from 'react-native-elements';
 
 import { MainApp } from '../../styles/Styles'
 import { APIService } from '../../service/APIService';
@@ -9,6 +9,7 @@ interface State {
     amount: string
     connectedUsers: { name: string, id: string }[]
     description: string
+    isSelfPaying: boolean
     selectedUserId: string
     userId: string
 }
@@ -18,6 +19,7 @@ export default class NewPaymentScreen extends React.Component {
         amount: '',
         connectedUsers: new Array(),
         description: '',
+        isSelfPaying: true,
         selectedUserId: '',
         userId: '',
     }
@@ -30,8 +32,9 @@ export default class NewPaymentScreen extends React.Component {
     componentDidMount() {
         let userId = this.props.navigation.getParam('userId', '-1')
         this.setState({ userId: userId})
-        let connectedUsers = [ {id:"1", name: "Ryan" }, { id: "2", name: "Connor" }] // Set this to API call
+        let connectedUsers = [ {id:"1", name: "Ryan" }, { id: "3", name: "Connor" }] // Set this to API call
         this.setState({ connectedUsers: connectedUsers})
+        this.setState({ selectedUserId: connectedUsers[0].id })
     }
 
     handleSendPayment() {
@@ -45,9 +48,28 @@ export default class NewPaymentScreen extends React.Component {
             return
         }
 
+        var p
+        var r
+        if (this.state.isSelfPaying === true) {
+            r = this.state.selectedUserId 
+            p = this.state.userId
+        } else {
+            p = this.state.selectedUserId 
+            r = this.state.userId
+        }
+        
         APIService.createPayment({
             amount: this.state.amount,
             description: this.state.description,
+            payer: (this.state.isSelfPaying === true) ? this.state.userId : this.state.selectedUserId,
+            requester: (this.state.isSelfPaying === true) ? this.state.selectedUserId : this.state.userId,
+        }).then((response) => {
+            if (response.code === 200) {
+                this.props.navigation.state.params.onGoBack()
+                this.props.navigation.goBack()
+            }
+        }).catch((error) => {
+            console.log(error)
         })
     }
 
@@ -67,7 +89,14 @@ export default class NewPaymentScreen extends React.Component {
                         onChangeText={(text)=> this.setState({ amount: text })}
                         value={this.state.amount.toString()}></Input>
                     <Picker
-                        //style={ MainApp.picker }
+                        style={ MainApp.picker }
+                        mode="dropdown"
+                        selectedValue={ this.state.isSelfPaying }
+                        onValueChange={ (val) => this.setState({ isSelfPaying: val})}>
+                        <PickerItem label="Send Money To" value="true"></PickerItem>
+                        <PickerItem label="Request Money From" value="false"></PickerItem></Picker>
+                    <Picker
+                        style={ MainApp.picker }
                         mode="dropdown"
                         selectedValue={this.state.selectedUserId}
                         onValueChange={ (text) => this.setState({ selectedUserId: text})}>

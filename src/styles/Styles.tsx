@@ -11,6 +11,9 @@ const MainApp = StyleSheet.create({
       height:30,
       width:30
     },
+    flatList: {
+      
+    },
     horizontal_container: {
       alignContent: "center",
       alignSelf: "center",
@@ -27,6 +30,9 @@ const MainApp = StyleSheet.create({
       flex: 1,
       justifyContent: "center",
       width: "80%",
+    },
+    picker: {
+      flex: 1
     },
     button: {
       margin: "0.5%",
