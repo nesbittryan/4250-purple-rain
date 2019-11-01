@@ -53,10 +53,9 @@ export default class HomeScreen extends React.Component {
                         var requested:Payment[] = new Array()
                         var payed:Payment[] = new Array()
 
-                        console.log(response)
                         response.data.requested_payments.forEach((payment: any) => {
-                            let name = users.find(user => user.id === payment.payer || user.id === payment.requester)
-                            requested.push(new Payment({
+                            let user = users.find(user => user.id === payment.payer || user.id === payment.requester)
+                            let p = new Payment({
                                 id: payment.id,
                                 amount: payment.amount,
                                 description: payment.description,
@@ -66,12 +65,14 @@ export default class HomeScreen extends React.Component {
                                 paid_at: payment.paid_at,
                                 received_at: payment.received_at,
                                 status: payment.status,
-                            }).other_name = name) 
+                            })
+                            p.other_name = user.name
+                            requested.push(p) 
                         })
 
                         response.data.payed_payments.forEach((payment: any) => {
-                            let name = users.find(user => user.id === payment.payer || user.id === payment.requester)
-                            payed.push(new Payment({
+                            let user = users.find(user => user.id === payment.payer || user.id === payment.requester)
+                            let p = new Payment({
                                 id: payment.id,
                                 amount: payment.amount,
                                 description: payment.description,
@@ -80,8 +81,10 @@ export default class HomeScreen extends React.Component {
                                 requested_at: payment.requested_at,
                                 paid_at: payment.paid_at,
                                 received_at: payment.received_at,
-                                status: payment.status
-                            }).other_name = name)
+                                status: payment.status,
+                            })
+                            p.other_name = user.name
+                            payed.push(p) 
                         })
                         this.setState({ requestedPayments: requested, payedPayments: payed })
                     }

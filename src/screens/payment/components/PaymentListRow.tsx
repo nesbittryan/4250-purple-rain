@@ -47,10 +47,16 @@ export default class PaymentListRow extends React.Component<{userId:string, paym
 
         return (
             <View style={ Payment_Style.view }>
-                <Text>{this.props.payment.description}</Text>
-                <Text>{this.props.payment.amount}</Text>
-                <Text>{this.props.payment.status}</Text>
-                <Text>{this.props.payment.other_name}</Text>
+                <View>
+                    <Text style={ Payment_Style.title }>{this.props.payment.description}</Text>
+                    <Text style={ Payment_Style.subtitle }>{this.props.payment.amount}</Text>
+                </View>
+                <View>
+                    <Text style={ Payment_Style.subtitle }>{this.props.payment.status}</Text>
+                </View>
+                <View>
+                    <Text style={ Payment_Style.subtitle }>{this.props.payment.other_name}</Text>
+                </View>
                 {button}
             </View>
         )
@@ -60,12 +66,14 @@ export default class PaymentListRow extends React.Component<{userId:string, paym
 const Payment_Style = StyleSheet.create({
     
     subtitle: {
-
+        fontSize:12
     },
     title: {
-
+        fontSize:18
     },
     view: {
-
+        alignItems:'center',
+        flexDirection:'row',  
+        justifyContent:'center'
     },
 })

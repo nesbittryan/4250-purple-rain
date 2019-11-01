@@ -9,7 +9,7 @@ export default class PaymentTabView extends React.Component<{
   state = {
     index: 0,
     routes: [
-      { key: 'first', title: 'Payed' },
+      { key: 'first', title: 'Paid' },
       { key: 'second', title: 'Requested' },
     ],
   };
