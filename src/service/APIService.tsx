@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { Property, PropertyInterface } from '../common/models/property';
 import { User } from '../common/models/user';
-import { Payment, PaymentInterface, CreatePaymentInterface } from '../common/models/payment'
+import { CreatePaymentInterface } from '../common/models/payment'
 
 
 const url = "http://ec2-18-234-27-166.compute-1.amazonaws.com"
@@ -21,6 +21,7 @@ export const APIService =  {
     getTenantsInProperty,
     getPropertiesByUserId,
     getPaymentsByUserId,
+    getRelatedUsers,
     isLandlordByPropertyId,
     loginUser,
     markPaymentPayed,
@@ -171,6 +172,18 @@ function getPropertiesByUserId(userId: string) : any {
     })
 }
 
+function getRelatedUsers(userId: string) : Promise<Response> {
+    let endpoint = endpoints.user + "related/" + userId
+
+    return axios.get(endpoint)
+        .then((response: { status: number; statusText: string; data: any; }) => {
+            return new Response(response.status, response.statusText, response.data)
+        })
+        .catch((error: string) => {
+            console.log(error)
+            return new Response(500, error, null)
+        })
+}
 
 function getTenantsInProperty(propertyId: string) : any {
     let endpoint = url + endpoints.user + "property/" + propertyId
@@ -203,7 +216,7 @@ function loginUser(email: string, password: string) : Promise<Response> {
     body.append("password", password)
 
     return axios.post(endpoint, body, { headers: {'Content-Type': 'multipart/form-data' }})
-        .then((response: { status: number; statusText: string; data: any; }) => {
+        .then((response) => {
             return new Response(response.status, response.statusText, response.data)
         })
         .catch((error: string) => {

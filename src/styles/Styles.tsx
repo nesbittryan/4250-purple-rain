@@ -11,6 +11,9 @@ const MainApp = StyleSheet.create({
       height:30,
       width:30
     },
+    flatList: {
+      
+    },
     horizontal_container: {
       alignContent: "center",
       alignSelf: "center",

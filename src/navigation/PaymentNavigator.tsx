@@ -10,7 +10,6 @@ export const PaymentNavigator = createStackNavigator(
     },
     { 
         initialRouteName: 'Home',
-        headerMode: 'none',
     }
 )
 

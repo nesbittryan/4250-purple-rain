@@ -32,7 +32,7 @@ export default class NewPaymentScreen extends React.Component {
     componentDidMount() {
         let userId = this.props.navigation.getParam('userId', '-1')
         this.setState({ userId: userId})
-        let connectedUsers = [ {id:"1", name: "Ryan" }, { id: "2", name: "Connor" }] // Set this to API call
+        let connectedUsers = [ {id:"1", name: "Ryan" }, { id: "3", name: "Connor" }] // Set this to API call
         this.setState({ connectedUsers: connectedUsers})
         this.setState({ selectedUserId: connectedUsers[0].id })
     }
@@ -47,12 +47,22 @@ export default class NewPaymentScreen extends React.Component {
             alert("Please provide a description")
             return
         }
-        console.log(this.state)
+
+        var p
+        var r
+        if (this.state.isSelfPaying === true) {
+            r = this.state.selectedUserId 
+            p = this.state.userId
+        } else {
+            p = this.state.selectedUserId 
+            r = this.state.userId
+        }
+        
         APIService.createPayment({
             amount: this.state.amount,
             description: this.state.description,
-            payer: (this.state.isSelfPaying) ? this.state.userId : this.state.selectedUserId,
-            requester: (this.state.isSelfPaying) ? this.state.selectedUserId : this.state.userId
+            payer: (this.state.isSelfPaying === true) ? this.state.userId : this.state.selectedUserId,
+            requester: (this.state.isSelfPaying === true) ? this.state.selectedUserId : this.state.userId,
         }).then((response) => {
             if (response.code === 200) {
                 this.props.navigation.state.params.onGoBack()
