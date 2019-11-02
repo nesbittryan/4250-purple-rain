@@ -2,7 +2,7 @@ import React from "react";
 import { Component } from "react";
 import { Button, Input } from 'react-native-elements';
 import { View, ImageBackground, AsyncStorage } from "react-native";
-import { MainApp } from '../../styles/Styles';
+import { MainApp } from '../../res/Styles';
 import { StyleSheet } from 'react-native';
 import { Property } from "../../common/models/property";
 import { bool } from "prop-types";

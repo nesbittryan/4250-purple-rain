@@ -9,26 +9,20 @@ export interface PaymentInterface {
     received_at: string,
     description: string,
     status: string,
-}
-
-export interface CreatePaymentInterface {
-    amount: string,
-    payer: string,
-    requester: string,
-    description: string,
+    other_name:string,
 }
 
 export class Payment implements PaymentInterface {
-    amount: string
-    payer: string
-    requester: string
-    id: string
-    requested_at: string
-    paid_at: string
-    received_at: string
-    description: string
-    status: string
-    other_name = ''
+    amount= ''
+    payer= ''
+    requester= ''
+    id= ''
+    requested_at= ''
+    paid_at= ''
+    received_at= ''
+    description= ''
+    status= ''
+    other_name= ''
 
     constructor(payment: PaymentInterface) {
         this.id=payment.id

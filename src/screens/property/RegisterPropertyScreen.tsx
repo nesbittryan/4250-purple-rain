@@ -6,7 +6,7 @@ Icon.loadFont()
 
 import { PropertyInterface } from '../../common/models/Property';
 
-import { MainApp } from '../../styles/Styles';
+import { MainApp } from '../../res/Styles';
 import { APIService } from '../../service/APIService';
 
 interface State {

@@ -7,7 +7,7 @@ Icon.loadFont()
 
 import { APIService } from "../../service/APIService";
 
-import { MainApp } from '../../styles/Styles';
+import { MainApp } from '../../res/Styles';
 
 interface State {
   firstName: string,

@@ -2,7 +2,7 @@ import React from "react";
 import { View } from "react-native";
 import { Button, Input, Text } from 'react-native-elements';
 
-import { MainApp } from "../../styles/Styles";
+import { MainApp } from "../../res/Styles";
 import { APIService } from "../../service/APIService";
 
 interface State {

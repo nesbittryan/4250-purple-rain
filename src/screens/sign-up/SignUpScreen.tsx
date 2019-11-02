@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { Text, View } from 'react-native';
-import { Input, Button } from 'react-native-elements';
-
-import { MainApp } from '../../styles/Styles'
+import { View } from 'react-native';
+import { Input, Button, Text } from 'react-native-elements';
 
 import { APIService } from '../../service/APIService'
+
+import { MainApp } from '../../res/Styles'
 
 interface State {
   firstName: string,
@@ -15,12 +15,7 @@ interface State {
 }
 
 export default class AccountCreationScreen extends React.Component {
-  static navigationOptions = ({ navigation }) => {
-    return {
-      headerTitle: 'Sign Up',
-    }
-  }
-  
+ 
   readonly state: State = {
     firstName: "",
     lastName:"",
@@ -34,7 +29,6 @@ export default class AccountCreationScreen extends React.Component {
     this.handleStateChange = this.handleStateChange.bind(this)
     this.handleCreateAccountPress = this.handleCreateAccountPress.bind(this)
     this.handleToLoginPress = this.handleToLoginPress.bind(this)
-
   }
   
   
@@ -65,46 +59,51 @@ export default class AccountCreationScreen extends React.Component {
 
   render() {
     return (
-      <View style={ MainApp.container } >
-        <View style={ MainApp.form }>
-            <Text>Account Creation</Text>
-            <Input style={ MainApp.input }
-                value={ this.state.firstName }
-                onChangeText={(txt) => this.handleStateChange("firstName", txt)}
-                placeholder="First Name"
-                returnKeyType="next"/>
-            <Input style={ MainApp.input }
-                value={ this.state.lastName }
-                onChangeText={(txt) => this.handleStateChange("lastName", txt)}
-                placeholder="Last Name"
-                returnKeyType="next"/>
-            <Input style={ MainApp.input }
-                value={ this.state.email }
-                onChangeText={(txt) => this.handleStateChange("email", txt)}
-                placeholder="Email"
-                returnKeyType="next"/>
-            <Input style={ MainApp.input }
-                value={ this.state.password }
-                onChangeText={(txt) => this.handleStateChange("password", txt)}
-                placeholder="Password"
-                returnKeyType="next"
-                secureTextEntry={ true }/>
-            <Text>Must be longer than 8 characters</Text>
-            <Input 
-                style={ MainApp.input }
-                value={ this.state.confirmPassword }
-                onChangeText={(txt) => this.handleStateChange("confirmPassword", txt)}
-                placeholder="Confirm Password"
-                returnKeyType="go"
-                secureTextEntry={ true }/>
+      <View style={MainApp.container} >
+        <View style={MainApp.form}>
+          <Text h3>Account Creation</Text>
+          <Input style={ MainApp.input }
+            value={ this.state.firstName }
+            onChangeText={(txt) => this.handleStateChange("firstName", txt)}
+            placeholder="First Name"
+            returnKeyType="next"/>
+          <Input style={ MainApp.input }
+            value={ this.state.lastName }
+            onChangeText={(txt) => this.handleStateChange("lastName", txt)}
+            placeholder="Last Name"
+            returnKeyType="next"/>
+          <Input style={ MainApp.input }
+            value={ this.state.email }
+            onChangeText={(txt) => this.handleStateChange("email", txt)}
+            placeholder="Email"
+            returnKeyType="next"/>
+          <Text style={MainApp.tooltip}>Password must be at least 8 characters</Text>
+          <Input 
+            style={ MainApp.input }
+            value={ this.state.password }
+            onChangeText={(txt) => this.handleStateChange("password", txt)}
+            placeholder="Password"
+            returnKeyType="next"
+            secureTextEntry={ true }/>   
+          <Input 
+            style={ MainApp.input }
+            value={ this.state.confirmPassword }
+            onChangeText={(txt) => this.handleStateChange("confirmPassword", txt)}
+            placeholder="Confirm Password"
+            returnKeyType="go"
+            secureTextEntry={ true }/>
+          <View>
             <Button 
-                style={ MainApp.button }
-                onPress={ this.handleCreateAccountPress }
-                title="Sign Up"/>
+              style={{margin: '0.5%', marginTop:'5%'}}
+              onPress={ this.handleCreateAccountPress }
+              title="Sign Up"/>
             <Button 
-                style={ MainApp.button }
-                onPress={ this.handleToLoginPress }
-                title="Cancel"/>
+              type='outline'
+              style={{margin: '0.5%', marginTop:'1%'}}
+              onPress={ this.handleToLoginPress }
+              title="Cancel"/>
+          </View>
+          
         </View>
       </View>
     );      

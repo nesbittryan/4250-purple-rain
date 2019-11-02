@@ -9,6 +9,7 @@ export const PaymentNavigator = createStackNavigator(
         New: NewPaymentScreen
     },
     { 
+        headerMode: 'none',
         initialRouteName: 'Home',
     }
 )

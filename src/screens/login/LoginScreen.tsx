@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { View, AsyncStorage } from 'react-native';
-import { Input, Button } from 'react-native-elements';
-import { MainApp } from '../../styles/Styles';
+import { Input, Button, Image } from 'react-native-elements';
+import { MainApp } from '../../res/Styles';
 import { APIService } from '../../service/APIService'
 import { User } from '../../common/models/user';
 
@@ -26,6 +26,7 @@ export default class LoginScreen extends Component {
   }
 
   handleLoginPress() {
+    
     APIService.loginUser(this.state.email, this.state.password)
       .then((response) => {
         if (response.code != 200) {
@@ -59,26 +60,28 @@ export default class LoginScreen extends Component {
   render() {
     return (
       <View style={ MainApp.container }>
-        <View style={ MainApp.form }>
-          <Input 
-            style={ MainApp.input }
-            value={ this.state.email }
-            onChangeText={(txt) => this.handleStateChange("email", txt)}
-            placeholder="email"
-            returnKeyType="next"/>
-          <Input 
-            style={ MainApp.input }
-            value={ this.state.password }
-            onChangeText={(txt) => this.handleStateChange("password", txt)}
-            placeholder="password"
-            returnKeyType="go"
-            secureTextEntry={ true }/>
+        <View style={[ MainApp.form, {marginTop: '50%'}] }>
+            <Image 
+              source={require('../../res/img/logo.jpg')} 
+              style={{height: '60%',}}/>
+            <Input
+              value={ this.state.email }
+              onChangeText={(txt) => this.handleStateChange("email", txt)}
+              placeholder="Email"
+              returnKeyType="next"/>
+            <Input 
+              value={ this.state.password }
+              onChangeText={(txt) => this.handleStateChange("password", txt)}
+              placeholder="Password"
+              returnKeyType="go"
+              secureTextEntry={ true }/>
           <Button 
-            style={ MainApp.button } 
+            style={{margin: '0.5%', marginTop:'5%'}} 
             onPress={ this.handleLoginPress }
             title="Login"/>
           <Button 
-            style={ MainApp.button } 
+            type="outline"
+            style={{margin: '0.5%', marginTop:'1%'}} 
             onPress={ this.handleSignupPress }
             title="Sign Up"/>
         </View>
