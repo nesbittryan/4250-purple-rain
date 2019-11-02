@@ -2,7 +2,7 @@ import React from "react";
 import { View } from "react-native";
 import { Button, Input, Text } from 'react-native-elements';
 
-import { MainApp } from "../../styles/Styles";
+import { MainApp } from "../../res/Styles";
 import { APIService } from "../../service/APIService";
 
 interface State {
@@ -44,25 +44,30 @@ export default class ChangePasswordScreen extends React.Component {
         return (
           <View style={ MainApp.container }>
             <View style={ MainApp.form }>
-              <View style= {{
-                borderBottomWidth: 40,
-                borderBottomColor: 'transparent' }}>
-                <Text>Change Password for { this.state.email}</Text>
-                <Text>Old Password</Text>
-                <Input value={ this.state.oldPassword }
+              <View>
+                <Text style={[MainApp.title, { textAlign: 'center'}]}>Change Password for {this.state.email}</Text>  
+              </View>
+              <View>
+                <Input
+                  label="Old Password"
+                  value={ this.state.oldPassword }
                   onChangeText={(txt) => this.handleStateChange("oldPassword", txt)}
                   returnKeyType="next"/>
-                <Text>New Password</Text>
-                <Input value={ this.state.password }
+                <Input 
+                  label="New Password"
+                  value={ this.state.password }
                   onChangeText={(txt) => this.handleStateChange("password", txt)}
                   returnKeyType="next"/>
-                <Text>Confirm New Password</Text>
-                <Input value={ this.state.confirmPassword }
+                <Input 
+                  label="Confirm New Password"
+                  value={ this.state.confirmPassword }
                   onChangeText={(txt) => this.handleStateChange("confirmPassword", txt)}
                   returnKeyType="next"/>
               </View>
-              <Button style={ MainApp.button } title="Confirm Change Password" onPress={ () => { this.handlePasswordChange() } } />
-              <Button style={ MainApp.button } title="Cancel" onPress={ () => { this.props.navigation.goBack() } } />
+              <View>
+                <Button style={{margin: '0.5%', marginTop:'5%'}} title="Confirm Change Password" onPress={ () => { this.handlePasswordChange() } } />
+                <Button style={{margin: '0.5%', marginTop:'1%'}} type="outline" title="Cancel" onPress={ () => { this.props.navigation.goBack() } } />
+              </View>
             </View>
           </View>
         );

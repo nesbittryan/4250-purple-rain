@@ -1,12 +1,13 @@
 import React from 'react'
-import { View } from 'react-native';
+import { Alert, View } from 'react-native';
 import { Button } from 'react-native-elements';
 
-import { MainApp } from '../../styles/Styles'
+import { MainApp } from '../../res/Styles'
 
 import { Payment } from '../../common/models/payment';
 import { APIService, Response } from '../../service/APIService';
 import PaymentTabView from './components/PaymentTabView';
+import { Colours } from '../../res/Colours';
 
 interface State {
     payedPayments:Payment[]
@@ -55,7 +56,7 @@ export default class HomeScreen extends React.Component {
 
                         response.data.requested_payments.forEach((payment: any) => {
                             let user = users.find(user => user.id === payment.payer || user.id === payment.requester)
-                            let p = new Payment({
+                            requested.push(new Payment({
                                 id: payment.id,
                                 amount: payment.amount,
                                 description: payment.description,
@@ -65,14 +66,13 @@ export default class HomeScreen extends React.Component {
                                 paid_at: payment.paid_at,
                                 received_at: payment.received_at,
                                 status: payment.status,
-                            })
-                            p.other_name = user.name
-                            requested.push(p) 
+                                other_name: user.name
+                            })) 
                         })
 
                         response.data.payed_payments.forEach((payment: any) => {
                             let user = users.find(user => user.id === payment.payer || user.id === payment.requester)
-                            let p = new Payment({
+                            payed.push(new Payment({
                                 id: payment.id,
                                 amount: payment.amount,
                                 description: payment.description,
@@ -82,10 +82,10 @@ export default class HomeScreen extends React.Component {
                                 paid_at: payment.paid_at,
                                 received_at: payment.received_at,
                                 status: payment.status,
-                            })
-                            p.other_name = user.name
-                            payed.push(p) 
+                                other_name: user.name
+                            })) 
                         })
+                        
                         this.setState({ requestedPayments: requested, payedPayments: payed })
                     }
                 })
@@ -105,19 +105,21 @@ export default class HomeScreen extends React.Component {
 
     render() {
         return (
-            <View style={ MainApp.container}>
-                <View style={ MainApp.form }>
-                    <PaymentTabView 
+            <View>
+                <View style={[MainApp.form, { height: '85%', width:'100%', alignSelf: 'center', alignItems:'center', alignContent:'center'}]}>
+                    <PaymentTabView
                         userId={this.userId}
                         payedPayments={ this.state.payedPayments} 
                         requestedPayments={ this.state.requestedPayments}
-                        onCallBack={ () => { this.fetchData() } }></PaymentTabView>
-                    <Button 
-                        style={ MainApp.button }
+                        onCallBack={ () => { this.fetchData() } }></PaymentTabView>   
+                </View>
+                <View style={{alignSelf:'center', alignItems:'stretch', width: '90%', height:'10%'}}>
+                    <Button
                         title="New Payment" 
                         onPress={ () => { this.props.navigation.navigate("New", { userId: this.userId, onGoBack: () => this.fetchData(), connectedUsers: this.state.userIdList })}}></Button>
                 </View>
             </View>
+            
         )
     }
 }

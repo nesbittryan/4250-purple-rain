@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { View, FlatList } from 'react-native'
 import { Payment } from '../../../common/models/payment'
-import { MainApp } from '../../../styles/Styles'
+import { MainApp } from '../../../res/Styles'
 import PaymentListRow from './PaymentListRow'
 
 export default class PaymentList extends React.Component<{

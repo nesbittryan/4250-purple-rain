@@ -1,13 +1,14 @@
 import React from "react";
 import { Component } from "react";
-import { View, AsyncStorage } from "react-native";
+import { View } from "react-native";
 import { Button, Input, Text } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 Icon.loadFont()
 
 import { APIService } from "../../service/APIService";
 
-import { MainApp } from '../../styles/Styles';
+import { MainApp } from '../../res/Styles';
+import { Colours } from "../../res/Colours";
 
 interface State {
   firstName: string,
@@ -38,6 +39,7 @@ export default class ViewUserScreen extends Component {
     this.handleUserUpdate = this.handleUserUpdate.bind(this)
 
     let user = this.props.navigation.dangerouslyGetParent().getParam("user")
+
     this.state.email = user.email
     this.state.firstName = user.firstName
     this.state.lastName = user.lastName
@@ -55,7 +57,7 @@ export default class ViewUserScreen extends Component {
         alert("User profile was unable to be updated")
         return
       } else {
-        alert("Account updated")
+        alert("User profile updated")
       }
     })
   }
@@ -64,34 +66,45 @@ export default class ViewUserScreen extends Component {
     return (
       <View style={ MainApp.container }>
         <View style={ MainApp.form }>
-          <View style= {{ borderBottomWidth: 40, borderBottomColor: 'transparent' }}>
-            <Text>First Name</Text>
+          <View>
+            <Text style={[MainApp.title, { textAlign: 'center'}]}>About you</Text> 
+          </View>
+          <View style={{ display:'flex', flexDirection:'column', alignContent:'space-between'}}>
             <Input
+              label="First Name"
               style={ MainApp.input }
               value={ this.state.firstName }
               onChangeText={(txt) => this.handleStateChange("firstName", txt)}
               returnKeyType="next"/>
-            <Text>Last Name</Text>
             <Input
+              label="Last Name"
               style={ MainApp.input }
               value={ this.state.lastName }
               onChangeText={(txt) => this.handleStateChange("lastName", txt)}
               returnKeyType="next"/>
-            <Text>Email</Text>
             <Input
+              label="Email"
               style={ MainApp.input }
               value={ this.state.email }
               onChangeText={(txt) => this.handleStateChange("email", txt)}
               returnKeyType="next"/>
           </View>
-          <Button
-            style={ MainApp.button }
-            title="Update Profile"
-            onPress={ () => { this.handleUserUpdate } } />
-          <Button
-            style={ MainApp.button }
-            title="Change Password"
-            onPress={ () => { this.props.navigation.navigate("ChangePassword", { user_id: this.state.id, email: this.state.email })} }/>
+          <View>
+            <Button
+              style={{margin: '0.5%', marginTop:'5%'}}
+              title="Update Profile"
+              onPress={ () => { this.handleUserUpdate } } />
+            <Button
+              type="outline"
+              style={{margin: '0.5%', marginTop:'1%'}}
+              title="Change Password"
+              onPress={ () => { this.props.navigation.navigate("ChangePassword", { user_id: this.state.id, email: this.state.email })} }/>
+            <Button
+              buttonStyle={{backgroundColor:Colours.accent_green}}
+              style={{margin: '0.5%', marginTop:'10%'}}
+              title="Log Out"
+              onPress={ () => { this.props.navigation.dangerouslyGetParent().popToTop() }}/>
+          </View>
         </View>
       </View>
     );

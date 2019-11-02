@@ -1,12 +1,12 @@
 import React from 'react'
 import AppNavigator from './src/navigation/MainNavigator'
 import { ThemeProvider } from 'react-native-elements'
-import { AppColours } from './src/styles/AppColours';
+import { Colours } from './src/res/Colours';
 
 const theme = {
     colors: {
-      primary: AppColours.blue_purple,
-      secondary: AppColours.dark_purple
+      primary: Colours.accent_blue,
+      secondary: Colours.accent_green,
     }
 }
 

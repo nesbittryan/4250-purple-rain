@@ -17,6 +17,7 @@ const PropertyNavigator = createStackNavigator(
         TenantOptions: TenantOptionsScreen
     },
     { 
+        headerMode: 'none',
         initialRouteName: 'Home',
     }
 )

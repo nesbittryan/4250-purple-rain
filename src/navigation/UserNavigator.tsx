@@ -9,6 +9,7 @@ export const UserNavigator = createStackNavigator(
         Profile: ViewUserScreen
     },
     {
+        headerMode: 'none',
         initialRouteName: 'Profile'
     }
 )

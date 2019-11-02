@@ -1,32 +1,49 @@
 import React from 'react'
-import { View, Picker, PickerItem } from 'react-native';
-import { Button, Input, Text, ButtonGroup } from 'react-native-elements';
+import { View, Picker, PickerItem, Alert } from 'react-native';
+import { Button, Input, Text } from 'react-native-elements';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
-import { MainApp } from '../../styles/Styles'
+import { MainApp } from '../../res/Styles'
 import { APIService } from '../../service/APIService';
+import NotificationService from '../../service/NotificationService';
+import { Switch } from 'react-native-gesture-handler';
 
 interface State {
     amount: string
+    connectedUsers: { id: string, name: string }[]
+    createNotifications:boolean
+    dueDate: Date
     description: string
     isSelfPaying: boolean
     selectedUserId: string
-    connectedUsers: { id: string, name: string }[]
     userId: string
 }
+
 export default class NewPaymentScreen extends React.Component {
 
     readonly state: State = {
         amount: '',
+        connectedUsers: new Array(),
+        createNotifications: true,
+        dueDate: new Date(Date.now()),
         description: '',
         isSelfPaying: true,
         selectedUserId: '',
-        connectedUsers: new Array(),
         userId: '',
     }
+
+    notifService: NotificationService
 
     constructor(props: any) {
         super(props)
         this.handleSendPayment = this.handleSendPayment.bind(this)
+        this.notifService = new NotificationService(this.onNotif.bind(this))
+    }
+
+    onNotif(notif: any) {
+        Alert.alert(notif.title, notif.message);
+        console.log(notif)
+        //this.notifService.schedulePaymentNotification(10, notif.data.payment)
     }
 
     componentDidMount() {
@@ -46,12 +63,11 @@ export default class NewPaymentScreen extends React.Component {
             alert("Please provide a description")
             return
         }
-        APIService.createPayment({
-            amount: this.state.amount,
-            description: this.state.description,
-            payer: (this.state.isSelfPaying === true) ? this.state.userId : this.state.selectedUserId,
-            requester: (this.state.isSelfPaying === true) ? this.state.selectedUserId : this.state.userId,
-        }).then((response) => {
+        APIService.createPayment(
+            (this.state.isSelfPaying === true) ? this.state.userId : this.state.selectedUserId,
+            (this.state.isSelfPaying === true) ? this.state.selectedUserId : this.state.userId, 
+            this.state.description, this.state.amount)
+        .then((response) => {
             if (response.code === 200) {
                 this.props.navigation.state.params.onGoBack()
                 this.props.navigation.goBack()
@@ -65,24 +81,28 @@ export default class NewPaymentScreen extends React.Component {
         return (
             <View style={ MainApp.container}>
                 <View style={ MainApp.form }>
-                    <Text>Label/Info:</Text>
                     <Input
+                        label= "Memo"
                         style= { MainApp.input }
                         value={ this.state.description }
                         onChangeText={(txt) => this.setState({ description: txt })}></Input>
-                    <Text>Amount</Text>
+                
                     <Input
+                        label= "Amount"
                         style= { MainApp.input }
                         keyboardType='numeric'
                         onChangeText={(text)=> this.setState({ amount: text })}
                         value={this.state.amount.toString()}></Input>
+                       
                     <Picker
                         style={ MainApp.picker }
                         mode="dropdown"
                         selectedValue={ this.state.isSelfPaying }
                         onValueChange={ (val) => this.setState({ isSelfPaying: val})}>
                         <PickerItem label="Send Money To" value={true}></PickerItem>
-                        <PickerItem label="Request Money From" value={false}></PickerItem></Picker>
+                        <PickerItem label="Request Money From" value={false}></PickerItem>
+                    </Picker>
+                    
                     <Picker
                         style={ MainApp.picker }
                         mode="dropdown"
@@ -90,8 +110,25 @@ export default class NewPaymentScreen extends React.Component {
                         onValueChange={ (text) => this.setState({ selectedUserId: text})}>
                             {this.state.connectedUsers.map((item, index) => {
                             return (<Picker.Item label={item.name} value={item.id} key={index}/>) 
-                        })}</Picker>
+                        })}
+                    </Picker>
+                
+
                     <View style={ MainApp.horizontal_container }>
+                        <Text style={ MainApp.title }>Create reccuring payment</Text>
+                        <Switch
+                            value={this.state.createNotifications}
+                            onValueChange={ (val) => { this.setState({ createNotifications: val})}}></Switch>
+                    </View>
+                    
+                    { this.state.createNotifications &&
+                        <DateTimePicker 
+                            style={ MainApp.datePicker }
+                            value={this.state.dueDate}
+                            onChange={ (val) => { this.setState({ dueDate: val })}} />
+                    }
+
+                    <View style={ MainApp.horizontal_container}>
                         <Button 
                             style={ MainApp.button }
                             title="Cancel"

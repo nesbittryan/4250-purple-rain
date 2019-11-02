@@ -1,7 +1,7 @@
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import { Property, PropertyInterface } from '../common/models/property';
 import { User } from '../common/models/user';
-import { CreatePaymentInterface } from '../common/models/payment'
+import { Payment } from '../common/models/payment'
 
 
 const url = "http://ec2-18-234-27-166.compute-1.amazonaws.com"
@@ -63,14 +63,14 @@ function isLandlordByPropertyId(userId: string, propertyId: string): any {
     })
 }
 
-function createPayment(payment: CreatePaymentInterface) : Promise<Response> {
+function createPayment(payerId: string, requesterId: string, description: string, amount: string) : Promise<Response> {
     let endpoint = url + endpoints.payment + 'request'
 
     let body = new FormData()
-    body.append("payer", payment.payer)
-    body.append("requester", payment.requester)
-    body.append("description", payment.description)
-    body.append("amount", payment.amount)
+    body.append("payer", payerId)
+    body.append("requester", requesterId)
+    body.append("description", description)
+    body.append("amount", amount)
     
     return axios.post(endpoint, body, { headers: {'Content-Type': 'multipart/form-data' }})
         .then((response: { status: number; statusText: string; data: any; }) => {

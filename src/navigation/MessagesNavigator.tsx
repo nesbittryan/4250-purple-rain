@@ -9,6 +9,7 @@ export const MessagesNavigator = createStackNavigator(
     Conversation: ViewConversationScreen,
   },
   {
+    headerMode: 'none',
     initialRouteName: 'Messages',
   },
 )

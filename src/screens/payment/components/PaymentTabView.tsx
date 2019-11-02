@@ -2,6 +2,7 @@ import * as React from 'react'
 import { TabView, SceneMap } from 'react-native-tab-view'
 import { Payment } from '../../../common/models/payment';
 import PaymentList from './PaymentList';
+import { Colours } from '../../../res/Colours';
 
 export default class PaymentTabView extends React.Component<{
   userId: string, payedPayments: Payment[], requestedPayments: Payment[], onCallBack: () => void }, {}> {
@@ -17,6 +18,7 @@ export default class PaymentTabView extends React.Component<{
   render() {
       return (
         <TabView
+          style={{width: '100%'}}
           navigationState={this.state}
           renderScene={SceneMap({
             first: () => <PaymentList userId={this.props.userId} payments={this.props.payedPayments} onCallBack={this.props.onCallBack}/> ,

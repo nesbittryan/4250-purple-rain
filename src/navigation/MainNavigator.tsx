@@ -1,6 +1,11 @@
+import React from 'react';
 import { createAppContainer } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
 import { createBottomTabNavigator } from 'react-navigation-tabs';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import OtherIcon from 'react-native-vector-icons/MaterialIcons';
+Icon.loadFont()
+OtherIcon.loadFont()
 
 import LoginScreen from '../screens/login/LoginScreen'
 import SignUpScreen from '../screens/sign-up/SignUpScreen'
@@ -10,7 +15,7 @@ import PropertyNavigator from './PropertyNavigator'
 import MessagesNavigator from './MessagesNavigator';
 import PaymentNavigator from './PaymentNavigator';
 
-import { AppColours } from '../styles/AppColours'
+import { Colours } from '../res/Colours'
 
 const MainTabNav = createBottomTabNavigator(
     {
@@ -20,16 +25,36 @@ const MainTabNav = createBottomTabNavigator(
         User: UserNavigator,
     },
     {
+        defaultNavigationOptions: ({ navigation }) => ({
+          tabBarIcon: ({ focused, tintColor }) => {
+            const { routeName } = navigation.state;
+            let iconName = "";
+            if (routeName === 'Property') {
+              iconName = 'home';
+            } else if (routeName === 'Payment') {
+              iconName = 'payment';
+              return <OtherIcon name={iconName} size={45} color={tintColor}/>
+            } else if (routeName === 'Messages') {
+              iconName = 'comments';
+            } else if (routeName === 'User') {
+              iconName = 'user';
+            }
+            return <Icon name={iconName} size={45} color={tintColor} />;
+          },
+        }),
         tabBarOptions: {
-            activeTintColor: '#36213E',
-            activeBackgroundColor: '#B8F3FF',
-            inactiveBackgroundColor: AppColours.blue_purple,
-            showIcon: true,
-            labelStyle: {
-                fontSize: 20,
-                fontWeight: '500',
-                alignContent: 'center'
-            },
+          activeBackgroundColor: Colours.darker_blue,
+          activeTintColor: Colours.accent_green,
+          inactiveBackgroundColor: Colours.accent_blue,
+          inactiveTintColor: Colours.white,
+          labelStyle: {
+            fontSize: 20,
+            fontWeight: '300',
+          },
+          style: {
+            height:80,
+            backgroundColor: Colours.accent_blue,
+          }
         }
     }
   );
