@@ -1,12 +1,13 @@
 import React from 'react'
 import { View, Picker, PickerItem, Alert } from 'react-native';
 import { Button, Input, Text } from 'react-native-elements';
-import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { MainApp } from '../../res/Styles'
 import { APIService } from '../../service/APIService';
 import NotificationService from '../../service/NotificationService';
 import { Switch } from 'react-native-gesture-handler';
+import { Colours } from '../../res/Colours';
+import { Payment } from '../../common/models/payment';
 
 interface State {
     amount: string
@@ -63,18 +64,38 @@ export default class NewPaymentScreen extends React.Component {
             alert("Please provide a description")
             return
         }
-        APIService.createPayment(
-            (this.state.isSelfPaying === true) ? this.state.userId : this.state.selectedUserId,
-            (this.state.isSelfPaying === true) ? this.state.selectedUserId : this.state.userId, 
-            this.state.description, this.state.amount)
-        .then((response) => {
-            if (response.code === 200) {
-                this.props.navigation.state.params.onGoBack()
-                this.props.navigation.goBack()
-            }
-        }).catch((error) => {
-            console.log(error)
+
+        let p = new Payment({
+            amount: this.state.amount,
+            description: this.state.description,
+            payer: (this.state.isSelfPaying === true) ? this.state.userId : this.state.selectedUserId,
+            requester: (this.state.isSelfPaying === true) ? this.state.selectedUserId : this.state.userId, 
+            other_name: '',
+            paid_at: '',
+            received_at: '',
+            requested_at: '', 
+            status: '',
+            id: '',
         })
+
+        if (this.state.createNotifications === true) {
+            this.props.navigation.navigate("Reoccuring", { 
+                onGoBack: () => this.props.navigation.state.params.onGoBack(),
+                payment: p, 
+            })
+        } else {
+            APIService.createPayment(p.payer, p.requester, p.description, p.amount)
+            .then((response) => {
+                if (response.code === 200) {
+                    this.props.navigation.state.params.onGoBack()
+                    this.props.navigation.goBack()
+                } else {
+                    alert("Payment was not able to be created")
+                }
+            }).catch((error) => {
+                console.log(error)
+            })
+        }
     }
 
     render() {
@@ -86,57 +107,52 @@ export default class NewPaymentScreen extends React.Component {
                         style= { MainApp.input }
                         value={ this.state.description }
                         onChangeText={(txt) => this.setState({ description: txt })}></Input>
-                
                     <Input
                         label= "Amount"
                         style= { MainApp.input }
                         keyboardType='numeric'
                         onChangeText={(text)=> this.setState({ amount: text })}
                         value={this.state.amount.toString()}></Input>
-                       
-                    <Picker
-                        style={ MainApp.picker }
-                        mode="dropdown"
-                        selectedValue={ this.state.isSelfPaying }
-                        onValueChange={ (val) => this.setState({ isSelfPaying: val})}>
-                        <PickerItem label="Send Money To" value={true}></PickerItem>
-                        <PickerItem label="Request Money From" value={false}></PickerItem>
-                    </Picker>
-                    
-                    <Picker
-                        style={ MainApp.picker }
-                        mode="dropdown"
-                        selectedValue={this.state.selectedUserId}
-                        onValueChange={ (text) => this.setState({ selectedUserId: text})}>
-                            {this.state.connectedUsers.map((item, index) => {
-                            return (<Picker.Item label={item.name} value={item.id} key={index}/>) 
-                        })}
-                    </Picker>
-                
 
+                    <View>
+                        <Picker
+                            itemStyle={{height: 120, color: Colours.accent_blue}}
+                            mode="dropdown"
+                            selectedValue={ this.state.isSelfPaying }
+                            onValueChange={ (val) => this.setState({ isSelfPaying: val})}>
+                            <PickerItem label="Send Money To" value={true}></PickerItem>
+                            <PickerItem label="Request Money From" value={false}></PickerItem>
+                        </Picker>
+                        
+                        <Picker
+                            itemStyle={{height: 120, color: Colours.accent_blue}}
+                            mode="dropdown"
+                            selectedValue={this.state.selectedUserId}
+                            onValueChange={ (text) => this.setState({ selectedUserId: text})}>
+                                {this.state.connectedUsers.map((item, index) => {
+                                return (<Picker.Item label={item.name} value={item.id} key={index}/>) 
+                            })}
+                        </Picker>
+                    </View>
+                    
                     <View style={ MainApp.horizontal_container }>
                         <Text style={ MainApp.title }>Create reccuring payment</Text>
                         <Switch
                             value={this.state.createNotifications}
                             onValueChange={ (val) => { this.setState({ createNotifications: val})}}></Switch>
+                        
                     </View>
                     
-                    { this.state.createNotifications &&
-                        <DateTimePicker 
-                            style={ MainApp.datePicker }
-                            value={this.state.dueDate}
-                            onChange={ (val) => { this.setState({ dueDate: val })}} />
-                    }
-
-                    <View style={ MainApp.horizontal_container}>
+                    <View>
                         <Button 
-                            style={ MainApp.button }
+                            style={{margin: '0.5%', marginTop: '1%'}}
+                            title={ (this.state.createNotifications) ? "Continue" : "Create" }
+                            onPress={ () => { this.handleSendPayment() }}></Button>
+                        <Button
+                            style={{margin: '0.5%', marginTop: '1%'}}
+                            type="outline"
                             title="Cancel"
                             onPress={ () => { this.props.navigation.goBack() }}></Button>
-                        <Button 
-                            style={ MainApp.button }
-                            title="Send"
-                            onPress={ () => { this.handleSendPayment() }}></Button>
                     </View>
                 </View>
             </View>

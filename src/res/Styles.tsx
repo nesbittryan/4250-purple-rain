@@ -11,9 +11,6 @@ const MainApp = StyleSheet.create({
       height:30,
       width:30
     },
-    datePicker: {
-
-    },
     flatList: {
     },
     form: {
@@ -26,18 +23,14 @@ const MainApp = StyleSheet.create({
     },
     horizontal_container: {
       display: 'flex',
-      flex: 3,
       flexDirection: 'row',
-      justifyContent: 'space-evenly',
-      margin: "2%"
+      textAlignVertical: 'center',
+      justifyContent: 'space-between',
+      width: '100%'
     },
     input: {
       margin: "10%",
       alignSelf: 'center'
-    },
-    picker: {
-      flex: 1,
-      margin: "5%"
     },
     subtitle: {
       fontSize: 18,
