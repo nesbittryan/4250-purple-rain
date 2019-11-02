@@ -55,6 +55,7 @@ const MainTabNav = createBottomTabNavigator(
                 alignContent:'center',
                 alignSelf:'stretch',
                 height:80,
+                backgroundColor: Colours.accent_blue,
             }
         }
     }
