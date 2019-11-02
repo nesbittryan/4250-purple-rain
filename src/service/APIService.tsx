@@ -28,6 +28,7 @@ export const APIService =  {
     markPaymentReceived,
     removeTenantFromProperty,
     addTenantToPropertyByEmail,
+    updateProperty,
     updateUser,
     updateUserPassword,
 }
@@ -63,7 +64,7 @@ function isLandlordByPropertyId(userId: string, propertyId: string): any {
     })
 }
 
-function createPayment(payerId: string, requesterId: string, description: string, amount: string) : Promise<Response> {
+function createPayment(payerId: string, requesterId: string, description: string, amount: string, dueDate: string) : Promise<Response> {
     let endpoint = url + endpoints.payment + 'request'
 
     let body = new FormData()
@@ -71,6 +72,8 @@ function createPayment(payerId: string, requesterId: string, description: string
     body.append("requester", requesterId)
     body.append("description", description)
     body.append("amount", amount)
+    if (dueDate != '')
+        body.append("due_date", dueDate)
     
     return axios.post(endpoint, body, { headers: {'Content-Type': 'multipart/form-data' }})
         .then((response: { status: number; statusText: string; data: any; }) => {
@@ -292,7 +295,27 @@ function addTenantToPropertyByEmail(propertyId: string, userEmail: string): Prom
         })
 }
 
-function updateUser(id: string, email: string, firstName: string, lastName: string) : any {
+function updateProperty(id: string, address: string, city: string, state: string, country: string, description: string) : Promise<Response> {
+    let endpoint = url + endpoints.property + 'update/' + id
+
+    let body = new FormData()
+    body.append("street_address", address)
+    body.append("city", city)
+    body.append("state", state)
+    body.append("country", country)
+    body.append("description", description)
+
+    return axios.put(endpoint, body, { headers: {'Content-Type': 'multipart/form-data' }})
+    .then((response: { status: number; statusText: string; data: any; }) => {
+        return new Response(response.status, response.statusText, response.data)
+    })
+    .catch((error: string) => {
+        console.log(error)
+        return new Response(500, error, null)
+    })
+}
+
+function updateUser(id: string, email: string, firstName: string, lastName: string) : Promise<Response> {
     let endpoint = url + endpoints.user + 'update/' + id
     
     let body = new FormData()
@@ -301,16 +324,16 @@ function updateUser(id: string, email: string, firstName: string, lastName: stri
     body.append("last_name", lastName)
 
     return axios.post(endpoint, body, { headers: {'Content-Type': 'multipart/form-data' }})
-        .then((response: { status: number; statusText: string; data: any; }) => {
-            return new Response(response.status, response.statusText, response.data)
-        })
-        .catch((error: string) => {
-            console.log(error)
-            return new Response(500, error, null)
-        })
+    .then((response: { status: number; statusText: string; data: any; }) => {
+        return new Response(response.status, response.statusText, response.data)
+    })
+    .catch((error: string) => {
+        console.log(error)
+        return new Response(500, error, null)
+    })
 }
 
-function updateUserPassword(id: string, email: string, password: string, oldPassword: string) : any {
+function updateUserPassword(id: string, email: string, password: string, oldPassword: string) : Promise<Response> {
     let endpoint = url + endpoints.user + 'update/password/' + id
     let body = new FormData()
 
@@ -319,11 +342,11 @@ function updateUserPassword(id: string, email: string, password: string, oldPass
     body.append("new_password", password)
 
     return axios.put(endpoint, body, { headers: {'Content-Type': 'multipart/form-data' }})
-        .then((response: { status: number; statusText: string; data: any; }) => {
-            return new Response(response.status, response.statusText, response.data)
-        })
-        .catch((error: string) => {
-            console.log(error)
-            return new Response(500, error, null)
-        })
+    .then((response: { status: number; statusText: string; data: any; }) => {
+        return new Response(response.status, response.statusText, response.data)
+    })
+    .catch((error: string) => {
+        console.log(error)
+        return new Response(500, error, null)
+    })
 }

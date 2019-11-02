@@ -10,6 +10,7 @@ export interface PaymentInterface {
     description: string,
     status: string,
     other_name:string,
+    due_date: string
 }
 
 export class Payment implements PaymentInterface {
@@ -23,6 +24,7 @@ export class Payment implements PaymentInterface {
     description= ''
     status= ''
     other_name= ''
+    due_date=''
 
     constructor(payment: PaymentInterface) {
         this.id=payment.id
@@ -36,5 +38,6 @@ export class Payment implements PaymentInterface {
         this.paid_at=payment.paid_at
         this.received_at=payment.received_at
         this.status=payment.status
+        this.due_date=payment.due_date
     }
 }

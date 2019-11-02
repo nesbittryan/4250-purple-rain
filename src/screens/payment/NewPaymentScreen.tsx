@@ -136,7 +136,7 @@ export default class NewPaymentScreen extends React.Component {
                     </View>
                     
                     <View style={ MainApp.horizontal_container }>
-                        <Text style={ MainApp.title }>Create reccuring payment</Text>
+                        <Text style={ MainApp.title }>Create reoccuring payment</Text>
                         <Switch
                             value={this.state.createNotifications}
                             onValueChange={ (val) => { this.setState({ createNotifications: val})}}></Switch>

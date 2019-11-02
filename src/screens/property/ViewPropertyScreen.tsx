@@ -1,14 +1,14 @@
 import React from "react";
 import { Component } from "react";
-import { Button, Input } from 'react-native-elements';
-import { View, ImageBackground, AsyncStorage } from "react-native";
+import { Button, Input, Image, Text } from 'react-native-elements';
+import { View, AsyncStorage } from "react-native";
 import { MainApp } from '../../res/Styles';
-import { StyleSheet } from 'react-native';
-import { Property } from "../../common/models/property";
-import { bool } from "prop-types";
 import { User } from "../../common/models/user";
 import { APIService } from '../../service/APIService';
+import { Colours } from "../../res/Colours";
 
+const url = 'https://maps.googleapis.com/maps/api/streetview?size=300x200&location='
+const key = '&key=AIzaSyCO4E3Yhrq01Y56FCm_bbj2dhF73PyzJiE'
 
 interface State {
   address: string,
@@ -32,113 +32,118 @@ export default class ViewPropertyScreen extends Component {
     state: "",
     isLandlord: false
   }
-  user: User | any
-  property: Property
 
-  static navigationOptions = ({ navigation }) => {
-    return {
-      title: navigation.getParam('title', ''),
-    };
-  };
+  user: User | any
 
   constructor(props: any) {
     super(props)
 
-    this.handleStateChange = this.handleStateChange.bind(this)
-    this.property =  this.props.navigation.getParam('property', 'error')
-    this.props.navigation.setParams({ title: this.property.address })
-    this.state.address = this.property.address
-    this.state.description = this.property.description
-    this.state.id = this.property.id
-
+    this.handleUpdateProperty = this.handleUpdateProperty.bind(this)
+    let property =  this.props.navigation.getParam('property', 'error')
+    this.state.address = property.address
+    this.state.description = property.description
+    this.state.id = property.id
+    this.state.city = property.city
+    this.state.country = property.country
+    this.state.state = property.state
   }
+
   componentDidMount(){
     AsyncStorage.getItem("user")
-      .then((response: any) => {
-        this.user = JSON.parse(response)
-
-      }).then(() => {
-        APIService.isLandlordByPropertyId( this.user.id,this.property.id).then((isLandlord: boolean)  => {
-          this.setState({
-            isLandlord: isLandlord
-          })
+    .then((response: any) => {
+      this.user = JSON.parse(response)
+    }).then(() => {
+      APIService.isLandlordByPropertyId(this.user.id, this.state.id)
+      .then((isLandlord: boolean)  => {
+        this.setState({
+          isLandlord: isLandlord
         })
       })
+    })
   }
-  handleStateChange(name: string, input: string) {
-    this.setState(() => ({ [name]: input }));
-  }
-  handleOptionsPress(){
-    //this.props.navigation.navigate(PropertyInfoScreen)
+
+  handleUpdateProperty() {
+    APIService.updateProperty(this.state.id, this.state.address, this.state.city, 
+      this.state.state, this.state.country, this.state.description)
   }
 
   render() {
     return (
       <View style={MainApp.container}>
-        <View style={ViewPropertyStyles.form}>
-          <View style={ViewPropertyStyles.imageContainer}>
-            <ImageBackground source={require('../../res/img/house1.jpg')} style={ViewPropertyStyles.imageHeader}>
-
-            </ImageBackground>
-          </View>
-          <View style={ViewPropertyStyles.options}>
-            {this.state.isLandlord && <Button
-              style={ViewPropertyStyles.optionButtons}
-              title="Landlord Options"
-              onPress={ () => { this.props.navigation.navigate("LandlordOptions", {
-                property: this.property,
-              }) }}
-            />}
-
-            <Button
-              style={ViewPropertyStyles.optionButtons}
-              title="Tenant Options"
-              onPress={ () => { this.props.navigation.navigate("TenantOptions", {
-                property: this.property,
-              }) }}
-            />
-            <Button
-              style={ViewPropertyStyles.optionButtons}
-              title="Messages Options"
-            />
-            <Button
-              style={ViewPropertyStyles.optionButtons}
-              title="Property Info"
-              onPress={ () => { this.props.navigation.navigate("Info", {
-                property: this.property,
-              }) }}
-            />
-          </View>
+        <View style={MainApp.form}>
+        <Image
+          source={{ uri: url + this.state.address + ', ' + this.state.city + ', ' + this.state.state + ', ' + this.state.country + key }}
+          style={{height: '50%', width: '100%'}}
+          containerStyle={{ marginBottom:-200}}/>
+          { this.state.isLandlord &&  //landlord view
+            <View>
+              <Input
+                value={this.state.address}
+                onChangeText={ (txt) => { this.setState({ address: txt })}}
+                label="Address"></Input>
+              <Input
+                value={this.state.city}
+                onChangeText={ (txt) => { this.setState({ city: txt })}}
+                label="City"></Input>
+              <Input
+                value={this.state.state}
+                onChangeText={ (txt) => { this.setState({ state: txt })}}
+                label="Province/State"></Input>
+              <Input
+                value={this.state.country}
+                onChangeText={ (txt) => { this.setState({ country: txt })}}
+                label="Country"></Input>
+              <Input
+                value={this.state.description}
+                onChangeText={ (txt) => { this.setState({ description: txt })}}
+                label="Description"></Input>
+              <Button
+                style={{margin: '0.5%', marginTop: '5%'}}
+                title="Landlord Options"
+                onPress={ () => { this.props.navigation.navigate("LandlordOptions", {
+                  propertyId: this.state.id,
+                }) }}/>
+              <Button
+                style={{margin: '0.5%', marginTop: '1%'}}
+                buttonStyle={{backgroundColor:Colours.accent_green}}
+                title="Update Property"
+                onPress={ () => { this.handleUpdateProperty()}}/>
+              <Button
+                style={{margin: '0.5%', marginTop: '1%'}}
+                type="outline"
+                title="Back"
+                onPress={ () => { 
+                  this.props.navigation.popToTop()}
+                }/>
+            </View>
+          }
+          
+          { !this.state.isLandlord && //tenant view
+            <View>
+              <View>
+                <Text style={MainApp.subtitle}>{"Address: " + this.state.address}</Text>
+                <Text style={MainApp.subtitle}>{"City: " + this.state.city}</Text>
+                <Text style={MainApp.subtitle}>{"Province/State: " + this.state.state}</Text>
+                <Text style={MainApp.subtitle}>{"Country: " + this.state.country}</Text>
+                <Text style={MainApp.subtitle}>{"Description: " + this.state.description}</Text>
+              </View>
+             
+              <Button
+                style={{margin: '0.5%', marginTop: '5%'}}
+                title="Tenant Options"
+                onPress={ () => { this.props.navigation.navigate("TenantOptions", {
+                  propertyId: this.state.id,
+                }) }}/>
+              <Button
+                style={{margin: '0.5%', marginTop: '1%'}}
+                title="Back"
+                onPress={ () => {
+                  this.props.navigation.popToTop()}
+                }/>
+            </View>
+          }
         </View>
       </View>
     );
   }
 }
-
-const ViewPropertyStyles = StyleSheet.create({
-  header: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  form: {
-    flex: 1,
-    justifyContent: "flex-start",
-    width: "95%",
-  },
-  imageHeader: {
-    height: "100%",
-    width: "100%",
-    resizeMode: "cover",
-    alignItems: "flex-start"
-  },
-  imageContainer: {
-    maxHeight: 200,
-  },
-  options: {
-
-  },
-  optionButtons: {
-    marginBottom: 20,
-  }
-})

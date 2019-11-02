@@ -26,6 +26,7 @@ export default class ReoccuringSelectionScreen extends React.Component {
         console.log(payment)
         console.log(this.state.dueDate)
         console.log(this.state.schedule)
+        let dueDate = this.state.dueDate.toISOString()
         APIService.createPayment(payment.payer, payment.requester, payment.description, payment.amount)
         .then((response) => {
             if (response.code === 200) {
