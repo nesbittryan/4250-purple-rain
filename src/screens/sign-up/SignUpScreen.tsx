@@ -5,6 +5,7 @@ import { Input, Button, Text } from 'react-native-elements';
 import { APIService } from '../../service/APIService'
 
 import { MainApp } from '../../res/Styles'
+import { Colours } from '../../res/Colours';
 
 interface State {
   firstName: string,
@@ -61,7 +62,7 @@ export default class AccountCreationScreen extends React.Component {
     return (
       <View style={MainApp.container} >
         <View style={MainApp.form}>
-          <Text h3>Account Creation</Text>
+          <Text h3 style={{color: Colours.accent_green}}>Account Creation</Text>
           <Input style={ MainApp.input }
             value={ this.state.firstName }
             onChangeText={(txt) => this.handleStateChange("firstName", txt)}

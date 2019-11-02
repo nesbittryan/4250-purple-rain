@@ -19,9 +19,10 @@ const MainApp = StyleSheet.create({
     form: {
       display: 'flex',
       flexDirection: 'column',
-      height: "85%",
-      justifyContent: 'space-evenly',
-      width: "85%",
+      height: '85%',
+      marginTop: '10%',
+      justifyContent: 'space-between',
+      width: "90%",
     },
     horizontal_container: {
       display: 'flex',
@@ -42,10 +43,12 @@ const MainApp = StyleSheet.create({
       fontSize: 18,
     },
     title: {
-      fontSize: 24,
-      fontWeight: 'bold',
+      color: Colours.darker_green,
+      fontSize: 28,
+      fontWeight: '400',
     },
     tooltip: {
+      color: Colours.darker_green,
       fontSize: 12,
       fontWeight: '200',
       fontStyle: 'italic',

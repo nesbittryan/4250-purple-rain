@@ -26,37 +26,35 @@ const MainTabNav = createBottomTabNavigator(
     },
     {
         defaultNavigationOptions: ({ navigation }) => ({
-            tabBarIcon: ({ focused, tintColor }) => {
-              const { routeName } = navigation.state;
-              let iconName = "";
-              if (routeName === 'Property') {
-                iconName = 'home';
-              } else if (routeName === 'Payment') {
-                iconName = 'payment';
-                return <OtherIcon name={iconName} size={45} color={tintColor}/>
-              } else if (routeName === 'Messages') {
-                iconName = 'comments';
-              } else if (routeName === 'User') {
-                iconName = 'user';
-              }
-              return <Icon name={iconName} size={45} color={tintColor} />;
-            },
+          tabBarIcon: ({ focused, tintColor }) => {
+            const { routeName } = navigation.state;
+            let iconName = "";
+            if (routeName === 'Property') {
+              iconName = 'home';
+            } else if (routeName === 'Payment') {
+              iconName = 'payment';
+              return <OtherIcon name={iconName} size={45} color={tintColor}/>
+            } else if (routeName === 'Messages') {
+              iconName = 'comments';
+            } else if (routeName === 'User') {
+              iconName = 'user';
+            }
+            return <Icon name={iconName} size={45} color={tintColor} />;
+          },
         }),
         tabBarOptions: {
-            activeBackgroundColor: Colours.darker_blue,
-            activeTintColor: Colours.accent_green,
-            inactiveBackgroundColor: Colours.accent_blue,
-            inactiveTintColor: Colours.white,
-            labelStyle: {
-                fontSize: 20,
-                fontWeight: '300',
-            },
-            style: {
-                alignContent:'center',
-                alignSelf:'stretch',
-                height:80,
-                backgroundColor: Colours.accent_blue,
-            }
+          activeBackgroundColor: Colours.darker_blue,
+          activeTintColor: Colours.accent_green,
+          inactiveBackgroundColor: Colours.accent_blue,
+          inactiveTintColor: Colours.white,
+          labelStyle: {
+            fontSize: 20,
+            fontWeight: '300',
+          },
+          style: {
+            height:80,
+            backgroundColor: Colours.accent_blue,
+          }
         }
     }
   );
