@@ -1,5 +1,5 @@
 import React from 'react'
-import { Alert, View } from 'react-native';
+import { View } from 'react-native';
 import { Button } from 'react-native-elements';
 
 import { MainApp } from '../../res/Styles'
@@ -7,7 +7,6 @@ import { MainApp } from '../../res/Styles'
 import { Payment } from '../../common/models/payment';
 import { APIService, Response } from '../../service/APIService';
 import PaymentTabView from './components/PaymentTabView';
-import { Colours } from '../../res/Colours';
 
 interface State {
     payedPayments:Payment[]
@@ -113,13 +112,12 @@ export default class HomeScreen extends React.Component {
                         requestedPayments={ this.state.requestedPayments}
                         onCallBack={ () => { this.fetchData() } }></PaymentTabView>   
                 </View>
-                <View style={{alignSelf:'center', alignItems:'stretch', width: '90%', height:'10%'}}>
+                <View style={{alignSelf:'center',alignItems:'stretch', width: '90%', height:'10%'}}>
                     <Button
                         title="New Payment" 
                         onPress={ () => { this.props.navigation.navigate("New", { userId: this.userId, onGoBack: () => this.fetchData(), connectedUsers: this.state.userIdList })}}></Button>
                 </View>
-            </View>
-            
+            </View>   
         )
     }
 }
