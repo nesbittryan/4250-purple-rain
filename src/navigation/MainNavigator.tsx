@@ -33,16 +33,16 @@ const MainTabNav = createBottomTabNavigator(
                 iconName = 'home';
               } else if (routeName === 'Payment') {
                 iconName = 'payment';
-                return <OtherIcon name={iconName} size={25} color={tintColor}/>
+                return <OtherIcon name={iconName} size={45} color={tintColor}/>
               } else if (routeName === 'Messages') {
                 iconName = 'comments';
               } else if (routeName === 'User') {
                 iconName = 'user';
               }
-              return <Icon name={iconName} size={25} color={tintColor} />;
+              return <Icon name={iconName} size={45} color={tintColor} />;
             },
-          }),
-          tabBarOptions: {
+        }),
+        tabBarOptions: {
             activeBackgroundColor: Colours.darker_blue,
             activeTintColor: Colours.accent_green,
             inactiveBackgroundColor: Colours.accent_blue,
@@ -51,7 +51,11 @@ const MainTabNav = createBottomTabNavigator(
                 fontSize: 20,
                 fontWeight: '300',
             },
-            showIcon: true,
+            style: {
+                alignContent:'center',
+                alignSelf:'stretch',
+                height:80,
+            }
         }
     }
   );
