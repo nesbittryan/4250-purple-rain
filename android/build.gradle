@@ -13,6 +13,7 @@ buildscript {
     }
     dependencies {
         classpath("com.android.tools.build:gradle:3.4.2")
+        classpath("com.google.gms:google-services:4.3.2")
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -38,12 +39,12 @@ allprojects {
 }
 
 ext {
-    googlePlayServicesVersion = "<Your play services version>" // default: "+"
-    firebaseVersion = "<Your Firebase version>" // default: "+"
+    googlePlayServicesVersion = "+" // default: "+"
+    firebaseVersion = "+" // default: "+"
 
     // Other settings
-    compileSdkVersion = <Your compile SDK version> // default: 23
-    buildToolsVersion = "<Your build tools version>" // default: "23.0.1"
-    targetSdkVersion = <Your target SDK version> // default: 23
-    supportLibVersion = "<Your support lib version>" // default: 23.1.1
+    compileSdkVersion = 28 // default: 23
+    buildToolsVersion = "28" // default: "23.0.1"
+    targetSdkVersion = 28 // default: 23
+    supportLibVersion = "28" // default: 23.1.1
 }
