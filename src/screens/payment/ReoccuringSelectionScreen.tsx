@@ -1,9 +1,10 @@
 import React from "react";
-import { View, Picker } from "react-native";
+import { View, Picker, Alert } from "react-native";
 import { Text, Button } from "react-native-elements";
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { APIService } from "../../service/APIService";
+import NotificationService from '../../service/NotificationService'
 
 import { MainApp } from "../../res/Styles";
 import { Colours } from "../../res/Colours";
@@ -15,21 +16,24 @@ interface State {
 
 export default class ReoccuringSelectionScreen extends React.Component {
     
+    notifService = new NotificationService(this.onNotification.bind(this))
+
     readonly state: State = {
         dueDate: new Date(Date.now()),
         schedule: 1
     }
 
-    handleSendPayment() {
+    onNotification(notif: any) {
+        Alert.alert(notif.title, notif.message)
+        this.notifService.schedulePaymentNotification(new Date(Date.now()),notif.data.periodInDays, notif.data.payment)
+    }
 
+    handleSendPayment() {
         let payment = this.props.navigation.state.params.payment
-        console.log(payment)
-        console.log(this.state.dueDate)
-        console.log(this.state.schedule)
-        let dueDate = this.state.dueDate.toISOString()
-        APIService.createPayment(payment.payer, payment.requester, payment.description, payment.amount)
+        APIService.createPayment(payment.payer, payment.requester, payment.description, payment.amount, this.state.dueDate.toISOString())
         .then((response) => {
             if (response.code === 200) {
+                this.notifService.schedulePaymentNotification(this.state.dueDate, this.state.schedule, payment)
                 this.props.navigation.state.params.onGoBack()
                 this.props.navigation.popToTop()
             } else {
@@ -58,10 +62,10 @@ export default class ReoccuringSelectionScreen extends React.Component {
                             mode="dropdown"
                             selectedValue={this.state.schedule}
                             onValueChange={ (val) => this.setState({ schedule: val})}>
-                            <Picker.Item label="Daily" value={1}></Picker.Item>
-                            <Picker.Item label="Weekly" value={2}></Picker.Item>
-                            <Picker.Item label="Monthly" value={3}></Picker.Item>
-                            <Picker.Item label="Yearly" value={4}></Picker.Item>
+                            <Picker.Item label="Daily" value={10}></Picker.Item>
+                            <Picker.Item label="Weekly" value={30}></Picker.Item>
+                            <Picker.Item label="Monthly" value={60}></Picker.Item>
+                            <Picker.Item label="Yearly" value={90}></Picker.Item>
                         </Picker>
                     </View>
                     

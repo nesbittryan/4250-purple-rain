@@ -24,13 +24,13 @@ export default class NotificationService {
         });
     }
 
-    schedulePaymentNotification(periodInDays: number, payment: Payment) {
+    schedulePaymentNotification(date: Date, periodInDays: number, payment: Payment) {
         this.lastId++;
         PushNotification.localNotificationSchedule({
-            date: new Date(Date.now() + (periodInDays * 1000)),
+            date: new Date(date.getMilliseconds() + (periodInDays * 24 * 60 * 60 * 1000)),
             title: "Payment due for " + payment.description,
             message: "Payment to " + payment.other_name + " of " + payment.amount + " is due.",
-            userInfo: { payment: payment }
+            userInfo: { payment: payment, periodInDays: periodInDays }
         })
     }
 

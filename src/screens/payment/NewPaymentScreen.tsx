@@ -64,18 +64,18 @@ export default class NewPaymentScreen extends React.Component {
             alert("Please provide a description")
             return
         }
-
         let p = new Payment({
             amount: this.state.amount,
             description: this.state.description,
             payer: (this.state.isSelfPaying === true) ? this.state.userId : this.state.selectedUserId,
             requester: (this.state.isSelfPaying === true) ? this.state.selectedUserId : this.state.userId, 
-            other_name: '',
+            other_name: this.state.connectedUsers[this.state.connectedUsers.findIndex(u => u.id === this.state.selectedUserId)].name,
             paid_at: '',
             received_at: '',
             requested_at: '', 
             status: '',
             id: '',
+            due_date: ''
         })
 
         if (this.state.createNotifications === true) {
@@ -84,7 +84,7 @@ export default class NewPaymentScreen extends React.Component {
                 payment: p, 
             })
         } else {
-            APIService.createPayment(p.payer, p.requester, p.description, p.amount)
+            APIService.createPayment(p.payer, p.requester, p.description, p.amount, '')
             .then((response) => {
                 if (response.code === 200) {
                     this.props.navigation.state.params.onGoBack()
