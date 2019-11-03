@@ -16,7 +16,7 @@ const MainApp = StyleSheet.create({
     form: {
       display: 'flex',
       flexDirection: 'column',
-      height: '85%',
+      height: '90%',
       marginTop: '10%',
       justifyContent: 'space-between',
       width: "90%",

@@ -84,7 +84,7 @@ class PropertyList extends React.Component<{properties: Property[]},{}> {
         renderItem={({item}) =>
           <TouchableOpacity
             onPress={() => this.props.navigation.navigate("View", {
-              property: item,
+              property: item
             })}
           >
             <ListItem
