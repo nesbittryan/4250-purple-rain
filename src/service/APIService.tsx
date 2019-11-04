@@ -72,7 +72,9 @@ function createPayment(payerId: string, requesterId: string, description: string
     body.append("requester", requesterId)
     body.append("description", description)
     body.append("amount", amount)
-    body.append("due_date", dueDate)
+    if (dueDate != '')
+        body.append("due_date", dueDate)
+
     return axios.post(endpoint, body, { headers: {'Content-Type': 'multipart/form-data' }})
         .then((response: { status: number; statusText: string; data: any; }) => {
             return new Response(response.status, response.statusText, response.data)
