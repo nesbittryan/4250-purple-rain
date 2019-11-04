@@ -33,18 +33,9 @@ export default class NewPaymentScreen extends React.Component {
         userId: '',
     }
 
-    notifService: NotificationService
-
     constructor(props: any) {
         super(props)
         this.handleSendPayment = this.handleSendPayment.bind(this)
-        this.notifService = new NotificationService(this.onNotif.bind(this))
-    }
-
-    onNotif(notif: any) {
-        Alert.alert(notif.title, notif.message);
-        console.log(notif)
-        //this.notifService.schedulePaymentNotification(10, notif.data.payment)
     }
 
     componentDidMount() {

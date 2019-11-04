@@ -36,7 +36,6 @@ export default class HomeScreen extends Component<{navigation: Navigator,wentBac
 
     APIService.getPropertiesByUserId(this.user.id).then((propertyList: any)  => {
       this.setState({properties: propertyList})
-      console.log(this.state.properties)
       this.forceUpdate();
     })
   }

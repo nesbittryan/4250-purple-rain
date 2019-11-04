@@ -39,5 +39,6 @@ export class Payment implements PaymentInterface {
         this.received_at=payment.received_at
         this.status=payment.status
         this.due_date=payment.due_date
+        this.other_name=payment.other_name
     }
 }
