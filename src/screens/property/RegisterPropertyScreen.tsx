@@ -66,11 +66,8 @@ export default class RegisterPropertyScreen extends React.Component<{navigation:
 
   handleRegisterProperty() {
     APIService.createProperty(this.state.property, this.state.isLandlord, this.state.userId)
-    //const { navigation } = this.props;
     this.props.navigation.state.params.onGoBack({wentBack: true})
     this.props.navigation.goBack();
-    //this.state.params.onSelect({ selected: true });
-    //this.props.navigation.navigate("Home", {wentBack: true})
   }
 
   handleStateChange(name: string, input: boolean) {

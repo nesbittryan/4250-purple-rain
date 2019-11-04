@@ -43,8 +43,11 @@ export default class HomeScreen extends Component<{navigation: Navigator,wentBac
     this.user = this.props.navigation.dangerouslyGetParent().getParam("user")
     this.fetchData()
   }
+  
+
 
   render() {
+    var fetchData  =   this.fetchData;
     return (
       <View>
         <PropertyList
