@@ -3,7 +3,7 @@ import { View, Picker, Alert } from "react-native";
 import { Text, Button } from "react-native-elements";
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-import { APIService } from "../../service/APIService";
+import { APIService, Response } from "../../service/APIService";
 import NotificationService from '../../service/NotificationService'
 
 import { MainApp } from "../../res/Styles";
@@ -24,8 +24,21 @@ export default class ReoccuringSelectionScreen extends React.Component {
     }
 
     onNotification(notif: any) {
-        Alert.alert(notif.title, notif.message)
-        this.notifService.schedulePaymentNotification(new Date(Date.now()),notif.data.periodInDays, notif.data.payment)
+        Alert.alert(notif.title, notif.message,
+            [
+                {text: 'Ok', onPress: () => {
+                    let date = new Date(Date.now())
+                    APIService.createPayment(notif.data.payment.payer, notif.data.payment.requester, notif.data.payment.description, notif.data.payment.amount,date.toISOString())
+                    .then((response: Response) => {
+                        if (response.code === 200) {
+                            this.notifService.schedulePaymentNotification(date, notif.data.periodInDays, notif.data.payment)
+                            this.props.navigation.state.params.onGoBack()
+                        }
+                    })
+                }},
+                {text: 'Cancel Payments', onPress: () => {}},
+              ],
+              {cancelable: false},)
     }
 
     handleSendPayment() {
@@ -33,7 +46,7 @@ export default class ReoccuringSelectionScreen extends React.Component {
         APIService.createPayment(payment.payer, payment.requester, payment.description, payment.amount, this.state.dueDate.toISOString())
         .then((response) => {
             if (response.code === 200) {
-                this.notifService.schedulePaymentNotification(this.state.dueDate, this.state.schedule, payment)
+                this.notifService.schedulePaymentNotification(new Date(Date.now()), this.state.schedule, payment)
                 this.props.navigation.state.params.onGoBack()
                 this.props.navigation.popToTop()
             } else {
@@ -62,10 +75,10 @@ export default class ReoccuringSelectionScreen extends React.Component {
                             mode="dropdown"
                             selectedValue={this.state.schedule}
                             onValueChange={ (val) => this.setState({ schedule: val})}>
-                            <Picker.Item label="Daily" value={10}></Picker.Item>
-                            <Picker.Item label="Weekly" value={30}></Picker.Item>
-                            <Picker.Item label="Monthly" value={60}></Picker.Item>
-                            <Picker.Item label="Yearly" value={90}></Picker.Item>
+                            <Picker.Item label="Daily" value={1}></Picker.Item>
+                            <Picker.Item label="Weekly" value={7}></Picker.Item>
+                            <Picker.Item label="Monthly" value={30}></Picker.Item>
+                            <Picker.Item label="Yearly" value={365}></Picker.Item>
                         </Picker>
                     </View>
                     

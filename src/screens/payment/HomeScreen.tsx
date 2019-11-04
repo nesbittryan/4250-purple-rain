@@ -1,14 +1,16 @@
 import React from 'react'
 import { View } from 'react-native';
-import { Button } from 'react-native-elements';
-
-import { MainApp } from '../../res/Styles'
+import { Button, SearchBar } from 'react-native-elements';
 
 import { Payment } from '../../common/models/payment';
 import { APIService, Response } from '../../service/APIService';
 import PaymentTabView from './components/PaymentTabView';
+import { Colours } from '../../res/Colours';
 
 interface State {
+    filterValue: string
+    filteredPayedPayments:Payment[]
+    filteredRequestedPayments:Payment[]
     payedPayments:Payment[]
     requestedPayments: Payment[]
     userIdList: { id: string, name: string }[]
@@ -16,17 +18,21 @@ interface State {
 
 export default class HomeScreen extends React.Component {
 
-    userId = ''
-
     readonly state: State = {
+        filterValue: '',
+        filteredPayedPayments: new Array(),
+        filteredRequestedPayments: new Array(),
         requestedPayments: new Array(),
         payedPayments: new Array(),
         userIdList: new Array(),
     }
 
+    userId = ''
+
     constructor(props:any) {
         super(props)
         this.fetchData = this.fetchData.bind(this)
+        this.onFilter = this.onFilter.bind(this)
     }
 
     componentDidMount() {
@@ -54,7 +60,7 @@ export default class HomeScreen extends React.Component {
                         var payed:Payment[] = new Array()
 
                         response.data.requested_payments.forEach((payment: any) => {
-                            let user = users.find(user => user.id === payment.payer || user.id === payment.requester)
+                            let user = users.filter(user => String(user.id).includes(payment.payer) || String(user.id).includes(payment.requester))
                             requested.push(new Payment({
                                 id: payment.id,
                                 amount: payment.amount,
@@ -65,12 +71,13 @@ export default class HomeScreen extends React.Component {
                                 paid_at: payment.paid_at,
                                 received_at: payment.received_at,
                                 status: payment.status,
-                                other_name: user.name
-                            })) 
+                                other_name: user[0].name,
+                                due_date: payment.due_date
+                            }))
                         })
 
                         response.data.payed_payments.forEach((payment: any) => {
-                            let user = users.find(user => user.id === payment.payer || user.id === payment.requester)
+                            let user = users.filter(user => String(user.id).includes(payment.payer) || String(user.id).includes(payment.requester))
                             payed.push(new Payment({
                                 id: payment.id,
                                 amount: payment.amount,
@@ -81,11 +88,13 @@ export default class HomeScreen extends React.Component {
                                 paid_at: payment.paid_at,
                                 received_at: payment.received_at,
                                 status: payment.status,
-                                other_name: user.name
+                                other_name: user[0].name,
+                                due_date: payment.due_date
                             })) 
                         })
                         
-                        this.setState({ requestedPayments: requested, payedPayments: payed })
+                        this.setState({ requestedPayments: requested, payedPayments: payed,
+                            filteredRequestedPayments: requested, filteredPayedPayments: payed })
                     }
                 })
                 .catch((error: any) => {
@@ -102,17 +111,42 @@ export default class HomeScreen extends React.Component {
         })
     }
 
+    onFilter(val: string) {
+        this.state.filterValue = val
+        let filterBy = val.toLowerCase()
+        this.setState({ filteredPayedPayments: this.state.payedPayments.filter(item => 
+            String(item.description.toLowerCase()).includes(filterBy) ||
+            String(item.other_name.toLowerCase()).includes(filterBy) ||
+            String(item.amount).includes(filterBy) ||
+            String(item.requested_at.toLowerCase()).includes(filterBy))
+        })
+        
+        this.setState({ filteredRequestedPayments: this.state.requestedPayments.filter(item => 
+            String(item.description.toLowerCase()).includes(filterBy) ||
+            String(item.other_name.toLowerCase()).includes(filterBy) ||
+            String(item.amount).includes(this.state.filterValue) ||
+            String(item.requested_at.toLowerCase()).includes(filterBy))
+        })
+    }
+
     render() {
         return (
-            <View>
-                <View style={[MainApp.form, { height: '85%', width:'100%', alignSelf: 'center', alignItems:'center', alignContent:'center'}]}>
+            <View style={{marginTop:'10%'}}>
+                <SearchBar
+                    inputContainerStyle={{backgroundColor: Colours.white}}
+                    inputStyle={{color: Colours.accent_green}}
+                    containerStyle={{backgroundColor: Colours.accent_blue}}
+                    placeholder="Filter payments..."
+                    onChangeText={(txt) => this.onFilter(txt) }
+                    value={this.state.filterValue}/>
+                <View style={{height: '85%', width:'100%'}}>
                     <PaymentTabView
                         userId={this.userId}
-                        payedPayments={ this.state.payedPayments} 
-                        requestedPayments={ this.state.requestedPayments}
+                        payedPayments={ this.state.filteredPayedPayments} 
+                        requestedPayments={ this.state.filteredRequestedPayments}
                         onCallBack={ () => { this.fetchData() } }></PaymentTabView>   
                 </View>
-                <View style={{alignSelf:'center',alignItems:'stretch', width: '90%', height:'10%'}}>
+                <View style={{alignSelf:'center', alignItems:'stretch', width: '90%', height:'10%', marginTop:'5%'}}>
                     <Button
                         title="New Payment" 
                         onPress={ () => { this.props.navigation.navigate("New", { userId: this.userId, onGoBack: () => this.fetchData(), connectedUsers: this.state.userIdList })}}></Button>
