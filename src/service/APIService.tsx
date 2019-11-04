@@ -281,7 +281,6 @@ function removeTenantFromProperty(propertyId : string, userId: string) : Promise
 function addTenantToPropertyByEmail(propertyId: string, userEmail: string): Promise<Response> {
     let endpoint = url + '/invite/tenant'
     let body = new FormData()
-    
     body.append("email", userEmail)
     body.append("property_id", propertyId)
 
