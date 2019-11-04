@@ -4,55 +4,11 @@ import { GiftedChat } from 'react-native-gifted-chat'
 import { Contact } from '../../common/models/contact';
 import { View, Text, StyleSheet } from 'react-native';
 
+import ChatService from '../../service/ChatService';
+
 export default class ViewConversationScreen extends Component {
 
   contact: Contact
-
-  mean_messages = [
-    {
-      _id: 2,
-      text: "Please pay quickly or face EVICTION",
-      createdAt: new Date(),
-      user: {
-        _id: 2,
-        name: 'React Native',
-        avatar: 'https://placeimg.com/180/180/animals',
-      },
-    },
-    {
-      _id: 1,
-      text: 'Hey you are late on your rent :(',
-      createdAt: new Date(),
-      user: {
-        _id: 2,
-        name: 'React Native',
-        avatar: 'https://placeimg.com/180/180/animals',
-      },
-    },
-  ]
-
-  nice_messages = [
-    {
-      _id: 2,
-      text: "You're the bomb.com",
-      createdAt: new Date(),
-      user: {
-        _id: 2,
-        name: 'React Native',
-        avatar: 'https://placeimg.com/180/180/animals',
-      },
-    },
-    {
-      _id: 1,
-      text: 'Hey thanks for doing your dishes',
-      createdAt: new Date(),
-      user: {
-        _id: 2,
-        name: 'React Native',
-        avatar: 'https://placeimg.com/180/180/animals',
-      },
-    },
-  ]
 
   state = {
     messages: []
@@ -66,16 +22,28 @@ export default class ViewConversationScreen extends Component {
 
   constructor(props: any) {
     super(props)
-  
+
     this.contact = this.props.navigation.getParam('contact', 'error')
     this.props.navigation.setParams({ title: this.contact.name })
-    this.state.messages = this.contact.relationship === 'Tennant' ? this.nice_messages : this.mean_messages
+    let user = this.props.navigation.dangerouslyGetParent().getParam("user")
+
+    ChatService.setUid(user.id)
+    ChatService.setUserName(
+      user.firstName + user.lastName
+    )
+    ChatService.setConversationUid(user.id, this.contact.id)
+
+    ChatService.loadMessages((message) => {
+      this.setState((previousState) => {
+        return {
+          messages: GiftedChat.append(previousState.messages, message)
+        }
+      })
+    })
   }
 
-  onSend(messages = []) {
-    this.setState(previousState => ({
-      messages: GiftedChat.append(previousState.messages, messages),
-    }))
+  componentWillUnmount() {
+    ChatService.closeChat()
   }
 
 
@@ -84,9 +52,12 @@ export default class ViewConversationScreen extends Component {
       <View style = {{ flex:1 }}>
         <GiftedChat
           messages={ this.state.messages }
-          onSend={ messages => this.onSend(messages) }
+          onSend={(message) =>
+            ChatService.sendMessage(message)
+          }
           user={{
-            _id: 1,
+            _id: ChatService.getUid(),
+            name: ChatService.getUserName(),
           }}
         />
       </View>
