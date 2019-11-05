@@ -44,7 +44,7 @@ class ChatService {
         _id: data.key,
         text: message.text,
         createdAt: new Date(message.createdAt),
-        user : {
+        user: {
           _id: message.user._id,
           name: message.user.name,
         },
@@ -56,9 +56,15 @@ class ChatService {
   sendMessage(message) {
     for (let i = 0; i < message.length; i++) {
       this.messagesRef.push({
-        text: message[i].text,
-        user: message[i].user,
-        createdAt: firebase.database.ServerValue.TIMESTAMP,
+        convo: {
+          user1: "1",
+          user2: "2",
+          messages: {
+            text: message[i].text,
+            user: message[i].user,
+            createdAt: firebase.database.ServerValue.TIMESTAMP,
+          }
+        }
       })
     }
   }

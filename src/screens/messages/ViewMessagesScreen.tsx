@@ -1,20 +1,25 @@
 import React from 'react'
 import { Component } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
+import { Text, View, StyleSheet, TouchableOpacity, Button } from 'react-native'
 import { ListItem } from 'react-native-elements'
 import { Contact } from '../../common/models/contact';
 import { FlatList } from 'react-native-gesture-handler';
 
 
+interface State {
+  empty: string,
+}
 export default class ViewMessagesScreen extends Component {
-
-  contacts:Contact[] = new Array()
+  readonly state: State = {
+    empty: " "
+  }
+  contacts: Contact[] = new Array()
 
   static navigationOptions = {
     headerTitle: 'Messages',
   };
 
-  constructor(props:  any) {
+  constructor(props: any) {
     super(props)
 
     this.contacts = this.dummyApiGetContacts()
@@ -54,9 +59,14 @@ export default class ViewMessagesScreen extends Component {
   render() {
     return (
       <View>
+        <CreateConvo
+          navigation={this.props.navigation}
+        />
+
+
         <FlatList
           data={this.contacts}
-          renderItem={({item}) =>
+          renderItem={({ item }) =>
             <TouchableOpacity
               onPress={() => this.props.navigation.navigate("Conversation", {
                 contact: item,
@@ -65,13 +75,26 @@ export default class ViewMessagesScreen extends Component {
               <ListItem
                 title={item.name}
                 subtitle={item.relationship}
-                leftAvatar={{source: {uri: 'https://placeimg.com/180/180/animals'}}}
+                leftAvatar={{ source: { uri: 'https://placeimg.com/180/180/animals' } }}
               />
             </TouchableOpacity>
           }
-          keyExtractor={item=>item.id}
+          keyExtractor={item => item.id}
         />
       </View>
     )
+  }
+}
+
+class CreateConvo extends Component<{ navigation: Navigator }, {}> {
+  render() {
+    return (
+      <Button
+        title="new convo"
+        onPress={() => this.props.navigation.navigate("NewConversation")}
+      />
+
+    )
+
   }
 }
