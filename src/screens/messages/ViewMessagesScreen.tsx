@@ -4,6 +4,8 @@ import { Text, View, StyleSheet, TouchableOpacity, Button } from 'react-native'
 import { ListItem } from 'react-native-elements'
 import { Contact } from '../../common/models/contact';
 import { FlatList } from 'react-native-gesture-handler';
+import ChatService from '../../service/ChatService';
+import { User } from '../../common/models/user';
 
 
 interface State {
@@ -13,7 +15,9 @@ export default class ViewMessagesScreen extends Component {
   readonly state: State = {
     empty: " "
   }
+
   contacts: Contact[] = new Array()
+  user: User
 
   static navigationOptions = {
     headerTitle: 'Messages',
@@ -22,7 +26,14 @@ export default class ViewMessagesScreen extends Component {
   constructor(props: any) {
     super(props)
 
-    this.contacts = this.dummyApiGetContacts()
+    this.user = this.props.navigation.dangerouslyGetParent().getParam("user")
+
+    ChatService.setUid(this.user.id)
+    ChatService.setUserName(this.user.email)
+
+    ChatService.getConversationsId(this.user.id, (value) => {
+      this.contacts = value
+    })
   }
 
   dummyApiGetContacts() {

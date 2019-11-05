@@ -29,7 +29,7 @@ export default class ViewConversationScreen extends Component {
 
     ChatService.setUid(user.id)
     ChatService.setUserName(
-      user.firstName + user.lastName
+      user.email
     )
 
     ChatService.loadMessages((message) => {
@@ -48,9 +48,9 @@ export default class ViewConversationScreen extends Component {
 
   render() {
     return (
-      <View style = {{ flex:1 }}>
+      <View style={{ flex: 1 }}>
         <GiftedChat
-          messages={ this.state.messages }
+          messages={this.state.messages}
           onSend={(message) =>
             ChatService.sendMessage(message)
           }
@@ -71,7 +71,7 @@ var styles = StyleSheet.create({
     borderBottomWidth: 2,
   },
 
-  title:{
+  title: {
     marginTop: 5,
     fontSize: 22,
   },

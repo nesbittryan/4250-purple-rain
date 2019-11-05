@@ -1,12 +1,15 @@
 import firebase from 'firebase'
 import { thisExpression } from '@babel/types'
+import { resolve } from 'path'
 
 class ChatService {
   uid = ''
   username = ''
   messagesRef = null
+  conversationRef = null
 
   constructor() {
+    this.getConversationsId = this.getConversationsId.bind(this)
     firebase.initializeApp({
       apiKey: "AIzaSyArS9sNG2L12Z9-nxitqzXFiFP3lruWyug",
       authDomain: "purplerain-1513a.firebaseapp.com",
@@ -33,6 +36,22 @@ class ChatService {
 
   getUserName() {
     return this.username
+  }
+
+  getConversationsId(uid: string, callback) {
+    this.conversationRef = firebase.database().ref('conversations')
+    this.conversationRef.off()
+
+    let contacts = []
+
+    const foundUser = (data) => {
+      if (data.val()) {
+        contacts.push(data)
+      }
+      callback(contacts)
+    }
+    this.conversationRef.orderByChild("uid_1").equalTo(1).on("value", foundUser)
+    this.conversationRef.orderByChild("uid_2").equalTo(2).on("value", foundUser)
   }
 
   loadMessages(callback) {
