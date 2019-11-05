@@ -36,7 +36,7 @@ class ChatService {
     return this.username
   }
 
-  setconversationUid(userId, contactId) {
+  setConversationUid(userId, contactId) {
     let ids = [userId, contactId]
     ids.sort()
     this.conversationUid = ids.join()
@@ -52,7 +52,7 @@ class ChatService {
         _id: data.key,
         text: message.text,
         createdAt: new Date(message.createdAt),
-        user : {
+        user: {
           _id: message.user._id,
           name: message.user.name,
         },
