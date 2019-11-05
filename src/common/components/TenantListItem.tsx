@@ -19,30 +19,30 @@ export default class TenantListItem extends Component {
   userId: string
   propertyId: string
   user : User
-  property: Property
 
   constructor(props: any) {
     super(props)
     this.user = props.user
     this.userId = props.user.id
-    this.propertyId = props.property.id
-    this.property = props.property
+    this.propertyId = props.propertyId
     this.removeTenant = this.removeTenant.bind(this)
   }
 
   componentDidMount() {  
-    this.setState({propertyId: this.property.id})
+    this.setState({propertyId: this.propertyId})
     this.setState({userId : this.user.id})
   }
 
 
 
   removeTenant() {
+    console.log(this.state.propertyId)
+    console.log( this.state.userId)
     APIService.removeTenantFromProperty( this.state.propertyId,this.state.userId).then((response) => {
       if (response.code != 200) {
         alert("error removing tenant")
       } else {
-        alert("tenant has been removed please refresh")
+        this.props.fetchData()
       }
     })
   }
@@ -76,5 +76,24 @@ const TenantListItemStyles = StyleSheet.create({
   },
   deleteButton:{
 
+  },
+  buttonBackground:{ 
+    width: "25%",
+    backgroundColor: "#1B80AE",
+    alignItems: "center",
+    justifyContent: "center",
+    height: 40
+  },
+  buttonText:{
+    color: "#ffffff"
+  },
+  button:{
+    width: "50%",
+    alignSelf: 'stretch',
+  },
+  buttonContainer: {
+    
+    flexDirection: "row",
+    justifyContent: "space-evenly"
   }
 })

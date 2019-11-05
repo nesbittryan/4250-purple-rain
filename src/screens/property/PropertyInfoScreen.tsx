@@ -4,6 +4,7 @@ import { Button, Input } from 'react-native-elements';
 import { Text, View, ImageBackground, Picker } from "react-native";
 import { MainApp } from '../../res/Styles';
 import { StyleSheet } from 'react-native';
+import { APIService } from "../../service/APIService";
 
 
 interface State {
@@ -41,7 +42,7 @@ export default class ViewPropertyScreen extends Component {
     this.state.state = property.state
   }
   handlePropertyDelete() {
-
+    //APIService.deleteProperty
   }
   handleStateChange(name: string, input: string) {
     this.setState(() => ({ [name]: input }));
