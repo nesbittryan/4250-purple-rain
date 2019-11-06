@@ -1,6 +1,6 @@
 import React from 'react'
 import { View } from 'react-native';
-import { Button, SearchBar } from 'react-native-elements';
+import { Button, SearchBar, Text } from 'react-native-elements';
 
 import { Payment } from '../../common/models/payment';
 import { APIService, Response } from '../../service/APIService';
@@ -36,7 +36,8 @@ export default class HomeScreen extends React.Component {
     }
 
     componentDidMount() {
-        this.userId = this.props.navigation.dangerouslyGetParent().getParam("user").id
+        if (this.userId == '')
+            this.userId = this.props.navigation.dangerouslyGetParent().getParam("user").id
         this.fetchData()
     }
 
@@ -131,7 +132,9 @@ export default class HomeScreen extends React.Component {
 
     render() {
         return (
-            <View style={{marginTop:'10%'}}>
+            <View style={{backgroundColor:Colours.accent_blue}}>
+                <Text style={{textAlign:'center',fontSize:20, color:Colours.accent_green, marginBottom:'3%', marginTop:'12%'}}>Payments</Text>
+                <View style={{backgroundColor:Colours.white, width:'100%'}}>
                 <SearchBar
                     inputContainerStyle={{backgroundColor: Colours.white}}
                     inputStyle={{color: Colours.accent_green}}
@@ -139,17 +142,17 @@ export default class HomeScreen extends React.Component {
                     placeholder="Filter payments..."
                     onChangeText={(txt) => this.onFilter(txt) }
                     value={this.state.filterValue}/>
-                <View style={{height: '85%', width:'100%'}}>
+                <View style={{height: '78%', width:'100%'}}>
                     <PaymentTabView
                         userId={this.userId}
                         payedPayments={ this.state.filteredPayedPayments} 
                         requestedPayments={ this.state.filteredRequestedPayments}
                         onCallBack={ () => { this.fetchData() } }></PaymentTabView>   
                 </View>
-                <View style={{alignSelf:'center', alignItems:'stretch', width: '90%', height:'10%', marginTop:'5%'}}>
-                    <Button
-                        title="New Payment" 
-                        onPress={ () => { this.props.navigation.navigate("New", { userId: this.userId, onGoBack: () => this.fetchData(), connectedUsers: this.state.userIdList })}}></Button>
+                <Button
+                    style={{marginHorizontal:'5%', marginTop:'2%'}}
+                    title="New Payment" 
+                    onPress={ () => { this.props.navigation.navigate("New", { userId: this.userId, onGoBack: () => this.fetchData(), connectedUsers: this.state.userIdList })}}></Button>
                 </View>
             </View>   
         )

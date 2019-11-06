@@ -129,9 +129,12 @@ export default class RegisterPropertyScreen extends React.Component<{navigation:
             onPress={ () => this.setState({ isLandlord: !this.state.isLandlord }) }
             checked={ this.state.isLandlord}></CheckBox>
           <Button 
-            style= { MainApp.button }
             onPress={ this.handleRegisterProperty }
             title="Register Property"/>
+          <Button 
+            onPress={ () => this.props.navigation.popToTop() }
+            type="outline"
+            title="Back"/>
         </View>
       </View>
     );

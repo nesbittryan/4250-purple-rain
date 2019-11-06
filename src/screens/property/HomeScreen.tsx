@@ -2,36 +2,29 @@ import React from 'react';
 import { Component } from 'react';
 import { TouchableOpacity, View, FlatList, AsyncStorage } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { Button } from 'react-native-elements';
+import { Button, Text } from 'react-native-elements';
 import { Property } from '../../common/models/Property';
 import PropertyButton from '../../common/components/PropertyButton'
 import { APIService } from '../../service/APIService';
 import { User } from '../../common/models/user';
 import { ListItem } from 'react-native-elements'
-import { HeaderTitle } from 'react-navigation-stack';
+import { MainApp } from '../../res/Styles';
+import { Colours } from '../../res/Colours';
 
 
-export default class HomeScreen extends Component<{navigation: Navigator,wentBack: boolean}, { properties: Property[]  }>  {
-  static navigationOptions = {
-    headerTitle: 'Properties',
-    tabBarLabel: 'Properties',
-    tabBarIcon: ({ }) => {
-      Icon.loadFont();
-      return<Icon name="home" size={33} color="#554971" />
-    },
-  };
+export default class HomeScreen extends Component<{navigation: Navigator, wentBack: boolean}, { properties: Property[]  }>  {
+
   properties:Property[] = new Array()
   user: User | any
 
   constructor(props: any) {
     super(props)
-    const {navigation} =  this.props //wentBack = navigation.getParam('wentBack', 'whatever default value - should be false');
     this.fetchData = this.fetchData.bind(this)
     this.state = {
       properties: new Array,
     }
-   
   }
+
   fetchData(){
 
     APIService.getPropertiesByUserId(this.user.id).then((propertyList: any)  => {
@@ -39,38 +32,36 @@ export default class HomeScreen extends Component<{navigation: Navigator,wentBac
       this.forceUpdate();
     })
   }
+
   componentDidMount() {
-    this.user = this.props.navigation.dangerouslyGetParent().getParam("user")
+    if (this.user == null)
+      this.user = this.props.navigation.dangerouslyGetParent().getParam("user")
+
     this.fetchData()
   }
-  
-
 
   render() {
-    var fetchData  =   this.fetchData;
     return (
-      <View>
-        <PropertyList
-          properties={this.state.properties}
-          navigation={this.props.navigation}/>
-        <AddNewPropertyButton
-          navigation={this.props.navigation}
-          fetchData = {this.fetchData}/>
+      <View style={{backgroundColor:Colours.accent_blue}}>
+        <Text style={{ borderBottomWidth:1,textAlign:'center',fontSize:20, color:Colours.accent_green, marginBottom:'3%', marginTop:'12%'}}>Properties</Text>
+        <View style={{ borderTopWidth:1, borderColor:Colours.darker_blue, backgroundColor:Colours.white, width:'100%'}}>
+          <View style={{height: '85.5%', width:'100%'}}>
+            <PropertyList
+              properties={this.state.properties}
+              navigation={this.props.navigation}/>  
+          </View>
+          <Button 
+            style={{marginHorizontal:'5%', marginTop:'2%'}}
+            title="Register New Property" 
+            onPress={ () => { this.props.navigation.navigate("Register", {onGoBack: () => this.fetchData() }) }}></Button>
+        </View>
       </View>
     );
   }
 }
 
-class AddNewPropertyButton extends React.Component {
-
-  render() {
-    return (
-      <Button title="Register New Property" onPress={ () => { this.props.navigation.navigate("Register", {onGoBack: () => this.props.fetchData() }) }}></Button>
-    )
-  }
-}
-
 class PropertyList extends React.Component<{properties: Property[]},{}> {
+  
   constructor(props: any) {
     super(props)
   }
@@ -80,7 +71,7 @@ class PropertyList extends React.Component<{properties: Property[]},{}> {
     return (
       <FlatList
         style={{
-          maxHeight: "90%"
+          borderBottomColor: Colours.darker_blue, borderBottomWidth:1
         }}
         data={properties}
         renderItem={({item}) =>
@@ -90,6 +81,7 @@ class PropertyList extends React.Component<{properties: Property[]},{}> {
             })}
           >
             <ListItem
+              titleStyle={{fontWeight:'bold'}}
               title={item.address}
               subtitle={item.description}
               leftAvatar={{rounded: false, source: {uri: 'https://i.imgur.com/uZpj0B6.jpg'}}}

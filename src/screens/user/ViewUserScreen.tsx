@@ -38,7 +38,9 @@ export default class ViewUserScreen extends Component {
     this.handleStateChange = this.handleStateChange.bind(this)
     this.handleUserUpdate = this.handleUserUpdate.bind(this)
 
-    let user = this.props.navigation.dangerouslyGetParent().getParam("user")
+    var user
+    if (this.state.id == "")
+      user = this.props.navigation.dangerouslyGetParent().getParam("user")
 
     this.state.email = user.email
     this.state.firstName = user.firstName
@@ -64,44 +66,41 @@ export default class ViewUserScreen extends Component {
 
   render() {
     return (
-      <View style={ MainApp.container }>
-        <View style={ MainApp.form }>
-          <View>
-            <Text style={[MainApp.title, { textAlign: 'center'}]}>About you</Text> 
-          </View>
-          <View style={{ display:'flex', flexDirection:'column', alignContent:'space-between'}}>
+      <View style={{backgroundColor:Colours.accent_blue}}>
+        <Text style={{textAlign:'center',fontSize:20, color:Colours.accent_green, marginBottom:'3%', marginTop:'12%'}}>You</Text>
+        <View style={{backgroundColor:Colours.white, width:'100%'}}>
+          <View style={{ marginTop:'30%',display:'flex', flexDirection:'column', alignContent:'space-between'}}>
             <Input
               label="First Name"
-              style={ MainApp.input }
               value={ this.state.firstName }
               onChangeText={(txt) => this.handleStateChange("firstName", txt)}
               returnKeyType="next"/>
             <Input
               label="Last Name"
-              style={ MainApp.input }
+              containerStyle={{marginTop:'5%'}}
               value={ this.state.lastName }
               onChangeText={(txt) => this.handleStateChange("lastName", txt)}
               returnKeyType="next"/>
             <Input
               label="Email"
-              style={ MainApp.input }
+              containerStyle={{marginTop:'5%', marginBottom:'25%'}}
               value={ this.state.email }
               onChangeText={(txt) => this.handleStateChange("email", txt)}
               returnKeyType="next"/>
           </View>
           <View>
             <Button
-              style={{margin: '0.5%', marginTop:'5%'}}
+              style={{marginHorizontal: '5%', marginTop:'10%'}}
               title="Update Profile"
               onPress={ () => { this.handleUserUpdate } } />
             <Button
               type="outline"
-              style={{margin: '0.5%', marginTop:'1%'}}
+              style={{marginHorizontal: '5%', marginTop:'2%'}}
               title="Change Password"
               onPress={ () => { this.props.navigation.navigate("ChangePassword", { user_id: this.state.id, email: this.state.email })} }/>
             <Button
               buttonStyle={{backgroundColor:Colours.accent_green}}
-              style={{margin: '0.5%', marginTop:'10%'}}
+              style={{marginHorizontal: '5%', marginTop:'10%'}}
               title="Log Out"
               onPress={ () => { this.props.navigation.dangerouslyGetParent().popToTop() }}/>
           </View>
