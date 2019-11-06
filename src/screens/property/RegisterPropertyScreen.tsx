@@ -15,7 +15,7 @@ interface State {
   userId: string
 }
 
-export default class RegisterPropertyScreen extends React.Component<{navigation: Navigator},{}> {
+export default class RegisterPropertyScreen extends React.Component<{navigation: Navigator, refreshList:()=>void},{}> {
   static navigationOptions = {
     headerTitle: 'Register Property',
   };
@@ -66,7 +66,8 @@ export default class RegisterPropertyScreen extends React.Component<{navigation:
 
   handleRegisterProperty() {
     APIService.createProperty(this.state.property, this.state.isLandlord, this.state.userId)
-    this.props.navigation.state.params.onGoBack({wentBack: true})
+    let refresh = this.props.navigation.getParam('refreshList', null)
+    refresh()
     this.props.navigation.goBack();
   }
 

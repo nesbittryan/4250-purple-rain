@@ -54,7 +54,7 @@ export default class HomeScreen extends Component<{navigation: Navigator, wentBa
           <Button 
             style={{marginHorizontal:'5%', marginTop:'2%'}}
             title="Register New Property" 
-            onPress={ () => { this.props.navigation.navigate("Register", {onGoBack: () => this.fetchData() }) }}></Button>
+            onPress={ () => { this.props.navigation.navigate("Register", {refreshList: this.fetchData }) }}></Button>
         </View>
       </View>
     );
