@@ -136,6 +136,7 @@ export default class ViewPropertyScreen extends Component {
                 }) }}/>
               <Button
                 style={{margin: '0.5%', marginTop: '1%'}}
+                type="outline"
                 title="Back"
                 onPress={ () => {
                   this.props.navigation.popToTop()}

@@ -1,4 +1,5 @@
 import { createStackNavigator } from 'react-navigation-stack'
+import { } from 'react-native-elements'
 
 import HomeScreen from '../screens/property/HomeScreen'
 import LandlordOptionsScreen from '../screens/property/LandlordOptionsScreen'
@@ -6,6 +7,10 @@ import PropertyInfoScreen from '../screens/property/PropertyInfoScreen'
 import RegisterPropertyScreen from '../screens/property/RegisterPropertyScreen'
 import TenantOptionsScreen from '../screens/property/TenantOptionsScreen'
 import ViewPropertyScreen from '../screens/property/ViewPropertyScreen'
+import { Colours } from '../res/Colours'
+import React from 'react'
+import { Text } from 'react-native'
+
 
 const PropertyNavigator = createStackNavigator(
     {
@@ -16,8 +21,8 @@ const PropertyNavigator = createStackNavigator(
         LandlordOptions: LandlordOptionsScreen,
         TenantOptions: TenantOptionsScreen
     },
-    { 
-        headerMode: 'none',
+    {   
+        headerMode:'none',
         initialRouteName: 'Home',
     }
 )

@@ -5,15 +5,12 @@ import { ListItem } from 'react-native-elements'
 import { Contact } from '../../common/models/contact';
 import { FlatList } from 'react-native-gesture-handler';
 import { APIService } from '../../service/APIService';
+import { Colours } from '../../res/Colours';
 
 
 export default class ViewMessagesScreen extends Component {
 
   contacts: Contact[] = new Array()
-
-  static navigationOptions = {
-    headerTitle: 'Messages',
-  };
 
   constructor(props:  any) {
     super(props)
