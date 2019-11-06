@@ -21,7 +21,7 @@ interface State {
   isLandlord: any
 }
 
-export default class ViewPropertyScreen extends Component {
+export default class ViewPropertyScreen extends Component<{navigation:Navigator}> {
   readonly state: State = {
     address: "",
     city: "",
@@ -33,13 +33,15 @@ export default class ViewPropertyScreen extends Component {
     isLandlord: false
   }
 
+  callBackRefresh: ()=> void
   user: User | any
 
   constructor(props: any) {
     super(props)
 
     this.handleUpdateProperty = this.handleUpdateProperty.bind(this)
-    let property =  this.props.navigation.getParam('property', 'error')
+    let property = this.props.navigation.getParam('property', 'error')
+    this.callBackRefresh = this.props.navigation.getParam('refreshList', null)
     this.state.address = property.address
     this.state.description = property.description
     this.state.id = property.id
@@ -101,6 +103,8 @@ export default class ViewPropertyScreen extends Component {
                 style={{margin: '0.5%', marginTop: '5%'}}
                 title="Landlord Options"
                 onPress={ () => { this.props.navigation.navigate("LandlordOptions", {
+                  userId: this.user.id,
+                  refreshList: this.callBackRefresh,
                   propertyId: this.state.id,
                 }) }}/>
               <Button
@@ -113,6 +117,7 @@ export default class ViewPropertyScreen extends Component {
                 type="outline"
                 title="Back"
                 onPress={ () => { 
+                  this.callBackRefresh()
                   this.props.navigation.popToTop()}
                 }/>
             </View>

@@ -48,6 +48,7 @@ export default class HomeScreen extends Component<{navigation: Navigator, wentBa
           <View style={{height: '85.5%', width:'100%'}}>
             <PropertyList
               properties={this.state.properties}
+              refreshList={this.fetchData}
               navigation={this.props.navigation}/>  
           </View>
           <Button 
@@ -60,7 +61,7 @@ export default class HomeScreen extends Component<{navigation: Navigator, wentBa
   }
 }
 
-class PropertyList extends React.Component<{properties: Property[]},{}> {
+class PropertyList extends React.Component<{navigation: Navigator,properties: Property[], refreshList:()=>void},{}> {
   
   constructor(props: any) {
     super(props)
@@ -77,7 +78,8 @@ class PropertyList extends React.Component<{properties: Property[]},{}> {
         renderItem={({item}) =>
           <TouchableOpacity
             onPress={() => this.props.navigation.navigate("View", {
-              property: item
+              property: item,
+              refreshList: this.props.refreshList
             })}
           >
             <ListItem
