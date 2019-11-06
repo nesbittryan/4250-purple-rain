@@ -26,6 +26,7 @@ export const APIService =  {
     loginUser,
     markPaymentPayed,
     markPaymentReceived,
+    removeLandlordFromProperty,
     removeTenantFromProperty,
     addTenantToPropertyByEmail,
     updateProperty,
@@ -253,6 +254,21 @@ function markPaymentReceived(paymentId: string, userId: string) : Promise<Respon
     body.append("user_id", userId)
 
     return axios.put(endpoint, body, { headers: {'Content-Type': 'multipart/form-data' }})
+        .then((response: { status: number; statusText: string; data: any; }) => {
+            return new Response(response.status, response.statusText, response.data)
+        })
+        .catch((error: string) => {
+            console.log(error)
+            return new Response(500, error, null)
+        })
+}
+
+function removeLandlordFromProperty(propertyId: string, userId: string) : Promise<Response> {
+    let endpoint = url + endpoints.landlord + 'delete'
+    let body = new FormData()
+    body.append("user_id", userId)
+    body.append("property_id", propertyId)
+    return axios.post(endpoint, body, { headers: {'Content-Type': 'multipart/form-data' }})
         .then((response: { status: number; statusText: string; data: any; }) => {
             return new Response(response.status, response.statusText, response.data)
         })
