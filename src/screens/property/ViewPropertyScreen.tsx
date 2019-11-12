@@ -4,7 +4,7 @@ import { Button, Input, Image, Text } from 'react-native-elements';
 import { View, AsyncStorage } from "react-native";
 import { MainApp } from '../../res/Styles';
 import { User } from "../../common/models/user";
-import { APIService } from '../../service/APIService';
+import { isLandlordByPropertyId, updateProperty } from '../../service/APIService';
 import { Colours } from "../../res/Colours";
 
 const url = 'https://maps.googleapis.com/maps/api/streetview?size=300x200&location='
@@ -55,7 +55,7 @@ export default class ViewPropertyScreen extends Component<{navigation:Navigator}
     .then((response: any) => {
       this.user = JSON.parse(response)
     }).then(() => {
-      APIService.isLandlordByPropertyId(this.user.id, this.state.id)
+      isLandlordByPropertyId(this.user.id, this.state.id)
       .then((isLandlord: boolean)  => {
         this.setState({
           isLandlord: isLandlord
@@ -65,7 +65,7 @@ export default class ViewPropertyScreen extends Component<{navigation:Navigator}
   }
 
   handleUpdateProperty() {
-    APIService.updateProperty(this.state.id, this.state.address, this.state.city, 
+    updateProperty(this.state.id, this.state.address, this.state.city, 
       this.state.state, this.state.country, this.state.description)
   }
 

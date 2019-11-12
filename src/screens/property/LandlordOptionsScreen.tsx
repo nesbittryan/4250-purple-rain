@@ -1,11 +1,10 @@
 import React from "react";
 import { Component } from "react";
 import { Button, Input } from 'react-native-elements';
-import { Text, View, ImageBackground, Picker, FlatList, TextInput, Alert } from "react-native";
-import { MainApp } from '../../res/Styles';
+import { Text, View, FlatList, Alert } from "react-native";
 import { StyleSheet } from 'react-native';
 import { User } from "../../common/models/user";
-import { APIService } from "../../service/APIService";
+import { removeLandlordFromProperty, addTenantToPropertyByEmail } from "../../service/APIService";
 import TenantListItem from "../../common/components/TenantListItem";
 import { Colours } from "../../res/Colours";
 
@@ -63,7 +62,7 @@ export default class LandlordOptionsScreen extends Component<{navigation:Navigat
   }
 
   deleteProperty() {
-    APIService.removeLandlordFromProperty(this.propertyId, this.userId)
+    removeLandlordFromProperty(this.propertyId, this.userId)
       .then((response:any) => {
         if (response.code == 200) {
           this.callbackRefresh()
@@ -75,7 +74,7 @@ export default class LandlordOptionsScreen extends Component<{navigation:Navigat
   }
   
   fetchData() {
-    APIService.getTenantsInProperty(this.state.id).then((users: any)  => {
+    getTenantsInProperty(this.state.id).then((users: any)  => {
       this.setState({tenants: users})
       this.forceUpdate()
     })
@@ -86,7 +85,7 @@ export default class LandlordOptionsScreen extends Component<{navigation:Navigat
   }
 
   handleAddTenant() {
-    APIService.addTenantToPropertyByEmail(this.state.id, this.state.newTenant).then((response) => {
+    addTenantToPropertyByEmail(this.state.id, this.state.newTenant).then((response) => {
       if (response.code != 200) {
         alert("error adding tenant")
       } else {

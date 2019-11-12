@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import { TouchableHighlight, View, Text,Image } from "react-native";
-import { Property } from "../models/property";
+import { View, Text } from "react-native";
 import { Button } from 'react-native-elements';
 import { User } from "../models/user";
 import { StyleSheet } from 'react-native';
-import { APIService } from "../../service/APIService";
+import { removeTenantFromProperty } from "../../service/APIService";
 
 interface State {
   propertyId: string,
@@ -38,7 +37,7 @@ export default class TenantListItem extends Component {
   removeTenant() {
     console.log(this.state.propertyId)
     console.log( this.state.userId)
-    APIService.removeTenantFromProperty( this.state.propertyId,this.state.userId).then((response) => {
+    removeTenantFromProperty( this.state.propertyId,this.state.userId).then((response) => {
       if (response.code != 200) {
         alert("error removing tenant")
       } else {

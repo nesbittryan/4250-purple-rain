@@ -3,7 +3,7 @@ import { View, Picker, Alert } from "react-native";
 import { Text, Button } from "react-native-elements";
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-import { APIService, Response } from "../../service/APIService";
+import { createPayment, Response } from "../../service/APIService";
 import NotificationService from '../../service/NotificationService'
 
 import { MainApp } from "../../res/Styles";
@@ -28,7 +28,7 @@ export default class ReoccuringSelectionScreen extends React.Component {
             [
                 {text: 'Ok', onPress: () => {
                     let date = new Date(Date.now())
-                    APIService.createPayment(notif.data.payment.payer, notif.data.payment.requester, notif.data.payment.description, notif.data.payment.amount,date.toISOString())
+                    createPayment(notif.data.payment.payer, notif.data.payment.requester, notif.data.payment.description, notif.data.payment.amount,date.toISOString())
                     .then((response: Response) => {
                         if (response.code === 200) {
                             this.notifService.schedulePaymentNotification(date, notif.data.periodInDays, notif.data.payment)
@@ -43,7 +43,7 @@ export default class ReoccuringSelectionScreen extends React.Component {
 
     handleSendPayment() {
         let payment = this.props.navigation.state.params.payment
-        APIService.createPayment(payment.payer, payment.requester, payment.description, payment.amount, this.state.dueDate.toISOString())
+        createPayment(payment.payer, payment.requester, payment.description, payment.amount, this.state.dueDate.toISOString())
         .then((response) => {
             if (response.code === 200) {
                 this.notifService.schedulePaymentNotification(new Date(Date.now()), this.state.schedule, payment)
