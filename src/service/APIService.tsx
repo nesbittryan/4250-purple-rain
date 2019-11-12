@@ -48,7 +48,7 @@ export async function isLandlordByPropertyId(userId: string, propertyId: string)
   const response = await get(endpoint);
   if (response === undefined || response.data === undefined) return false;
 
-  const isLandlord = response.data.property_id.some((id: any) => id === propertyId);
+  const isLandlord = response.data.property_id.some((id: any) => id === parseInt(propertyId));
 
   return isLandlord;
 }
@@ -79,7 +79,6 @@ export async function createProperty(property: PropertyInterface, isLandlord: bo
   body.append("description", property.description)
   body.append("assign_as", isLandlord ? "landlord" : "tenant")
   body.append("user_id", userId)
-
   return await axios.post(endpoint, body, { headers: { 'Content-Type': 'multipart/form-data' } })
 }
 
