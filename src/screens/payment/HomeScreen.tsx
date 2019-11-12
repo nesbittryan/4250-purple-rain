@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { Button, SearchBar, Text } from 'react-native-elements';
 
 import { Payment } from '../../common/models/payment';
-import { APIService, Response } from '../../service/APIService';
+import { getRelatedUsers, getPaymentsByUserId, Response } from '../../service/APIService';
 import PaymentTabView from './components/PaymentTabView';
 import { Colours } from '../../res/Colours';
 
@@ -41,8 +41,8 @@ export default class HomeScreen extends React.Component {
         this.fetchData()
     }
 
-    fetchData() {
-        APIService.getRelatedUsers(this.userId)
+    fetchData = () => {
+        getRelatedUsers(this.userId)
         .then((response: Response) => {
             if (response.code === 200) {
                 var users = new Array()
@@ -54,7 +54,7 @@ export default class HomeScreen extends React.Component {
                     })
                 })
 
-                APIService.getPaymentsByUserId(this.userId)
+                getPaymentsByUserId(this.userId)
                 .then((response: Response) => {
                     if (response.code === 200) {
                         var requested:Payment[] = new Array()

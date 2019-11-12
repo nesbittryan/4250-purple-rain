@@ -7,7 +7,7 @@ Icon.loadFont()
 import { PropertyInterface } from '../../common/models/Property';
 
 import { MainApp } from '../../res/Styles';
-import { APIService } from '../../service/APIService';
+import { createProperty } from '../../service/APIService';
 
 interface State {
   property: PropertyInterface
@@ -65,7 +65,7 @@ export default class RegisterPropertyScreen extends React.Component<{navigation:
   }
 
   handleRegisterProperty() {
-    APIService.createProperty(this.state.property, this.state.isLandlord, this.state.userId)
+    createProperty(this.state.property, this.state.isLandlord, this.state.userId)
     let refresh = this.props.navigation.getParam('refreshList', null)
     refresh()
     this.props.navigation.goBack();

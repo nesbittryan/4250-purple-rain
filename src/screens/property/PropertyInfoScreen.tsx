@@ -4,7 +4,6 @@ import { Button, Input } from 'react-native-elements';
 import { Text, View, ImageBackground, Picker } from "react-native";
 import { MainApp } from '../../res/Styles';
 import { StyleSheet } from 'react-native';
-import { APIService } from "../../service/APIService";
 
 
 interface State {

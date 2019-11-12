@@ -1,11 +1,10 @@
 import React from 'react'
 import { Component } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, TouchableOpacity } from 'react-native'
 import { ListItem } from 'react-native-elements'
 import { Contact } from '../../common/models/contact';
 import { FlatList } from 'react-native-gesture-handler';
-import { APIService } from '../../service/APIService';
-import { Colours } from '../../res/Colours';
+import { getRelatedUsers } from '../../service/APIService';
 
 
 export default class ViewMessagesScreen extends Component {
@@ -23,7 +22,7 @@ export default class ViewMessagesScreen extends Component {
   componentDidMount() {
     let user = this.props.navigation.dangerouslyGetParent().getParam("user")
 
-    APIService.getRelatedUsers(user.id)
+    getRelatedUsers(user.id)
       .then((response: Response) => {
         if (response.code === 200) {
           console.log(response.data)

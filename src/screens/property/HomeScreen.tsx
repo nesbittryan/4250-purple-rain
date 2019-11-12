@@ -1,14 +1,11 @@
 import React from 'react';
 import { Component } from 'react';
 import { TouchableOpacity, View, FlatList, AsyncStorage } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { Button, Text } from 'react-native-elements';
 import { Property } from '../../common/models/Property';
-import PropertyButton from '../../common/components/PropertyButton'
-import { APIService } from '../../service/APIService';
+import { getPropertiesByUserId } from '../../service/APIService';
 import { User } from '../../common/models/user';
 import { ListItem } from 'react-native-elements'
-import { MainApp } from '../../res/Styles';
 import { Colours } from '../../res/Colours';
 
 
@@ -27,7 +24,7 @@ export default class HomeScreen extends Component<{navigation: Navigator, wentBa
 
   fetchData(){
 
-    APIService.getPropertiesByUserId(this.user.id).then((propertyList: any)  => {
+    getPropertiesByUserId(this.user.id).then((propertyList: any)  => {
       this.setState({properties: propertyList})
       this.forceUpdate();
     })
