@@ -66,8 +66,11 @@ export default class RegisterPropertyScreen extends React.Component<{navigation:
 
   handleRegisterProperty() {
     APIService.createProperty(this.state.property, this.state.isLandlord, this.state.userId)
-    let refresh = this.props.navigation.getParam('refreshList', null)
-    refresh()
+    .then(() => {
+      let refresh = this.props.navigation.getParam('refreshList', null)
+      refresh()
+    })
+    
     this.props.navigation.goBack();
   }
 

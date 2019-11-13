@@ -7,7 +7,6 @@ Icon.loadFont()
 
 import { APIService } from "../../service/APIService";
 
-import { MainApp } from '../../res/Styles';
 import { Colours } from "../../res/Colours";
 
 interface State {
