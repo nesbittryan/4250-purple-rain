@@ -71,6 +71,8 @@ class PropertyList extends React.Component<{navigation: Navigator,properties: Pr
     const properties = this.props.properties;
     return (
       <FlatList
+        onRefresh={ () => { this.props.refreshList() }}
+        refreshing={false}
         style={{
           borderBottomColor: Colours.darker_blue, borderBottomWidth:1
         }}
