@@ -92,7 +92,7 @@ export default class ViewUserScreen extends Component {
             <Button
               style={{marginHorizontal: '5%', marginTop:'10%'}}
               title="Update Profile"
-              onPress={ () => { this.handleUserUpdate } } />
+              onPress={ () => { this.handleUserUpdate() } } />
             <Button
               type="outline"
               style={{marginHorizontal: '5%', marginTop:'2%'}}

@@ -338,7 +338,7 @@ function updateUser(id: string, email: string, firstName: string, lastName: stri
     body.append("first_name", firstName)
     body.append("last_name", lastName)
 
-    return axios.post(endpoint, body, { headers: {'Content-Type': 'multipart/form-data' }})
+    return axios.put(endpoint, body, { headers: {'Content-Type': 'multipart/form-data' }})
     .then((response: { status: number; statusText: string; data: any; }) => {
         return new Response(response.status, response.statusText, response.data)
     })
