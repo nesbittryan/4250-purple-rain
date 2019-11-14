@@ -5,6 +5,7 @@ import { Input, Button, Image } from 'react-native-elements';
 import { MainApp } from '../../res/Styles';
 import { loginUser } from '../../service/APIService'
 import { User } from '../../common/models/user';
+import { getDocument, addDocument } from '../../service/S3';
 
 interface State {
   email: string,
