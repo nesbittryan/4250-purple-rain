@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View } from 'react-native';
 import { Input, Button, Text } from 'react-native-elements';
 
-import { APIService } from '../../service/APIService'
+import { createUser } from '../../service/APIService'
 
 import { MainApp } from '../../res/Styles'
 import { Colours } from '../../res/Colours';
@@ -42,9 +42,10 @@ export default class AccountCreationScreen extends React.Component {
       return
     }
     
-    APIService.createUser(this.state.email, this.state.password, this.state.firstName, this.state.lastName)
+    createUser(this.state.email, this.state.password, this.state.firstName, this.state.lastName)
       .then((response: any) => {
-        if (response.code != 201) {
+        if (response.status != 201) {
+          console.log(response);
           alert("Account was unable to be created, please try again")
           return
         } else {

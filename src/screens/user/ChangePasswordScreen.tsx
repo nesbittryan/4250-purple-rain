@@ -3,7 +3,7 @@ import { View } from "react-native";
 import { Button, Input, Text } from 'react-native-elements';
 
 import { MainApp } from "../../res/Styles";
-import { APIService } from "../../service/APIService";
+import { updateUserPassword } from "../../service/APIService";
 
 interface State {
     oldPassword: string,
@@ -31,7 +31,7 @@ export default class ChangePasswordScreen extends React.Component {
 
     handlePasswordChange() {
       if (this.state.password == this.state.confirmPassword && this.state.password.length > 7) {
-          APIService.updateUserPassword(this.state.userId,this.state.email, this.state.password, this.state.oldPassword)
+          updateUserPassword(this.state.userId,this.state.email, this.state.password, this.state.oldPassword)
           this.props.navigation.goBack()
       }
     }

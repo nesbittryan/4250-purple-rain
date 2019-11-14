@@ -1,39 +1,20 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
+import { get, post, put } from './axios-wrapper';
 import { Property, PropertyInterface } from '../common/models/property';
 import { User } from '../common/models/user';
-import { Payment } from '../common/models/payment'
 
 
 const url = "http://ec2-18-234-27-166.compute-1.amazonaws.com"
 
 const endpoints = {
-    user: "/user/",
-    property: "/property/",
-    landlord: "/landlord/",
-    tenant: "/tenant/",
-    payment: "/payment/"
+  user: "/user/",
+  property: "/property/",
+  landlord: "/landlord/",
+  tenant: "/tenant/",
+  payment: "/payment/"
 }
 
-export const APIService =  {
-    createPayment,
-    createProperty,
-    createUser,
-    getTenantsInProperty,
-    getPropertiesByUserId,
-    getPaymentsByUserId,
-    getRelatedUsers,
-    isLandlordByPropertyId,
-    loginUser,
-    markPaymentPayed,
-    markPaymentReceived,
-    removeLandlordFromProperty,
-    removeTenantFromProperty,
-    addTenantToPropertyByEmail,
-    updateProperty,
-    updateUser,
-    updateUserPassword,
-}
-
+// TODO remove
 export class Response {
     code: number
     status: string
@@ -46,322 +27,218 @@ export class Response {
     }
 }
 
+
 /* returns true if user is landlord of a property */
-function isLandlordByPropertyId(userId: string, propertyId: string): any {
-    let endpoint = url + endpoints.landlord + userId
-    let final = false
-    return axios.get(endpoint)
+export async function isLandlordByPropertyId(userId: string, propertyId: string): Promise<boolean> {
+  let endpoint = url + endpoints.landlord + userId
+
+  const response = await get(endpoint);
+  if (response === undefined || response.data === undefined) return false;
+
+  const isLandlord = response.data.property_id.some((id: any) => id === parseInt(propertyId));
+
+  return isLandlord;
+}
+
+export async function createPayment(payerId: string, requesterId: string, description: string, amount: string, dueDate: string): Promise<AxiosResponse | undefined> {
+  let endpoint = url + endpoints.payment + 'request'
+
+  let body = new FormData()
+  body.append("payer", payerId)
+  body.append("requester", requesterId)
+  body.append("description", description)
+  body.append("amount", amount)
+  if (dueDate != '')
+    body.append("due_date", dueDate)
+
+  return await post(endpoint, body, { headers: { 'Content-Type': 'multipart/form-data' } });
+}
+
+export async function createProperty(property: PropertyInterface, isLandlord: boolean, userId: string): Promise<AxiosResponse | undefined> {
+  let endpoint = url + endpoints.property + 'create'
+
+  let body = new FormData()
+  body.append("street_address", property.address)
+  body.append("city", property.city)
+  body.append("state", property.state)
+  body.append("country", property.country)
+  body.append("max_occupancy", property.maxOccupancy.toString())
+  body.append("description", property.description)
+  body.append("assign_as", isLandlord ? "landlord" : "tenant")
+  body.append("user_id", userId)
+  return await axios.post(endpoint, body, { headers: { 'Content-Type': 'multipart/form-data' } })
+}
+
+export async function createUser(email: string, password: string, firstName: string, lastName: string): Promise<AxiosResponse | undefined> {
+  let endpoint = url + endpoints.user + 'create'
+
+  let body = new FormData()
+  body.append("email", email)
+  body.append("first_name", firstName)
+  body.append("last_name", lastName)
+  body.append("password", password)
+
+  return await post(endpoint, body, { headers: { 'Content-Type': 'multipart/form-data' } })
+}
+
+export async function getPaymentsByUserId(userId: string): Promise<AxiosResponse | undefined> {
+  let endpoint = url + endpoints.payment + '?user_id=' + userId
+
+  return await get(endpoint);
+}
+
+export function getPropertiesByUserId(userId: string): any {
+  let endpoint = url + endpoints.property + "user/" + userId
+
+  var propertyList: Property[] = new Array()
+  return axios.get(endpoint)
     .then(function (response) {
-        response.data.property_id.forEach((id: any) => {
-            if (id == propertyId) 
-            {
-                final = true
-            }
-        });
-        return final
+      response.data.landlord.forEach((house: any) => {
+        propertyList.push(new Property({
+          address: house.street_address,
+          city: house.city,
+          country: house.country,
+          state: house.state,
+          id: house.id.toString(),
+          maxOccupancy: house.max_occupancy,
+          description: house.description
+        }))
+      });
+      response.data.tenant.forEach((house: any) => {
+        propertyList.push(new Property({
+          address: house.street_address,
+          city: house.city,
+          country: house.country,
+          state: house.state,
+          id: house.id.toString(),
+          maxOccupancy: house.max_occupancy,
+          description: house.description
+        }))
+      });
+      return propertyList
     })
     .catch(function (error) {
-        console.log(error)
+      console.log(error)
     })
 }
 
-function createPayment(payerId: string, requesterId: string, description: string, amount: string, dueDate: string) : Promise<Response> {
-    let endpoint = url + endpoints.payment + 'request'
+export async function getRelatedUsers(userId: string): Promise<AxiosResponse | undefined> {
+  let endpoint = url + endpoints.user + "related/" + userId
 
-    let body = new FormData()
-    body.append("payer", payerId)
-    body.append("requester", requesterId)
-    body.append("description", description)
-    body.append("amount", amount)
-    if (dueDate != '')
-        body.append("due_date", dueDate)
-
-    return axios.post(endpoint, body, { headers: {'Content-Type': 'multipart/form-data' }})
-        .then((response: { status: number; statusText: string; data: any; }) => {
-            return new Response(response.status, response.statusText, response.data)
-        })
-        .catch((error: string) => {
-            console.log(error)
-            return new Response(500, error, null)
-        })
+  return await get(endpoint);
 }
 
-function createProperty(property: PropertyInterface, isLandlord: boolean, userId: string) : Promise<Response> {
-    let endpoint = url + endpoints.property + 'create'
-    
-    let body = new FormData()
-    body.append("street_address", property.address)
-    body.append("city", property.city)
-    body.append("state", property.state)
-    body.append("country", property.country)
-    body.append("max_occupancy", property.maxOccupancy.toString())
-    body.append("description", property.description)
-    body.append("assign_as", isLandlord ? "landlord" : "tenant")
-    body.append("user_id", userId)
-    
-    return axios.post(endpoint, body, { headers: {'Content-Type': 'multipart/form-data' }})
-        .then((response: { status: number; statusText: string; data: any; }) => {
-            return new Response(response.status, response.statusText, response.data)
-        })
-        .catch((error: string) => {
-            console.log(error)
-            return new Response(500, error, null)
-        })
-}
-
-function createUser(email: string, password: string, firstName: string, lastName: string) : Promise<Response> {
-    let endpoint = url + endpoints.user + 'create'
-    
-    let body = new FormData()
-    body.append("email", email)
-    body.append("first_name", firstName)
-    body.append("last_name", lastName)
-    body.append("password", password)
-
-    return axios.post(endpoint, body, { headers: {'Content-Type': 'multipart/form-data' }})
-        .then((response: { status: number; statusText: string; data: any; }) => {
-            return new Response(response.status, response.statusText, response.data)
-        })
-        .catch((error: string) => {
-            console.log(error)
-            return new Response(500, error, null)
-        })
-}
-
-function getPaymentsByUserId(userId: string) : Promise<Response> {
-    let endpoint = url + endpoints.payment + '?user_id=' + userId
-
-    return axios.get(endpoint)
-        .then((response: { status: number; statusText: string; data: any; }) => {
-            return new Response(response.status, response.statusText, response.data)
-        })
-        .catch((error: string) => {
-            console.log(error)
-            return new Response(500, error, null)
-        })
-}
-
-function getPropertiesByUserId(userId: string) : any {
-    let endpoint = url + endpoints.property + "user/" + userId
-    
-    var propertyList:Property[] = new Array()
-    return axios.get(endpoint)
+export function getTenantsInProperty(propertyId: string): any {
+  let endpoint = url + endpoints.user + "property/" + propertyId
+  var userList: User[] = new Array()
+  return axios.get(endpoint)
     .then(function (response) {
-        response.data.landlord.forEach((house: any) => {
-            propertyList.push(new Property({
-                address: house.street_address,
-                city: house.city,
-                country: house.country,
-                state: house.state,
-                id: house.id.toString(),
-                maxOccupancy: house.max_occupancy,
-                description: house.description
-            }))
-        });
-        response.data.tenant.forEach((house: any) => {
-            propertyList.push(new Property({
-                address: house.street_address,
-                city: house.city,
-                country: house.country,
-                state: house.state,
-                id: house.id.toString(),
-                maxOccupancy: house.max_occupancy,
-                description: house.description
-            }))
-        });
-        return propertyList
+      response.data.tenant.forEach((user: any) => {
+        userList.push(new User({
+          email: user.email,
+          firstName: user.first_name,
+          id: user.id,
+          lastName: user.last_name,
+          password: "",
+          token: ""
+        }))
+      });
+      return userList
     })
     .catch(function (error) {
-        console.log(error)
+      // handle error
+      console.log(error)
     })
 }
 
-function getRelatedUsers(userId: string) : Promise<Response> {
-    let endpoint = url + endpoints.user + "related/" + userId
+export async function loginUser(email: string, password: string): Promise<any> {
+  console.info('inside');
+  let endpoint = url + endpoints.user + 'login'
 
-    return axios.get(endpoint)
-        .then((response: { status: number; statusText: string; data: any; }) => {
-            return new Response(response.status, response.statusText, response.data)
-        })
-        .catch((error: string) => {
-            console.log(error)
-            return new Response(500, error, null)
-        })
+  let body = new FormData()
+  body.append("email", email)
+  body.append("password", password)
+
+  return await post(endpoint, body, { headers: { 'Content-Type': 'multipart/form-data' } });
 }
 
-function getTenantsInProperty(propertyId: string) : any {
-    let endpoint = url + endpoints.user + "property/" + propertyId
-    var userList:User[] = new Array()
-    return axios.get(endpoint)
-    .then(function (response) {
-        response.data.tenant.forEach((user: any) => {
-            userList.push(new User({
-                email: user.email,
-                firstName: user.first_name,
-                id: user.id,
-                lastName: user.last_name,
-                password: "",
-                token: ""
-            }))     
-        });
-        return userList
-    })
-    .catch(function (error) {
-        // handle error
-        console.log(error)
-    })
+export async function markPaymentPayed(paymentId: string, userId: string): Promise<AxiosResponse | undefined> {
+  let endpoint = url + endpoints.payment + 'pay'
+  let body = new FormData()
+
+  body.append("payment_id", paymentId)
+  body.append("user_id", userId)
+
+  return await put(endpoint, body, { headers: { 'Content-Type': 'multipart/form-data' } });
 }
 
-function loginUser(email: string, password: string) : Promise<Response> {
-    let endpoint = url + endpoints.user + 'login'
+export async function markPaymentReceived(paymentId: string, userId: string): Promise<AxiosResponse | undefined> {
+  let endpoint = url + endpoints.payment + 'receive'
+  let body = new FormData()
 
-    let body = new FormData()
-    body.append("email", email)
-    body.append("password", password)
+  body.append("payment_id", paymentId)
+  body.append("user_id", userId)
 
-    return axios.post(endpoint, body, { headers: {'Content-Type': 'multipart/form-data' }})
-        .then((response) => {
-            return new Response(response.status, response.statusText, response.data)
-        })
-        .catch((error: string) => {
-            console.log(error)
-            return new Response(500, error, null)
-        })
+  return await put(endpoint, body, { headers: { 'Content-Type': 'multipart/form-data' } });
 }
 
-function markPaymentPayed(paymentId: string, userId: string) : Promise<Response> {
-    let endpoint = url + endpoints.payment + 'pay'
-    let body = new FormData()
-    
-    body.append("payment_id", paymentId)
-    body.append("user_id", userId)
-
-    return axios.put(endpoint, body, { headers: {'Content-Type': 'multipart/form-data' }})
-        .then((response: { status: number; statusText: string; data: any; }) => {
-            return new Response(response.status, response.statusText, response.data)
-        })
-        .catch((error: string) => {
-            console.log(error)
-            return new Response(500, error, null)
-        })
+export async function removeLandlordFromProperty(propertyId: string, userId: string): Promise<AxiosResponse | undefined> {
+  let endpoint = url + endpoints.landlord + 'delete'
+  let body = new FormData()
+  body.append("user_id", userId)
+  body.append("property_id", propertyId)
+  return await post(endpoint, body, { headers: { 'Content-Type': 'multipart/form-data' } });
 }
 
-function markPaymentReceived(paymentId: string, userId: string) : Promise<Response> {
-    let endpoint = url + endpoints.payment + 'receive'
-    let body = new FormData()
+export async function removeTenantFromProperty(propertyId: string, userId: string): Promise<AxiosResponse | undefined> {
+  let endpoint = url + endpoints.tenant + 'delete'
+  let body = new FormData()
+  body.append("user_id", userId)
+  body.append("property_id", propertyId)
 
-    body.append("payment_id", paymentId)
-    body.append("user_id", userId)
-
-    return axios.put(endpoint, body, { headers: {'Content-Type': 'multipart/form-data' }})
-        .then((response: { status: number; statusText: string; data: any; }) => {
-            return new Response(response.status, response.statusText, response.data)
-        })
-        .catch((error: string) => {
-            console.log(error)
-            return new Response(500, error, null)
-        })
+  return await post(endpoint, body, { headers: { 'Content-Type': 'multipart/form-data' } });
 }
 
-function removeLandlordFromProperty(propertyId: string, userId: string) : Promise<Response> {
-    let endpoint = url + endpoints.landlord + 'delete'
-    let body = new FormData()
-    body.append("user_id", userId)
-    body.append("property_id", propertyId)
-    return axios.post(endpoint, body, { headers: {'Content-Type': 'multipart/form-data' }})
-        .then((response: { status: number; statusText: string; data: any; }) => {
-            return new Response(response.status, response.statusText, response.data)
-        })
-        .catch((error: string) => {
-            console.log(error)
-            return new Response(500, error, null)
-        })
+export async function addTenantToPropertyByEmail(propertyId: string, userEmail: string): Promise<AxiosResponse | undefined> {
+  let endpoint = url + '/invite/tenant'
+  let body = new FormData()
+  body.append("email", userEmail)
+  body.append("property_id", propertyId)
+
+  return await post(endpoint, body, { headers: { 'Content-Type': 'multipart/form-data' } });
 }
 
-function removeTenantFromProperty(propertyId : string, userId: string) : Promise<Response> {
-    let endpoint = url + endpoints.tenant + 'delete'
-    let body = new FormData()
-    body.append("user_id", userId)
-    body.append("property_id", propertyId)
+export async function updateProperty(id: string, address: string, city: string, state: string, country: string, description: string): Promise<AxiosResponse | undefined> {
+  let endpoint = url + endpoints.property + 'update/' + id
 
-    return axios.post(endpoint, body, { headers: {'Content-Type': 'multipart/form-data' }})
-        .then((response: { status: number; statusText: string; data: any; }) => {
-            return new Response(response.status, response.statusText, response.data)
-        })
-        .catch((error: string) => {
-            console.log(error)
-            return new Response(500, error, null)
-        })
+  let body = new FormData()
+  body.append("street_address", address)
+  body.append("city", city)
+  body.append("state", state)
+  body.append("country", country)
+  body.append("description", description)
+
+  return await put(endpoint, body, { headers: { 'Content-Type': 'multipart/form-data' } });
 }
 
-function addTenantToPropertyByEmail(propertyId: string, userEmail: string): Promise<Response> {
-    let endpoint = url + '/invite/tenant'
-    let body = new FormData()
-    body.append("email", userEmail)
-    body.append("property_id", propertyId)
+export async function updateUser(id: string, email: string, firstName: string, lastName: string): Promise<AxiosResponse | undefined> {
+  let endpoint = url + endpoints.user + 'update/' + id
 
-    return axios.post(endpoint, body, { headers: {'Content-Type': 'multipart/form-data' }})
-        .then((response: { status: number; statusText: string; data: any; }) => {
-            return new Response(response.status, response.statusText, response.data)
-        })
-        .catch((error: string) => {
-            console.log(error)
-            return new Response(500, error, null)
-        })
+  let body = new FormData()
+  body.append("email", email)
+  body.append("first_name", firstName)
+  body.append("last_name", lastName)
+
+  return await put(endpoint, body, { headers: { 'Content-Type': 'multipart/form-data' } })
 }
 
-function updateProperty(id: string, address: string, city: string, state: string, country: string, description: string) : Promise<Response> {
-    let endpoint = url + endpoints.property + 'update/' + id
+export async function updateUserPassword(id: string, email: string, password: string, oldPassword: string): Promise<AxiosResponse | undefined> {
+  let endpoint = url + endpoints.user + 'update/password/' + id
+  let body = new FormData()
 
-    let body = new FormData()
-    body.append("street_address", address)
-    body.append("city", city)
-    body.append("state", state)
-    body.append("country", country)
-    body.append("description", description)
+  body.append("email", email)
+  body.append("password", oldPassword)
+  body.append("new_password", password)
 
-    return axios.put(endpoint, body, { headers: {'Content-Type': 'multipart/form-data' }})
-    .then((response: { status: number; statusText: string; data: any; }) => {
-        return new Response(response.status, response.statusText, response.data)
-    })
-    .catch((error: string) => {
-        console.log(error)
-        return new Response(500, error, null)
-    })
-}
-
-function updateUser(id: string, email: string, firstName: string, lastName: string) : Promise<Response> {
-    let endpoint = url + endpoints.user + 'update/' + id
-    
-    let body = new FormData()
-    body.append("email", email)
-    body.append("first_name", firstName)
-    body.append("last_name", lastName)
-
-    return axios.put(endpoint, body, { headers: {'Content-Type': 'multipart/form-data' }})
-    .then((response: { status: number; statusText: string; data: any; }) => {
-        return new Response(response.status, response.statusText, response.data)
-    })
-    .catch((error: string) => {
-        console.log(error)
-        return new Response(500, error, null)
-    })
-}
-
-function updateUserPassword(id: string, email: string, password: string, oldPassword: string) : Promise<Response> {
-    let endpoint = url + endpoints.user + 'update/password/' + id
-    let body = new FormData()
-
-    body.append("email", email)
-    body.append("password", oldPassword)
-    body.append("new_password", password)
-
-    return axios.put(endpoint, body, { headers: {'Content-Type': 'multipart/form-data' }})
-    .then((response: { status: number; statusText: string; data: any; }) => {
-        return new Response(response.status, response.statusText, response.data)
-    })
-    .catch((error: string) => {
-        console.log(error)
-        return new Response(500, error, null)
-    })
+  return put(endpoint, body, { headers: { 'Content-Type': 'multipart/form-data' } })
 }

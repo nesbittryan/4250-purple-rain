@@ -3,8 +3,7 @@ import { View, Picker, PickerItem, Alert } from 'react-native';
 import { Button, Input, Text } from 'react-native-elements';
 
 import { MainApp } from '../../res/Styles'
-import { APIService } from '../../service/APIService';
-import NotificationService from '../../service/NotificationService';
+import { createPayment } from '../../service/APIService';
 import { Switch } from 'react-native-gesture-handler';
 import { Colours } from '../../res/Colours';
 import { Payment } from '../../common/models/payment';
@@ -75,9 +74,9 @@ export default class NewPaymentScreen extends React.Component {
                 payment: p, 
             })
         } else {
-            APIService.createPayment(p.payer, p.requester, p.description, p.amount, '')
+            createPayment(p.payer, p.requester, p.description, p.amount, '')
             .then((response) => {
-                if (response.code === 200) {
+                if (response.status === 200) {
                     this.props.navigation.state.params.onGoBack()
                     this.props.navigation.goBack()
                 } else {

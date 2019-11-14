@@ -2,12 +2,9 @@ import React from "react";
 import { Component } from "react";
 import { Button, Input } from 'react-native-elements';
 import { Text, View, ImageBackground, Picker, FlatList, TextInput } from "react-native";
-import { MainApp } from '../../res/Styles';
 import { StyleSheet } from 'react-native';
-import { Property } from "../../common/models/Property";
 import { User } from "../../common/models/user";
-import { APIService } from "../../service/APIService";
-import TenantOptionsScreen from "./TenantOptionsScreen";
+import { getTenantsInProperty, addTenantToPropertyByEmail } from "../../service/APIService";
 import CoTenantListItem from "./components/CoTenantListItem";
 
 
@@ -56,7 +53,7 @@ export default class LandlordOptionsScreen extends Component<{propertyId: string
   }
   
   fetchData() {
-    APIService.getTenantsInProperty(this.state.id).then((users: any)  => {
+    getTenantsInProperty(this.state.id).then((users: any)  => {
       this.setState({tenants: users})
       this.forceUpdate()
     })
@@ -68,8 +65,8 @@ export default class LandlordOptionsScreen extends Component<{propertyId: string
 
   handleAddTenant()
   {
-    APIService.addTenantToPropertyByEmail(this.state.id, this.state.newTenant).then((response) => {
-      if (response.code != 200) {
+    addTenantToPropertyByEmail(this.state.id, this.state.newTenant).then((response) => {
+      if (response.status != 200) {
         alert("error adding tenant")
       } else {
         //alert("tenant has been added please refresh")

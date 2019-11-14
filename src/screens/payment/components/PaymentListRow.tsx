@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { Button, Text } from 'react-native-elements';
 
 import { Payment } from '../../../common/models/payment';
-import { APIService } from '../../../service/APIService';
+import { markPaymentPayed, markPaymentReceived } from '../../../service/APIService';
 import { Colours } from '../../../res/Colours';
 import Icon from 'react-native-vector-icons/FontAwesome';
 Icon.loadFont()
@@ -22,9 +22,9 @@ export default class PaymentListRow extends React.Component<{ index: number, use
     }
 
     handleMarkPayed() {
-        APIService.markPaymentPayed(this.props.payment.id, this.props.userId)
+        markPaymentPayed(this.props.payment.id, this.props.userId)
             .then((response: any) => {
-                if (response.code != 200) {
+                if (response.status != 200) {
                     alert("There was an error in your request")
                 }
 
@@ -33,9 +33,9 @@ export default class PaymentListRow extends React.Component<{ index: number, use
     }
 
     handleMarkedRecieved() {
-        APIService.markPaymentReceived(this.props.payment.id, this.props.userId)
+        markPaymentReceived(this.props.payment.id, this.props.userId)
             .then((response: any) => {
-                if (response.code != 200) {
+                if (response.status != 200) {
                     alert("There was an error in your request")
                 }
                 this.props.onCallBack();

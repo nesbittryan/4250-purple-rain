@@ -5,7 +5,7 @@ import { Button, Input, Text } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 Icon.loadFont()
 
-import { APIService } from "../../service/APIService";
+import { updateUser } from "../../service/APIService";
 
 import { Colours } from "../../res/Colours";
 
@@ -52,9 +52,9 @@ export default class ViewUserScreen extends Component {
   }
 
   handleUserUpdate() {
-    APIService.updateUser(this.state.id, this.state.email, this.state.firstName, this.state.lastName)
+    updateUser(this.state.id, this.state.email, this.state.firstName, this.state.lastName)
     .then((response: any) => {
-      if (response.code != 200) {
+      if (response.status != 200) {
         alert("User profile was unable to be updated")
         return
       } else {

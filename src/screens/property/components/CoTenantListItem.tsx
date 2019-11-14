@@ -4,7 +4,6 @@ import { Property } from "../../../common/models/property";
 import { Button } from 'react-native-elements';
 import { User } from "../../../common/models/user";
 import { StyleSheet } from 'react-native';
-import { APIService } from "../../../service/APIService";
 
 interface State {
   propertyId: string,
