@@ -38,7 +38,7 @@ export default class TenantListItem extends Component {
     console.log(this.state.propertyId)
     console.log( this.state.userId)
     removeTenantFromProperty( this.state.propertyId,this.state.userId).then((response) => {
-      if (response.code != 200) {
+      if (response.status != 200) {
         alert("error removing tenant")
       } else {
         this.props.fetchData()

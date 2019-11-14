@@ -24,7 +24,7 @@ export default class PaymentListRow extends React.Component<{ index: number, use
     handleMarkPayed() {
         markPaymentPayed(this.props.payment.id, this.props.userId)
             .then((response: any) => {
-                if (response.code != 200) {
+                if (response.status != 200) {
                     alert("There was an error in your request")
                 }
 
@@ -35,7 +35,7 @@ export default class PaymentListRow extends React.Component<{ index: number, use
     handleMarkedRecieved() {
         markPaymentReceived(this.props.payment.id, this.props.userId)
             .then((response: any) => {
-                if (response.code != 200) {
+                if (response.status != 200) {
                     alert("There was an error in your request")
                 }
                 this.props.onCallBack();

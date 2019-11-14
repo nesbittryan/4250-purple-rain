@@ -54,7 +54,7 @@ export default class ViewUserScreen extends Component {
   handleUserUpdate() {
     updateUser(this.state.id, this.state.email, this.state.firstName, this.state.lastName)
     .then((response: any) => {
-      if (response.code != 200) {
+      if (response.status != 200) {
         alert("User profile was unable to be updated")
         return
       } else {
