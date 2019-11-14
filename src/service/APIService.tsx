@@ -1,8 +1,7 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-import handleAxiosError from './axios-wrapper';
+import axios, { AxiosResponse } from 'axios';
+import { get, post, put } from './axios-wrapper';
 import { Property, PropertyInterface } from '../common/models/property';
 import { User } from '../common/models/user';
-
 
 
 const url = "http://ec2-18-234-27-166.compute-1.amazonaws.com"
@@ -26,18 +25,6 @@ export class Response {
         this.status = status
         this.data = data
     }
-}
-
-const get = async function (url: string): Promise<AxiosResponse | undefined> {
-  return await handleAxiosError(axios.get(url))
-}
-
-const post = async function (url: string, data?: any, config?: AxiosRequestConfig): Promise<AxiosResponse | undefined> {
-  return await handleAxiosError(axios.post(url, data, config))
-}
-
-const put = async function (url: string, data?: any, config?: AxiosRequestConfig): Promise<AxiosResponse | undefined> {
-  return await handleAxiosError(axios.put(url, data, config))
 }
 
 

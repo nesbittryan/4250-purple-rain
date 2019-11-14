@@ -1,10 +1,24 @@
+import axios, { AxiosRequestConfig } from 'axios';
+
 import { AxiosResponse } from "axios";
+
+export const get = async function (url: string): Promise<AxiosResponse | undefined> {
+    return await handleAxiosError(axios.get(url))
+}
+
+export const post = async function (url: string, data?: any, config?: AxiosRequestConfig): Promise<AxiosResponse | undefined> {
+    return await handleAxiosError(axios.post(url, data, config))
+}
+
+export const put = async function (url: string, data?: any, config?: AxiosRequestConfig): Promise<AxiosResponse | undefined> {
+    return await handleAxiosError(axios.put(url, data, config))
+}
 
 /**
  * Handles all axiosFunctions
  * @param {*} axiosFunc 
  */
-export default async (responsePromise: Promise<AxiosResponse>): Promise<AxiosResponse|undefined> => {
+const handleAxiosError = async (responsePromise: Promise<AxiosResponse>): Promise<AxiosResponse|undefined> => {
     try {
         const response =  await responsePromise;
         console.info(response);
