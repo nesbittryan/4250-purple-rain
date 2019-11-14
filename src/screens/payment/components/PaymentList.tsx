@@ -14,6 +14,8 @@ export default class PaymentList extends React.Component<{
         return(
             <View>
                 <FlatList
+                    onRefresh={ () => { this.props.onCallBack() }}
+                    refreshing={false}
                     style={{height:'100%', width:'100%'}}
                     data={this.props.payments}
                     renderItem={({ item, index }) => (<PaymentListRow index={index} userId={this.props.userId} payment={item} onCallBack={this.props.onCallBack}/>)}

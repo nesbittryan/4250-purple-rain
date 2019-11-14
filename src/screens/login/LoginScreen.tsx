@@ -13,8 +13,8 @@ interface State {
 
 export default class LoginScreen extends Component {
   readonly state: State = {
-    email: "colinmoffat1@gmail.com",
-    password: "password"
+    email: "",
+    password: ""
   }
 
   constructor(props: any) {

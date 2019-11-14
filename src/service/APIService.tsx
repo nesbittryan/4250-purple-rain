@@ -242,7 +242,7 @@ export async function updateUser(id: string, email: string, firstName: string, l
   body.append("first_name", firstName)
   body.append("last_name", lastName)
 
-  return await post(endpoint, body, { headers: { 'Content-Type': 'multipart/form-data' } })
+  return await put(endpoint, body, { headers: { 'Content-Type': 'multipart/form-data' } })
 }
 
 export async function updateUserPassword(id: string, email: string, password: string, oldPassword: string): Promise<AxiosResponse | undefined> {
