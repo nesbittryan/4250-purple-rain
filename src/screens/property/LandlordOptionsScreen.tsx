@@ -4,7 +4,7 @@ import { Button, Input } from 'react-native-elements';
 import { Text, View, FlatList, Alert } from "react-native";
 import { StyleSheet } from 'react-native';
 import { User } from "../../common/models/user";
-import { removeLandlordFromProperty, addTenantToPropertyByEmail } from "../../service/APIService";
+import { removeLandlordFromProperty, addTenantToPropertyByEmail, getTenantsInProperty } from "../../service/APIService";
 import TenantListItem from "../../common/components/TenantListItem";
 import { Colours } from "../../res/Colours";
 
