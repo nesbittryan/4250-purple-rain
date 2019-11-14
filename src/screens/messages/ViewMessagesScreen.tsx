@@ -24,7 +24,7 @@ export default class ViewMessagesScreen extends Component {
 
     getRelatedUsers(user.id)
       .then((response: Response) => {
-        if (response.code === 200) {
+        if (response.status === 200) {
           console.log(response.data)
           response.data.forEach((user: any) => {
             this.contacts.push(new Contact({

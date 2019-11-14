@@ -64,7 +64,7 @@ export default class LandlordOptionsScreen extends Component<{navigation:Navigat
   deleteProperty() {
     removeLandlordFromProperty(this.propertyId, this.userId)
       .then((response:any) => {
-        if (response.code == 200) {
+        if (response.status == 200) {
           this.callbackRefresh()
           this.props.navigation.popToTop()
         } else {
@@ -86,7 +86,7 @@ export default class LandlordOptionsScreen extends Component<{navigation:Navigat
 
   handleAddTenant() {
     addTenantToPropertyByEmail(this.state.id, this.state.newTenant).then((response) => {
-      if (response.code != 200) {
+      if (response.status != 200) {
         alert("error adding tenant")
       } else {
         this.fetchData()

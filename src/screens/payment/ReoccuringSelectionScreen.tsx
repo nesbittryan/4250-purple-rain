@@ -30,7 +30,7 @@ export default class ReoccuringSelectionScreen extends React.Component {
                     let date = new Date(Date.now())
                     createPayment(notif.data.payment.payer, notif.data.payment.requester, notif.data.payment.description, notif.data.payment.amount,date.toISOString())
                     .then((response: Response) => {
-                        if (response.code === 200) {
+                        if (response.status === 200) {
                             this.notifService.schedulePaymentNotification(date, notif.data.periodInDays, notif.data.payment)
                             this.props.navigation.state.params.onGoBack()
                         }
@@ -45,7 +45,7 @@ export default class ReoccuringSelectionScreen extends React.Component {
         let payment = this.props.navigation.state.params.payment
         createPayment(payment.payer, payment.requester, payment.description, payment.amount, this.state.dueDate.toISOString())
         .then((response) => {
-            if (response.code === 200) {
+            if (response.status === 200) {
                 this.notifService.schedulePaymentNotification(new Date(Date.now()), this.state.schedule, payment)
                 this.props.navigation.state.params.onGoBack()
                 this.props.navigation.popToTop()

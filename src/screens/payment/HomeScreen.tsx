@@ -44,7 +44,7 @@ export default class HomeScreen extends React.Component {
     fetchData = () => {
         getRelatedUsers(this.userId)
         .then((response: Response) => {
-            if (response.code === 200) {
+            if (response.status === 200) {
                 var users = new Array()
 
                 response.data.forEach((user: any) => {
@@ -56,7 +56,7 @@ export default class HomeScreen extends React.Component {
 
                 getPaymentsByUserId(this.userId)
                 .then((response: Response) => {
-                    if (response.code === 200) {
+                    if (response.status === 200) {
                         var requested:Payment[] = new Array()
                         var payed:Payment[] = new Array()
 

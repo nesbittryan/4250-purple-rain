@@ -66,7 +66,7 @@ export default class LandlordOptionsScreen extends Component<{propertyId: string
   handleAddTenant()
   {
     addTenantToPropertyByEmail(this.state.id, this.state.newTenant).then((response) => {
-      if (response.code != 200) {
+      if (response.status != 200) {
         alert("error adding tenant")
       } else {
         //alert("tenant has been added please refresh")

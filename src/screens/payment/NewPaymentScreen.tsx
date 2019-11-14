@@ -76,7 +76,7 @@ export default class NewPaymentScreen extends React.Component {
         } else {
             createPayment(p.payer, p.requester, p.description, p.amount, '')
             .then((response) => {
-                if (response.code === 200) {
+                if (response.status === 200) {
                     this.props.navigation.state.params.onGoBack()
                     this.props.navigation.goBack()
                 } else {
