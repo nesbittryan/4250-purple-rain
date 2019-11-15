@@ -1,106 +1,192 @@
 import React from 'react'
-import { View, Picker, PickerItem, Alert } from 'react-native';
-import { Button, Input, Text, ButtonGroup } from 'react-native-elements';
+import { View, Picker, Alert, } from 'react-native';
+import { Button, Input, Text, ButtonGroup, Overlay, Divider } from 'react-native-elements';
+import { Switch } from 'react-native-gesture-handler';
+import DateTimePicker from '@react-native-community/datetimepicker';
+
+import { AxiosResponse } from 'axios';
+import { createPayment } from '../../service/APIService';
+import NotificationService from '../../service/NotificationService'
+
+import { Payment } from '../../common/models/payment';
 
 import { MainApp } from '../../res/Styles'
-import { createPayment } from '../../service/APIService';
-import { Switch } from 'react-native-gesture-handler';
 import { Colours } from '../../res/Colours';
-import { Payment } from '../../common/models/payment';
 
 interface State {
     amount: string
     connectedUsers: { id: string, name: string }[]
-    createNotifications:boolean
+    createDueDate:boolean
+    createReccuringPayment:boolean
     dueDate: Date
+    dueTime: Date
     description: string
+    isPopupVisible: boolean
     isSelfPaying: boolean
+    periodDays: number
     selectedUserId: string
     userId: string
 }
 
 export default class NewPaymentScreen extends React.Component {
 
+    notifService = new NotificationService(this.onNotification.bind(this))
+
     readonly state: State = {
         amount: '',
         connectedUsers: new Array(),
-        createNotifications: true,
+        createDueDate: true,
+        createReccuringPayment: false,
         dueDate: new Date(Date.now()),
+        dueTime: new Date(Date.now()),
         description: '',
+        isPopupVisible: false,
         isSelfPaying: true,
+        periodDays: 1,
         selectedUserId: '',
         userId: '',
     }
 
     constructor(props: any) {
         super(props)
-        this.handleSendPayment = this.handleSendPayment.bind(this)
-        this.handleUpdateIndex = this.handleUpdateIndex.bind(this)
+        this.createPayment = this.createPayment.bind(this)
+        this.handleButtonPress = this.handleButtonPress.bind(this)
+        this.handleUpdateIndexForButtonGroup = this.handleUpdateIndexForButtonGroup.bind(this)
     }
 
     componentDidMount() {
-        this.setState({ userId: this.props.navigation.state.params.userId })
         this.state.connectedUsers = this.props.navigation.state.params.connectedUsers
+        
+        this.setState({ userId: this.props.navigation.state.params.userId })
         this.setState({ connectedUsers: this.props.navigation.state.params.connectedUsers })
         this.setState({ selectedUserId: this.state.connectedUsers[0].id })
     }
 
-    handleSendPayment() {
+    createPayment() {
+        let dateString = ''
+
+        if (this.state.createDueDate) {
+            dateString = this.state.dueDate.getFullYear() + "-" + 
+                (this.state.dueDate.getMonth() <9 ? '0' : '' ) + (this.state.dueDate.getMonth() + 1) + "-" + 
+                (this.state.dueDate.getDate() <9 ? '0' : '' ) + (this.state.dueDate.getDate() + 1) + "T" + 
+                (this.state.dueTime.getUTCHours() <10 ? '0' : '' ) + this.state.dueTime.getUTCHours() + ":" + 
+                (this.state.dueTime.getUTCMinutes() <10 ? '0' : '' ) + this.state.dueTime.getUTCMinutes() + ":00.000Z"
+        }
+
+        let payment: Payment = new Payment({
+            amount: this.state.amount,
+            payer: (this.state.isSelfPaying === true) ? this.state.userId : this.state.selectedUserId,
+            requester: (this.state.isSelfPaying === true) ? this.state.selectedUserId : this.state.userId,
+            id: '',
+            requested_at: '',
+            paid_at: '',
+            received_at: '',
+            description: this.state.description,
+            status: '',
+            other_name: '',
+            due_date: dateString,
+        })
+
+        createPayment(payment.payer, payment.requester, payment.description, payment.amount, payment.due_date)
+        .then((response: AxiosResponse<any> | undefined) => {
+            if (response.status === 200) {
+                if (this.state.createReccuringPayment)
+                    this.notifService.schedulePaymentNotification(new Date(Date.parse(dateString)), this.state.periodDays, payment)   
+                this.props.navigation.state.params.onGoBack()
+                this.props.navigation.goBack()
+            } else {
+                alert("Payment was not able to be created")
+            }
+        })
+    }
+
+    handleButtonPress() {
         let numRegex = /^[0-9]+(.[0-9]{1,2})?$/
         if (!numRegex.test(this.state.amount)) {
             alert("Please provide a valid dollar amount")
             return
         }
-        if (this.state.description.length < 1) {
+        else if (this.state.description.length < 1) {
             alert("Please provide a description")
             return
         }
-        let p = new Payment({
-            amount: this.state.amount,
-            description: this.state.description,
-            payer: (this.state.isSelfPaying === true) ? this.state.userId : this.state.selectedUserId,
-            requester: (this.state.isSelfPaying === true) ? this.state.selectedUserId : this.state.userId, 
-            other_name: this.state.connectedUsers[this.state.connectedUsers.findIndex(u => u.id === this.state.selectedUserId)].name,
-            paid_at: '',
-            received_at: '',
-            requested_at: '', 
-            status: '',
-            id: '',
-            due_date: ''
-        })
 
-        if (this.state.createNotifications === true) {
-            this.props.navigation.navigate("Reoccuring", { 
-                onGoBack: () => this.props.navigation.state.params.onGoBack(),
-                payment: p, 
-            })
+        if (this.state.createDueDate) {
+            this.setState({ isPopupVisible: true})
         } else {
-            createPayment(p.payer, p.requester, p.description, p.amount, '')
-            .then((response) => {
-                if (response.status === 200) {
-                    this.props.navigation.state.params.onGoBack()
-                    this.props.navigation.goBack()
-                } else {
-                    alert("Payment was not able to be created")
-                }
-            }).catch((error) => {
-                console.log(error)
-            })
+            this.createPayment()
         }
     }
 
-    handleUpdateIndex (selectedIndex: number) {
+    handleUpdateIndexForButtonGroup (selectedIndex: number) {
         let boolVal = selectedIndex == 0
         this.setState({ isSelfPaying: boolVal})
     }
 
+    onNotification(notif: any) {
+        Alert.alert(notif.title, notif.message,
+        [
+            { text: 'OK', onPress: () => {
+                let date = new Date(Date.now())
+                date.setMinutes(date.getMinutes() + notif.data.periodInDays)
+                createPayment(notif.data.payment.payer, notif.data.payment.requester, notif.data.payment.description, notif.data.payment.amount, date.toISOString())
+                .then((response: AxiosResponse<any> | undefined) => {
+                    if (response.status === 200) {
+                        this.notifService.schedulePaymentNotification(date, notif.data.periodInDays, notif.data.payment)
+                        this.props.navigation.state.params.onGoBack()
+                    }
+                })
+            }},
+            { text: 'Stop Recurring Payment', onPress: () => {} },
+        ],
+        {cancelable: false},)
+    }
+
+
     render() {
         return (
             <View style={ MainApp.container}>
+                <Overlay isVisible={this.state.isPopupVisible}
+                    containerStyle={{display:'flex', alignContent:'stretch', flexDirection:'column'}}>
+                    <View>
+                        <DateTimePicker
+                            onChange={ (event, val) => { this.setState({ dueDate: val })}}
+                            value={this.state.dueDate}
+                            mode="date"/>
+                        <Divider style={{marginHorizontal:'2%',marginVertical:'2%'}}/>
+                        <DateTimePicker
+                            onChange={ (event, val) => { this.setState({ dueTime: val })}}
+                            value={this.state.dueTime}
+                            is24Hour={false}
+                            mode="time"/>
+                        <Divider style={{marginHorizontal:'2%',marginVertical:'2%'}}/>
+                        <Picker
+                            itemStyle={{height: 130, color: Colours.accent_blue}}
+                            mode="dropdown"
+                            selectedValue={this.state.periodDays}
+                            onValueChange={ (val) => this.setState({ periodDays: val })}>
+                            <Picker.Item label="Daily" value={1}></Picker.Item>
+                            <Picker.Item label="Weekly" value={7}></Picker.Item>
+                            <Picker.Item label="Monthly" value={30}></Picker.Item>
+                            <Picker.Item label="Yearly" value={365}></Picker.Item>
+                        </Picker>
+                        <Divider style={{marginHorizontal:'2%',marginVertical:'2%'}}/>
+                        <Button 
+                            containerStyle={{marginHorizontal:'2%'}}
+                            title='Create' 
+                            onPress={ () => this.createPayment() }></Button>
+                        <Button 
+                            containerStyle={{marginHorizontal:'2%', marginTop:'1%'}}
+                            type="outline"
+                            title='Cancel' 
+                            onPress={ () => this.setState({ isPopupVisible: false})}></Button>
+                        
+                    </View>
+                </Overlay>
                 <View style={ MainApp.form }>
                     <ButtonGroup 
                         buttons={ ['Send Money', 'Request Money']}
-                        onPress={this.handleUpdateIndex}
+                        onPress={this.handleUpdateIndexForButtonGroup}
                         selectedIndex={(this.state.isSelfPaying) ? 0 : 1}
                     />
                     <Input
@@ -128,18 +214,24 @@ export default class NewPaymentScreen extends React.Component {
                     </View>
                     
                     <View style={ MainApp.horizontal_container }>
-                        <Text style={ MainApp.title }>Create reoccuring payment</Text>
+                        <Text style={{ color: Colours.darker_green, fontSize: 24, fontWeight: '400'}}>Add a Due Date</Text>
                         <Switch
-                            value={this.state.createNotifications}
-                            onValueChange={ (val) => { this.setState({ createNotifications: val})}}></Switch>
-                        
+                            value={this.state.createDueDate}
+                            onValueChange={ (val) => { this.setState({ createDueDate: val})}}></Switch>
+                    </View>
+                    <View style={ MainApp.horizontal_container }>
+                        <Text style={{ color: Colours.darker_green, fontSize: 24, fontWeight: '400'}}>Create Reccuring Payment</Text>
+                        <Switch
+                            disabled={!this.state.createDueDate}
+                            value={this.state.createReccuringPayment}
+                            onValueChange={ (val) => { this.setState({ createReccuringPayment: val})}}></Switch>
                     </View>
                     
                     <View>
-                        <Button 
+                        <Button
                             style={{margin: '0.5%', marginTop: '1%'}}
-                            title={ (this.state.createNotifications) ? "Continue" : "Create" }
-                            onPress={ () => { this.handleSendPayment() }}></Button>
+                            title={ (this.state.createDueDate) ? "Select Due Date" : "Create Payment" }
+                            onPress={ () => { this.handleButtonPress() }}></Button>
                         <Button
                             style={{margin: '0.5%', marginTop: '1%'}}
                             type="outline"
