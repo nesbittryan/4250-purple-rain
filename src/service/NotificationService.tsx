@@ -26,8 +26,6 @@ export default class NotificationService {
 
     schedulePaymentNotification(date: Date, periodInDays: number, payment: Payment) {
         this.lastId++;
-        //date.setDate(date.getDate() + periodInDays)
-        date.setTime(date.getTime() + 15000)
         PushNotification.localNotificationSchedule({
             date: date,
             title: "Payment due for " + payment.description,
