@@ -1,12 +1,13 @@
 import React from 'react'
 import { Component } from 'react';
 import { View, TouchableOpacity} from 'react-native';
-import { ListItem, Button, colors } from 'react-native-elements'
+import { ListItem, Button, colors, ButtonGroup } from 'react-native-elements'
 import { Contact } from '../../common/models/contact';
 import { FlatList, TextInput } from 'react-native-gesture-handler';
-import { getRelatedUsers } from '../../service/APIService';
+import { getRelatedUsers, getPropertiesByUserId } from '../../service/APIService';
 import UserContext from '../../context/UserContext';
 import Dialog from "react-native-dialog";
+import { Property } from '../../common/models/property';
 
 
 export default class ViewMessagesScreen extends Component {
@@ -16,12 +17,18 @@ export default class ViewMessagesScreen extends Component {
 
   constructor(props:  any) {
     super(props)
+    this.user = this.props.navigation.dangerouslyGetParent().getParam("user")
+    
+    this.getUsers()
+    this.getProperties()
   }
 
   readonly state = {
     refresh: true,
     dialogVisible: false,
     broadcast: "",
+    selectedIndex: 0,
+    properties: new Array()
   }
 
   componentDidMount() {
@@ -31,6 +38,7 @@ export default class ViewMessagesScreen extends Component {
     this.getUsers()
     this.showDialog = this.showDialog.bind(this)
     this.hideDialog = this.hideDialog.bind(this)
+    this.updateIndex = this.updateIndex.bind(this)
   }
 
   showDialog() {
@@ -44,6 +52,10 @@ export default class ViewMessagesScreen extends Component {
 
   handleStateChange = async (name: string, input: string) => {
     this.setState(() => ({ [name]: input }));
+  }
+
+  updateIndex (selectedIndex) {
+    this.setState({selectedIndex})
   }
 
   getUsers = async() => {
@@ -60,7 +72,20 @@ export default class ViewMessagesScreen extends Component {
     this.setState({ refresh: !this.state.refresh })
   }
 
+  getProperties() {
+    getPropertiesByUserId(this.user.id).then((propertyList: any)  => {
+      let propertyDescriptions = []
+      propertyList.forEach(property => {
+        propertyDescriptions.push(property.description)
+      });
+      this.setState({properties: propertyDescriptions})
+      this.forceUpdate();
+      console.log("\n \n \n \nADAMLOG::::" + JSON.stringify(propertyDescriptions))
+    })
+  }
+
   render() {
+    const { selectedIndex } = this.state
     return (
       <View>
         <FlatList
@@ -88,6 +113,12 @@ export default class ViewMessagesScreen extends Component {
         <View>
           <Dialog.Container visible={this.state.dialogVisible}>
               <Dialog.Title>Send Broadcast</Dialog.Title>
+              <ButtonGroup
+                onPress={this.updateIndex}
+                selectedIndex={selectedIndex}
+                buttons={this.state.properties}
+                containerStyle={{height: 50}}
+              />
               <TextInput
                 style={{height: 80, margin: 5, backgroundColor: colors.grey5, borderRadius:5}}
                 onChangeText={(txt) => this.handleStateChange("broadcast", txt)}
