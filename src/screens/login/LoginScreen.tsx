@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { View, AsyncStorage } from 'react-native';
+import { View } from 'react-native';
 import { Input, Button, Image } from 'react-native-elements';
+import AsyncStorage from '@react-native-community/async-storage'
 import { MainApp } from '../../res/Styles';
 import { loginUser } from '../../service/APIService'
 import { User } from '../../common/models/user';
@@ -14,8 +15,8 @@ interface State {
 
 export default class LoginScreen extends Component {
   readonly state: State = {
-    email: "",
-    password: ""
+    email: "Ryannesb@gmail.com",
+    password: "12121212"
   }
 
   constructor(props: any) {

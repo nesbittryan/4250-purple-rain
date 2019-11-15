@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Picker, PickerItem, Alert } from 'react-native';
-import { Button, Input, Text } from 'react-native-elements';
+import { Button, Input, Text, ButtonGroup } from 'react-native-elements';
 
 import { MainApp } from '../../res/Styles'
 import { createPayment } from '../../service/APIService';
@@ -35,6 +35,7 @@ export default class NewPaymentScreen extends React.Component {
     constructor(props: any) {
         super(props)
         this.handleSendPayment = this.handleSendPayment.bind(this)
+        this.handleUpdateIndex = this.handleUpdateIndex.bind(this)
     }
 
     componentDidMount() {
@@ -88,10 +89,20 @@ export default class NewPaymentScreen extends React.Component {
         }
     }
 
+    handleUpdateIndex (selectedIndex: number) {
+        let boolVal = selectedIndex == 0
+        this.setState({ isSelfPaying: boolVal})
+    }
+
     render() {
         return (
             <View style={ MainApp.container}>
                 <View style={ MainApp.form }>
+                    <ButtonGroup 
+                        buttons={ ['Send Money', 'Request Money']}
+                        onPress={this.handleUpdateIndex}
+                        selectedIndex={(this.state.isSelfPaying) ? 0 : 1}
+                    />
                     <Input
                         label= "Memo"
                         style= { MainApp.input }
@@ -105,15 +116,6 @@ export default class NewPaymentScreen extends React.Component {
                         value={this.state.amount.toString()}></Input>
 
                     <View>
-                        <Picker
-                            itemStyle={{height: 120, color: Colours.accent_blue}}
-                            mode="dropdown"
-                            selectedValue={ this.state.isSelfPaying }
-                            onValueChange={ (val) => this.setState({ isSelfPaying: val})}>
-                            <PickerItem label="Send Money To" value={true}></PickerItem>
-                            <PickerItem label="Request Money From" value={false}></PickerItem>
-                        </Picker>
-                        
                         <Picker
                             itemStyle={{height: 120, color: Colours.accent_blue}}
                             mode="dropdown"

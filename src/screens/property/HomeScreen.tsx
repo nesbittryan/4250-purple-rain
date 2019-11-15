@@ -1,6 +1,6 @@
 import React from 'react';
 import { Component } from 'react';
-import { TouchableOpacity, View, FlatList, AsyncStorage } from 'react-native';
+import { TouchableOpacity, View, FlatList } from 'react-native';
 import { Button, Text } from 'react-native-elements';
 import { Property } from '../../common/models/Property';
 import { getPropertiesByUserId } from '../../service/APIService';
