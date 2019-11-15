@@ -1,7 +1,8 @@
 import React from "react";
 import { Component } from "react";
 import { Button, Input, Image, Text } from 'react-native-elements';
-import { View, AsyncStorage } from "react-native";
+import { View } from "react-native";
+import AsyncStorage from '@react-native-community/async-storage'
 import { MainApp } from '../../res/Styles';
 import { User } from "../../common/models/user";
 import { isLandlordByPropertyId, updateProperty } from '../../service/APIService';

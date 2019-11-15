@@ -62,6 +62,11 @@ export default class PaymentListRow extends React.Component<{ index: number, use
         let bgColour = ((this.props.index % 2) === 0) ? Colours.white : Colours.light_blue
         let statusColour = (this.props.payment.status == 'REQUESTED') ? Colours.status_requested : 
             ((this.props.payment.status == 'PAID') ? Colours.status_paid : Colours.status_recieved)
+        
+        if (this.props.payment.due_date != null && Date.now() > Date.parse(this.props.payment.due_date) && this.props.payment.status != 'RECEIVED')
+        {   
+            bgColour = Colours.light_red
+        }
 
         return (
             <View style={{ alignItems:'center', flexDirection:'row',  alignContent:'center',
@@ -69,14 +74,11 @@ export default class PaymentListRow extends React.Component<{ index: number, use
                 <View style={{flex:1.4}}>
                     <Text style={{fontSize:14, fontWeight:'500'}}>{this.props.payment.description}</Text>
                     <Text style={{fontSize:14, fontWeight:'300'}}>{this.props.payment.other_name}</Text>
-                </View>
-                
-                <View style={{flex:0.8}}>
-                    <Text style={{fontSize:13, textAlign:'center'}}>{this.props.payment.amount}</Text>
+                    <Text style={{fontSize:13, fontWeight:'300'}}>{this.props.payment.amount}</Text>
                 </View>
                 
                 <View style={{flex:1}}>
-                    <Text style={{fontSize:13, textAlign:'right'}}>{this.props.payment.requested_at.slice(0,10)}</Text>
+                    <Text style={{fontSize:13, textAlign:'right'}}>{(this.props.payment.due_date == null) ? "Requested: " + this.props.payment.requested_at.slice(0,10) : "Due: " + this.props.payment.due_date.slice(0,10)}</Text>
                 </View>
                 
                 <View style={{flex:1}}>

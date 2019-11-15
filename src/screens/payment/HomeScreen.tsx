@@ -6,6 +6,7 @@ import { Payment } from '../../common/models/payment';
 import { getRelatedUsers, getPaymentsByUserId, Response } from '../../service/APIService';
 import PaymentTabView from './components/PaymentTabView';
 import { Colours } from '../../res/Colours';
+import { AxiosResponse } from 'axios';
 
 interface State {
     filterValue: string
@@ -43,19 +44,18 @@ export default class HomeScreen extends React.Component {
 
     fetchData = () => {
         getRelatedUsers(this.userId)
-        .then((response: Response) => {
+        .then((response: AxiosResponse<any> | undefined) => {
             if (response.status === 200) {
                 var users = new Array()
 
                 response.data.forEach((user: any) => {
-                    users.push({
-                        id: user.id,
-                        name: user.first_name + ' ' + user.last_name
-                    })
+                    let filtered = users.filter(c => c.id === user.id)
+                    if (filtered.length === 0)
+                        users.push({id: user.id, name: user.first_name + ' ' + user.last_name })
                 })
 
                 getPaymentsByUserId(this.userId)
-                .then((response: Response) => {
+                .then((response: AxiosResponse<any> | undefined) => {
                     if (response.status === 200) {
                         var requested:Payment[] = new Array()
                         var payed:Payment[] = new Array()

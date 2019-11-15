@@ -1,7 +1,7 @@
 import React from "react";
 import { Component } from "react";
 import { View } from "react-native";
-import { Button, Input, Text } from 'react-native-elements';
+import { Button, Input, Text, Avatar } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 Icon.loadFont()
 
@@ -68,7 +68,10 @@ export default class ViewUserScreen extends Component {
       <View style={{backgroundColor:Colours.accent_blue}}>
         <Text style={{textAlign:'center',fontSize:20, color:Colours.accent_green, marginBottom:'3%', marginTop:'12%'}}>You</Text>
         <View style={{backgroundColor:Colours.white, width:'100%'}}>
-          <View style={{ marginTop:'30%',display:'flex', flexDirection:'column', alignContent:'space-between'}}>
+          <View style={{ display:'flex', flexDirection:'column', alignContent:'flex-start'}}>
+            <Avatar rounded size="xlarge"
+              title={ this.state.firstName[0] + this.state.lastName[0]}
+              containerStyle={{alignSelf:'center', marginTop:'5%'}}/>
             <Input
               label="First Name"
               value={ this.state.firstName }
@@ -89,7 +92,7 @@ export default class ViewUserScreen extends Component {
           </View>
           <View>
             <Button
-              style={{marginHorizontal: '5%', marginTop:'10%'}}
+              style={{marginHorizontal: '5%'}}
               title="Update Profile"
               onPress={ () => { this.handleUserUpdate() } } />
             <Button

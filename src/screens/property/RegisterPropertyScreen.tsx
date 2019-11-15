@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { Text, View, AsyncStorage, Picker } from 'react-native';
+import { Text, View, Picker } from 'react-native';
 import { Input, Button, CheckBox } from 'react-native-elements';
+import AsyncStorage from '@react-native-community/async-storage'
 import Icon from 'react-native-vector-icons/FontAwesome';
 Icon.loadFont()
 
