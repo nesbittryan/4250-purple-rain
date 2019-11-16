@@ -9,6 +9,7 @@ import UserContext from '../../context/UserContext';
 import Dialog from "react-native-dialog";
 import { Property } from '../../common/models/property';
 
+import BroadcastService from '../../service/BroadcastService';
 
 export default class ViewMessagesScreen extends Component {
 
@@ -18,9 +19,13 @@ export default class ViewMessagesScreen extends Component {
   constructor(props:  any) {
     super(props)
     this.user = this.props.navigation.dangerouslyGetParent().getParam("user")
-    
+
     this.getUsers()
     this.getProperties()
+    this.showDialog = this.showDialog.bind(this)
+    this.hideDialog = this.hideDialog.bind(this)
+    this.updateIndex = this.updateIndex.bind(this)
+    this.broadcast = this.broadcast.bind(this)
   }
 
   readonly state = {
@@ -47,7 +52,6 @@ export default class ViewMessagesScreen extends Component {
 
   hideDialog() {
     this.setState({ dialogVisible: false })
-    alert(this.state.broadcast)
   }
 
   handleStateChange = async (name: string, input: string) => {
@@ -77,15 +81,48 @@ export default class ViewMessagesScreen extends Component {
       let propertyDescriptions = []
       propertyList.forEach(property => {
         propertyDescriptions.push(property.description)
-      });
+      })
       this.setState({properties: propertyDescriptions})
-      this.forceUpdate();
-      console.log("\n \n \n \nADAMLOG::::" + JSON.stringify(propertyDescriptions))
+      this.forceUpdate()
     })
+  }
+
+  broadcast = async() => {
+    if(this.state.broadcast = "") {
+      this.hideDialog()
+      return
+    }
+
+    let contactIds = []
+    this.contacts && this.contacts.forEach(contact => {
+      contactIds.push(contact.id)
+    })
+
+    const message = {
+      text: "BROADCAST: " + this.state.broadcast,
+      user: {
+        _id: this.user.id,
+        name: this.user.firstName + this.user.lastName,
+      }
+    }
+    BroadcastService.sendBroadcast(this.user.id, contactIds, message)
+
+    this.hideDialog()
+
+    //this sleep is need due to a bug where dialogVisible is set to false and it closes the alert as a result
+    await this.sleep(500);
+    alert("Broadcast successfully sent")
+  }
+
+  sleep(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   render() {
     const { selectedIndex } = this.state
+    const reactNativeModalProps = {
+      onBackdropPress: this.hideDialog,
+    };
     return (
       <View>
         <FlatList
@@ -111,7 +148,7 @@ export default class ViewMessagesScreen extends Component {
           onPress={ this.showDialog }
         />
         <View>
-          <Dialog.Container visible={this.state.dialogVisible}>
+          <Dialog.Container visible={this.state.dialogVisible} {...reactNativeModalProps}>
               <Dialog.Title>Send Broadcast</Dialog.Title>
               <ButtonGroup
                 onPress={this.updateIndex}
@@ -127,7 +164,7 @@ export default class ViewMessagesScreen extends Component {
                 value={this.state.broadcast}
                 textAlignVertical= 'top'
               />
-              <Dialog.Button label="OK" onPress={this.hideDialog} />
+              <Dialog.Button label="OK" onPress={this.broadcast} />
           </Dialog.Container>
         </View>
       </View>

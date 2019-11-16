@@ -66,22 +66,4 @@ export default class ViewConversationScreen extends Component {
   }
 }
 
-var styles = StyleSheet.create({
-  topbox: {
-    alignItems: "center",
-    justifyContent: "center",
-    borderBottomWidth: 2,
-  },
-
-  title:{
-    marginTop: 5,
-    fontSize: 22,
-  },
-
-  subtitle: {
-    fontSize: 12,
-    marginBottom: 2,
-  },
-})
-
 ViewConversationScreen.contextType = UserContext;
