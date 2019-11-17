@@ -1,13 +1,16 @@
 import React from "react";
 import { Component } from "react";
 import { Button, Input, Text, Avatar, Icon } from 'react-native-elements';
-import { View } from "react-native";
 import { Style } from '../../res/Styles';
-import { User } from "../../common/models/user";
-import { isLandlordByPropertyId, updateProperty } from '../../service/APIService';
 import { Colours } from "../../res/Colours";
 import UserContext from "../../context/UserContext";
 import ButtonlessHeader from "../../common/components/ButtonlessHeader";
+import { StyleSheet, View, ScrollView } from "react-native";
+import AsyncStorage from '@react-native-community/async-storage'
+import { User } from "../../common/models/user";
+import { isLandlordByPropertyId, updateProperty } from '../../service/APIService';
+import { relative } from "path";
+
 
 const url = 'https://maps.googleapis.com/maps/api/streetview?size=300x200&location='
 const key = '&key=AIzaSyCO4E3Yhrq01Y56FCm_bbj2dhF73PyzJiE'
@@ -63,6 +66,7 @@ export default class ViewPropertyScreen extends Component<{navigation:Navigator}
     })
   }
 
+  
   handleUpdateProperty() {
     updateProperty(this.state.id, this.state.address, this.state.city, 
       this.state.state, this.state.country, this.state.description)
@@ -156,3 +160,32 @@ export default class ViewPropertyScreen extends Component<{navigation:Navigator}
 }
 
 ViewPropertyScreen.contextType = UserContext;
+const propertyStyles = StyleSheet.create({
+  container: {
+    //alignItems: "center",
+    flex: 1,
+    maxHeight: "100%",
+    //position: "relative"
+    //justifyContent: "center",*/
+    
+  },
+  contentContainer: {
+    //justifyContent: "center",
+    alignItems: "center",
+    flexGrow: 1,
+  },
+  form: {
+    flex: 1,
+    //display: 'flex',
+    flexDirection: 'column',
+    height: '90%',
+    marginTop: '10%',
+    justifyContent: 'space-between',
+    width: "90%",
+  },
+  scrollView: { 
+    width: "100%",
+    height:20,
+    //flex: 1
+  }
+})

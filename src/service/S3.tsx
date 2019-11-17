@@ -15,11 +15,11 @@ export const getDocument = async (userId: string, documentName: string) => {
 };
 
 // Adding will overwrite any existing document
-export const addDocument = async (userId: string, documentName: string, content: string | Uint8Array) => {
+export const addDocument = async (userId: string, documentName: string, content: any) => {
     let body = new FormData()
+    console.log("Here")
     body.append("key", s3DocumentKey(userId, documentName))
-    body.append("file", content.toString());
-
+    body.append("file", content);
     return await post(documentBucketUrl, body, { headers: { 'Content-Type': 'multipart/form-data' } });
 };
 
