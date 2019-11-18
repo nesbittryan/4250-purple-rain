@@ -1,26 +1,40 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import AsyncStorage from '@react-native-community/async-storage'
 
-import { AxiosResponse } from "axios";
 
 export const get = async function (url: string): Promise<AxiosResponse | undefined> {
-    return await handleAxiosError(axios.get(url))
+    console.log(url)
+    return await handleAxiosError(axios.get(url, await getHeaders()))
 }
 
-export const post = async function (url: string, data?: any, config?: AxiosRequestConfig): Promise<AxiosResponse | undefined> {
-    return await handleAxiosError(axios.post(url, data, config))
+export const post = async function (url: string, data?: any): Promise<AxiosResponse | undefined> {
+    console.log(url)
+    return await handleAxiosError(axios.post(url, data, await getHeaders()))
 }
 
-export const put = async function (url: string, data?: any, config?: AxiosRequestConfig): Promise<AxiosResponse | undefined> {
-    return await handleAxiosError(axios.put(url, data, config))
+export const put = async function (url: string, data?: any): Promise<AxiosResponse | undefined> {
+    console.log(url)
+    return await handleAxiosError(axios.put(url, data, await getHeaders()))
 }
+
+const getHeaders = async () => {
+    const token = await AsyncStorage.getItem('token')
+    return {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data'
+        },
+    }
+}
+
 
 /**
  * Handles all axiosFunctions
  * @param {*} axiosFunc 
  */
-const handleAxiosError = async (responsePromise: Promise<AxiosResponse>): Promise<AxiosResponse|undefined> => {
+const handleAxiosError = async (responsePromise: Promise<AxiosResponse>): Promise<AxiosResponse | undefined> => {
     try {
-        const response =  await responsePromise;
+        const response = await responsePromise;
         console.info(response);
         return response;
     } catch (error) {
@@ -39,7 +53,6 @@ const handleAxiosError = async (responsePromise: Promise<AxiosResponse>): Promis
         console.log(error);
         // Pass back the response we got from the message,
         // we might be able to use it to display an error message to the user.
-        console.log('returning')
         console.log(error.response)
         return error.response;
     }

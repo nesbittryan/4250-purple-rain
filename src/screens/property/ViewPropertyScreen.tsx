@@ -2,11 +2,11 @@ import React from "react";
 import { Component } from "react";
 import { Button, Input, Image, Text } from 'react-native-elements';
 import { View } from "react-native";
-import AsyncStorage from '@react-native-community/async-storage'
 import { MainApp } from '../../res/Styles';
 import { User } from "../../common/models/user";
 import { isLandlordByPropertyId, updateProperty } from '../../service/APIService';
 import { Colours } from "../../res/Colours";
+import UserContext from "../../context/UserContext";
 
 const url = 'https://maps.googleapis.com/maps/api/streetview?size=300x200&location='
 const key = '&key=AIzaSyCO4E3Yhrq01Y56FCm_bbj2dhF73PyzJiE'
@@ -52,15 +52,12 @@ export default class ViewPropertyScreen extends Component<{navigation:Navigator}
   }
 
   componentDidMount(){
-    AsyncStorage.getItem("user")
-    .then((response: any) => {
-      this.user = JSON.parse(response)
-    }).then(() => {
-      isLandlordByPropertyId(this.user.id, this.state.id)
-      .then((isLandlord: boolean)  => {
-        this.setState({
-          isLandlord: isLandlord
-        })
+    const {user} = this.context;
+    this.user = user;
+    isLandlordByPropertyId(this.user.id, this.state.id)
+    .then((isLandlord: boolean)  => {
+      this.setState({
+        isLandlord: isLandlord
       })
     })
   }
@@ -154,3 +151,5 @@ export default class ViewPropertyScreen extends Component<{navigation:Navigator}
     );
   }
 }
+
+ViewPropertyScreen.contextType = UserContext;

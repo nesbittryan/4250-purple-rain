@@ -7,6 +7,7 @@ import { getRelatedUsers, getPaymentsByUserId, Response } from '../../service/AP
 import PaymentTabView from './components/PaymentTabView';
 import { Colours } from '../../res/Colours';
 import { AxiosResponse } from 'axios';
+import UserContext from '../../context/UserContext';
 
 interface State {
     filterValue: string
@@ -37,8 +38,8 @@ export default class HomeScreen extends React.Component {
     }
 
     componentDidMount() {
-        if (this.userId == '')
-            this.userId = this.props.navigation.dangerouslyGetParent().getParam("user").id
+        const {user} = this.context;
+        this.userId = user.id;
         this.fetchData()
     }
 
@@ -158,3 +159,5 @@ export default class HomeScreen extends React.Component {
         )
     }
 }
+
+HomeScreen.contextType = UserContext;
