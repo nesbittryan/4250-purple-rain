@@ -45,7 +45,6 @@ export default class AccountCreationScreen extends React.Component {
     createUser(this.state.email, this.state.password, this.state.firstName, this.state.lastName)
       .then((response: any) => {
         if (response.status != 201) {
-          console.log(response);
           alert("Account was unable to be created, please try again")
           return
         } else {

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Text, View, Picker } from 'react-native';
 import { Input, Button, CheckBox } from 'react-native-elements';
-import AsyncStorage from '@react-native-community/async-storage'
 import Icon from 'react-native-vector-icons/FontAwesome';
 Icon.loadFont()
 
@@ -9,6 +8,7 @@ import { PropertyInterface } from '../../common/models/Property';
 
 import { MainApp } from '../../res/Styles';
 import { createProperty } from '../../service/APIService';
+import UserContext from '../../context/UserContext';
 
 interface State {
   property: PropertyInterface
@@ -20,6 +20,7 @@ export default class RegisterPropertyScreen extends React.Component<{navigation:
   static navigationOptions = {
     headerTitle: 'Register Property',
   };
+  userId: string
   
   readonly state: State = {
       property:  {
@@ -32,19 +33,17 @@ export default class RegisterPropertyScreen extends React.Component<{navigation:
         state:""
       },
       isLandlord: true,
-      userId: ""
   }
 
   constructor(props: any) {
     super(props);
     this.handlePropertyChange = this.handlePropertyChange.bind(this);
     this.handleRegisterProperty = this.handleRegisterProperty.bind(this);
+  }
 
-    AsyncStorage.getItem("user")  
-      .then((response: any) => {
-        let r = JSON.parse(response)
-        this.setState({ userId: r.id })
-    })
+  componentDidMount() {
+    const {user} = this.context;
+    this.userId = user.id;
   }
 
   handlePropertyChange(name: string, input: any) {
@@ -66,7 +65,7 @@ export default class RegisterPropertyScreen extends React.Component<{navigation:
   }
 
   handleRegisterProperty() {
-    APIService.createProperty(this.state.property, this.state.isLandlord, this.state.userId)
+    createProperty(this.state.property, this.state.isLandlord, this.userId)
     .then(() => {
       let refresh = this.props.navigation.getParam('refreshList', null)
       refresh()
@@ -145,3 +144,5 @@ export default class RegisterPropertyScreen extends React.Component<{navigation:
     );
   }
 }
+
+RegisterPropertyScreen.contextType = UserContext;

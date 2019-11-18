@@ -9,6 +9,7 @@ OtherIcon.loadFont()
 
 import LoginScreen from '../screens/login/LoginScreen'
 import SignUpScreen from '../screens/sign-up/SignUpScreen'
+import AuthLoadingScreen from '../screens/auth-loading/AuthLoadingScreen'
 
 import UserNavigator from './UserNavigator'
 import PropertyNavigator from './PropertyNavigator'
@@ -61,6 +62,7 @@ const MainTabNav = createBottomTabNavigator(
 
 const MainAppStack = createStackNavigator(
     {
+        Loading: AuthLoadingScreen,
         Tabs: MainTabNav,
         Login: LoginScreen,
         SignUp: SignUpScreen,

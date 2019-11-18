@@ -5,6 +5,7 @@ import { ListItem } from 'react-native-elements'
 import { Contact } from '../../common/models/contact';
 import { FlatList } from 'react-native-gesture-handler';
 import { getRelatedUsers } from '../../service/APIService';
+import UserContext from '../../context/UserContext';
 
 
 export default class ViewMessagesScreen extends Component {
@@ -20,7 +21,7 @@ export default class ViewMessagesScreen extends Component {
   }
 
   componentDidMount() {
-    let user = this.props.navigation.dangerouslyGetParent().getParam("user")
+    const {user} = this.context;
 
     getRelatedUsers(user.id)
       .then((response: Response) => {
@@ -65,3 +66,5 @@ export default class ViewMessagesScreen extends Component {
     )
   }
 }
+
+ViewMessagesScreen.contextType = UserContext;

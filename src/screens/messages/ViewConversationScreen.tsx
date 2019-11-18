@@ -5,6 +5,7 @@ import { Contact } from '../../common/models/contact';
 import { View, Text, StyleSheet } from 'react-native';
 
 import ChatService from '../../service/ChatService';
+import UserContext from '../../context/UserContext';
 
 export default class ViewConversationScreen extends Component {
 
@@ -25,7 +26,7 @@ export default class ViewConversationScreen extends Component {
 
     this.contact = this.props.navigation.getParam('contact', 'error')
     this.props.navigation.setParams({ title: this.contact.name })
-    let user = this.props.navigation.dangerouslyGetParent().getParam("user")
+    const {user} = this.context;
 
     ChatService.setUid(user.id)
     ChatService.setUserName(
@@ -82,3 +83,5 @@ var styles = StyleSheet.create({
     marginBottom: 2,
   },
 })
+
+ViewConversationScreen.contextType = UserContext;
