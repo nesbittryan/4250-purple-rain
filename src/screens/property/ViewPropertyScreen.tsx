@@ -11,6 +11,7 @@ import { User } from "../../common/models/user";
 import { isLandlordByPropertyId, updateProperty } from '../../service/APIService';
 import { relative } from "path";
 
+import UserContext from "../../context/UserContext";
 
 const url = 'https://maps.googleapis.com/maps/api/streetview?size=300x200&location='
 const key = '&key=AIzaSyCO4E3Yhrq01Y56FCm_bbj2dhF73PyzJiE'
@@ -189,3 +190,4 @@ const propertyStyles = StyleSheet.create({
     //flex: 1
   }
 })
+ViewPropertyScreen.contextType = UserContext;

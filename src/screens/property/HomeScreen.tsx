@@ -5,10 +5,13 @@ import { Button } from 'react-native-elements';
 import { Property } from '../../common/models/Property';
 import { getPropertiesByUserId } from '../../service/APIService';
 import { User } from '../../common/models/user';
-import UserContext from '../../context/UserContext';
 import ButtonlessHeader from '../../common/components/ButtonlessHeader';
 import { Style } from '../../res/Styles';
 import PropertyList from './components/PropertyList';
+import { ListItem } from 'react-native-elements'
+import { Colours } from '../../res/Colours';
+import UserContext from '../../context/UserContext';
+
 
 export default class HomeScreen extends Component<{navigation: Navigator, wentBack: boolean}, { properties: Property[]  }>  {
 
