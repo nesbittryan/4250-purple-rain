@@ -99,17 +99,24 @@ export default class ViewPropertyScreen extends Component<{navigation:Navigator}
                 label="Description"></Input>
               <Button
                 style={{margin: '0.5%', marginTop: '5%'}}
+                buttonStyle={{backgroundColor:Colours.accent_green}}
+                title="Update Property"
+                onPress={ () => { this.handleUpdateProperty()}}/>
+              <Button
+                style={{margin: '0.5%', marginTop: '1%'}}
                 title="Landlord Options"
                 onPress={ () => { this.props.navigation.navigate("LandlordOptions", {
                   userId: this.user.id,
                   refreshList: this.callBackRefresh,
                   propertyId: this.state.id,
                 }) }}/>
-              <Button
+               <Button
                 style={{margin: '0.5%', marginTop: '1%'}}
-                buttonStyle={{backgroundColor:Colours.accent_green}}
-                title="Update Property"
-                onPress={ () => { this.handleUpdateProperty()}}/>
+                title="Maintenance Requests"
+                onPress={ () => { this.props.navigation.navigate("MaintenanceRequests", {
+                  propertyId: this.state.id,
+                  isUserLandlord: true
+                }) }}/>
               <Button
                 style={{margin: '0.5%', marginTop: '1%'}}
                 type="outline"
@@ -133,9 +140,10 @@ export default class ViewPropertyScreen extends Component<{navigation:Navigator}
              
               <Button
                 style={{margin: '0.5%', marginTop: '5%'}}
-                title="Tenant Options"
-                onPress={ () => { this.props.navigation.navigate("TenantOptions", {
+                title="Maintenance Requests"
+                onPress={ () => { this.props.navigation.navigate("MaintenanceRequests", {
                   propertyId: this.state.id,
+                  isUserLandlord: false
                 }) }}/>
               <Button
                 style={{margin: '0.5%', marginTop: '1%'}}
