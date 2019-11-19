@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import { get, post, put } from './axios-wrapper';
 import { Property, PropertyInterface } from '../common/models/property';
 import { User } from '../common/models/user';
@@ -11,33 +11,18 @@ const endpoints = {
   property: "/property/",
   landlord: "/landlord/",
   tenant: "/tenant/",
-  payment: "/payment/"
+  payment: "/payment/",
+  maintenance: "/maintenance/"
 }
 
-// TODO remove
-export class Response {
-    code: number
-    status: string
-    data: any
-
-    constructor(code: number, status: string, data: any){
-        this.code = code
-        this.status = status
-        this.data = data
-    }
-}
-
-
-/* returns true if user is landlord of a property */
-export async function isLandlordByPropertyId(userId: string, propertyId: string): Promise<boolean> {
-  let endpoint = url + endpoints.landlord + userId
-
-  const response = await get(endpoint);
-  if (response === undefined || response.data === undefined) return false;
-
-  const isLandlord = response.data.property_id.some((id: any) => id === parseInt(propertyId));
-
-  return isLandlord;
+export async function createMaintenanceRequest(propertyId: string, userId: string, description: string): Promise<AxiosResponse | undefined> {
+  let endpoint = url + endpoints.maintenance + 'create'
+  let body = new FormData()
+  body.append("property_id", propertyId)
+  body.append("created_by", userId.toString())
+  body.append("description", description)
+  console.log(body)
+  return await post(endpoint, body)
 }
 
 export async function createPayment(payerId: string, requesterId: string, description: string, amount: string, dueDate: string): Promise<AxiosResponse | undefined> {
@@ -79,6 +64,11 @@ export async function createUser(email: string, password: string, firstName: str
   body.append("password", password)
 
   return await post(endpoint, body)
+}
+
+export async function getMaintenanceRequestsByProperty(propertyId: string): Promise<AxiosResponse | undefined> {
+  let endpoint = url + endpoints.maintenance + 'property/' + propertyId
+  return await get(endpoint)
 }
 
 export async function getPaymentsByUserId(userId: string): Promise<AxiosResponse | undefined> {
@@ -149,6 +139,18 @@ export async function getTenantsInProperty(propertyId: string): any {
   return userList
 }
 
+/* returns true if user is landlord of a property */
+export async function isLandlordByPropertyId(userId: string, propertyId: string): Promise<boolean> {
+  let endpoint = url + endpoints.landlord + userId
+
+  const response = await get(endpoint);
+  if (response === undefined || response.data === undefined) return false;
+
+  const isLandlord = response.data.property_id.some((id: any) => id === parseInt(propertyId));
+
+  return isLandlord;
+}
+
 export async function loginUser(email: string, password: string): Promise<any> {
   console.info('inside');
   let endpoint = url + endpoints.user + 'login'
@@ -158,6 +160,24 @@ export async function loginUser(email: string, password: string): Promise<any> {
   body.append("password", password)
 
   return await post(endpoint, body);
+}
+
+export async function markMaintenanceRequestAcknowledged(requestId: string): Promise<AxiosResponse | undefined> {
+  let endpoint = url + endpoints.maintenance + 'acknowledge/' + requestId
+
+  return await post(endpoint)
+}
+
+export async function markMaintenanceRequestCancelled(requestId: string): Promise<AxiosResponse | undefined> {
+  let endpoint = url + endpoints.maintenance + 'cancel/' + requestId
+
+  return await post(endpoint)
+}
+
+export async function markMaintenanceRequestCompleted(requestId: string): Promise<AxiosResponse | undefined> {
+  let endpoint = url + endpoints.maintenance + 'complete/' + requestId
+
+  return await post(endpoint)
 }
 
 export async function markPaymentPayed(paymentId: string, userId: string): Promise<AxiosResponse | undefined> {
@@ -204,6 +224,17 @@ export async function addTenantToPropertyByEmail(propertyId: string, userEmail: 
   body.append("property_id", propertyId)
 
   return await post(endpoint, body);
+}
+
+export async function updateMaintenanceRequest(requestId: string, action: string, estCompletionDate: string, description: string): Promise<AxiosResponse | undefined> {
+  let endpoint = url + endpoints.maintenance + 'update/' + requestId
+
+  let body = new FormData()
+  body.append("estimated_complete_date", estCompletionDate)
+  body.append("action", action)
+  body.append("description", description)
+
+  return await put(endpoint, body);
 }
 
 export async function updateProperty(id: string, address: string, city: string, state: string, country: string, description: string): Promise<AxiosResponse | undefined> {

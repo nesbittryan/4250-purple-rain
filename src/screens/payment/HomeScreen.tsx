@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { Button, SearchBar, Text } from 'react-native-elements';
 
 import { Payment } from '../../common/models/payment';
-import { getRelatedUsers, getPaymentsByUserId, Response } from '../../service/APIService';
+import { getRelatedUsers, getPaymentsByUserId } from '../../service/APIService';
 import PaymentTabView from './components/PaymentTabView';
 import { Colours } from '../../res/Colours';
 import { AxiosResponse } from 'axios';
