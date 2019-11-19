@@ -7,6 +7,8 @@ import { MainApp } from '../../res/Styles';
 import { loginUser } from '../../service/APIService'
 import { User } from '../../common/models/user';
 import { getDocument, addDocument } from '../../service/S3';
+import UserContext from '../../context/UserContext';
+import { getCurrentUser } from '../../../App';
 
 interface State {
   email: string,
@@ -15,38 +17,44 @@ interface State {
 
 export default class LoginScreen extends Component {
   readonly state: State = {
-    email: "Ryannesb@gmail.com",
-    password: "12121212"
+    email: "jordanchalupka@gmail.com",
+    password: "password"
   }
 
   constructor(props: any) {
     super(props)
   }
 
+  async componentDidMount() {
+    await this.setUserContext();
+    // If we already have a user, skip login.
+    const {user} = this.context;
+    if (user) {
+      this.props.navigation.navigate('Tabs');
+      return
+    }
+  }
+
+  setUserContext = async () => {
+    const user = await getCurrentUser();
+
+    const { update } = this.context;
+    update(user);
+  }
+
   handleLoginPress = async () => {
     const response = await loginUser(this.state.email, this.state.password)
+
+    const token = response.data.tokens.access_token;
+    await AsyncStorage.setItem('token', token);
 
     if (response === undefined || response.status !== 200) {
       alert("Please check your email and password are correct")
     }
 
-    AsyncStorage.setItem("user",
-      JSON.stringify(new User({
-        id: response.data.id,
-        email: response.data.email,
-        firstName: response.data.first_name,
-        lastName: response.data.last_name,
-      })
-      ))
+    this.setUserContext();
 
-    this.props.navigation.navigate("Tabs", {
-      user: new User({
-        id: response.data.id,
-        email: response.data.email,
-        firstName: response.data.first_name,
-        lastName: response.data.last_name,
-      })
-    })
+    this.props.navigation.navigate("Tabs")
   }
 
   handleSignupPress = async () => {
@@ -89,3 +97,5 @@ export default class LoginScreen extends Component {
     );
   }
 }
+
+LoginScreen.contextType = UserContext;

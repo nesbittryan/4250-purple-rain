@@ -43,12 +43,9 @@ export default class LandlordOptionsScreen extends Component<{propertyId: string
     this.fetchData = this.fetchData.bind(this)
     this.propertyId =  this.props.navigation.getParam('propertyId', 'error')
     this.state.id = this.propertyId
-    //console.log(this.propertyId)
   }
 
   componentDidMount() {
-    //this.propertyId = this.props.propertyId
-    //console.log(this.props.propertyId)
     this.fetchData()
   }
   

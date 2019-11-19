@@ -8,6 +8,8 @@ Icon.loadFont()
 import { updateUser } from "../../service/APIService";
 
 import { Colours } from "../../res/Colours";
+import UserContext from "../../context/UserContext";
+import AsyncStorage from "@react-native-community/async-storage";
 
 interface State {
   firstName: string,
@@ -36,16 +38,19 @@ export default class ViewUserScreen extends Component {
     super(props)
     this.handleStateChange = this.handleStateChange.bind(this)
     this.handleUserUpdate = this.handleUserUpdate.bind(this)
+  }
 
-    var user
-    if (this.state.id == "")
-      user = this.props.navigation.dangerouslyGetParent().getParam("user")
+  componentDidMount() {
+    const {user} = this.context;
+    this.setState(state => {
+      state.email = user.email
+      state.firstName = user.first_name
+      state.lastName = user.last_name
+      state.id = user.id
 
-    this.state.email = user.email
-    this.state.firstName = user.firstName
-    this.state.lastName = user.lastName
-    this.state.id = user.id
-}
+      return state;
+    })
+  }
 
   handleStateChange(name: string, input: string) {
     this.setState(() => ({ [name]: input }));
@@ -61,6 +66,11 @@ export default class ViewUserScreen extends Component {
         alert("User profile updated")
       }
     })
+  }
+
+  handleLogOut = async () => {
+    await AsyncStorage.removeItem('token')
+    this.props.navigation.navigate('Login');
   }
 
   render() {
@@ -104,10 +114,13 @@ export default class ViewUserScreen extends Component {
               buttonStyle={{backgroundColor:Colours.accent_green}}
               style={{marginHorizontal: '5%', marginTop:'10%'}}
               title="Log Out"
-              onPress={ () => { this.props.navigation.dangerouslyGetParent().popToTop() }}/>
+              onPress={ this.handleLogOut }
+            />
           </View>
         </View>
       </View>
     );
   }
 }
+
+ViewUserScreen.contextType = UserContext;

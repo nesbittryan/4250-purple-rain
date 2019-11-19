@@ -7,6 +7,7 @@ import { getPropertiesByUserId } from '../../service/APIService';
 import { User } from '../../common/models/user';
 import { ListItem } from 'react-native-elements'
 import { Colours } from '../../res/Colours';
+import UserContext from '../../context/UserContext';
 
 
 export default class HomeScreen extends Component<{navigation: Navigator, wentBack: boolean}, { properties: Property[]  }>  {
@@ -16,25 +17,22 @@ export default class HomeScreen extends Component<{navigation: Navigator, wentBa
 
   constructor(props: any) {
     super(props)
-    this.fetchData = this.fetchData.bind(this)
     this.state = {
       properties: new Array,
     }
   }
 
-  fetchData(){
-
-    getPropertiesByUserId(this.user.id).then((propertyList: any)  => {
-      this.setState({properties: propertyList})
+  fetchData = async () => {
+    await getPropertiesByUserId(this.user.id).then((propertyList: any) => {
+      this.setState({ properties: propertyList })
       this.forceUpdate();
-    })
+    });
   }
 
-  componentDidMount() {
-    if (this.user == null)
-      this.user = this.props.navigation.dangerouslyGetParent().getParam("user")
-
-    this.fetchData()
+  async componentDidMount() {
+    const {user} = this.context;
+    this.user = user;
+    await this.fetchData()
   }
 
   render() {
@@ -94,3 +92,5 @@ class PropertyList extends React.Component<{navigation: Navigator,properties: Pr
     )
   }
 }
+
+HomeScreen.contextType = UserContext;
