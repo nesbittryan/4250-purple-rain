@@ -12,7 +12,6 @@ import { ListItem } from 'react-native-elements'
 import { Colours } from '../../res/Colours';
 import UserContext from '../../context/UserContext';
 
-
 export default class HomeScreen extends Component<{navigation: Navigator, wentBack: boolean}, { properties: Property[]  }>  {
 
   properties:Property[] = new Array()

@@ -18,6 +18,7 @@ const PropertyNavigator = createStackNavigator(
         MaintenanceRequests: MaintenanceRequestsScreen,
         ViewMaintenanceRequest: ViewMaintenanceRequest,
         Documents: DocumentsScreen,
+        MaintenanceRequests: MaintenanceRequestsScreen
     },
     {   
         headerMode:'none',
