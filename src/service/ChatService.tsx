@@ -1,5 +1,4 @@
 import firebase from 'firebase'
-import { thisExpression } from '@babel/types'
 
 class ChatService {
   uid = ''
@@ -28,7 +27,7 @@ class ChatService {
     return this.uid
   }
 
-  setUserName(value) {
+  setUserName(value: any) {
     this.username = value
   }
 
@@ -36,13 +35,13 @@ class ChatService {
     return this.username
   }
 
-  setConversationUid(userId, contactId) {
+  setConversationUid(userId: any, contactId: any) {
     let ids = [userId, contactId]
     ids.sort()
     this.conversationUid = ids.join()
   }
 
-  loadMessages(callback) {
+  loadMessages(callback: any) {
     let messagesPath = this.conversationUid + '/messages'
     this.messagesRef = firebase.database().ref(messagesPath)
     this.messagesRef.off()
@@ -61,7 +60,8 @@ class ChatService {
     this.messagesRef.limitToLast(20).on('child_added', onReceive)
   }
 
-  sendMessage(message) {
+  sendMessage(message: any) {
+    console.log("ADAMLOG", JSON.stringify(message))
     for (let i = 0; i < message.length; i++) {
       this.messagesRef.push({
         text: message[i].text,
