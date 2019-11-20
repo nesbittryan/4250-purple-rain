@@ -2,7 +2,7 @@ import React from 'react'
 import { Component } from 'react';
 import { GiftedChat } from 'react-native-gifted-chat'
 import { Contact } from '../../common/models/contact';
-import { View, Text, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 
 import ChatService from '../../service/ChatService';
 import UserContext from '../../context/UserContext';
@@ -21,8 +21,8 @@ export default class ViewConversationScreen extends Component {
     };
   };
 
-  constructor(props: any) {
-    super(props)
+  constructor(props: any, context: any) {
+    super(props, context)
 
     this.contact = this.props.navigation.getParam('contact', 'error')
     this.props.navigation.setParams({ title: this.contact.name })

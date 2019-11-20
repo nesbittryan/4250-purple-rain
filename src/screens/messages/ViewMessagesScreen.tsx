@@ -4,11 +4,9 @@ import { View, TouchableOpacity} from 'react-native';
 import { ListItem, Button, colors, ButtonGroup } from 'react-native-elements'
 import { Contact } from '../../common/models/contact';
 import { FlatList, TextInput } from 'react-native-gesture-handler';
-import { getRelatedUsers, getPropertiesByUserId } from '../../service/APIService';
+import { getRelatedUsers, getPropertiesByUserId, getTenantsInProperty } from '../../service/APIService';
 import UserContext from '../../context/UserContext';
 import Dialog from "react-native-dialog";
-import { Property } from '../../common/models/property';
-
 import BroadcastService from '../../service/BroadcastService';
 
 export default class ViewMessagesScreen extends Component {
@@ -16,34 +14,28 @@ export default class ViewMessagesScreen extends Component {
   contacts: Contact[] = new Array()
   user: any
 
-  constructor(props:  any) {
-    super(props)
-    this.user = this.props.navigation.dangerouslyGetParent().getParam("user")
-
-    this.getUsers()
-    this.getProperties()
-    this.showDialog = this.showDialog.bind(this)
-    this.hideDialog = this.hideDialog.bind(this)
-    this.updateIndex = this.updateIndex.bind(this)
-    this.broadcast = this.broadcast.bind(this)
-  }
-
   readonly state = {
     refresh: true,
     dialogVisible: false,
     broadcast: "",
     selectedIndex: 0,
-    properties: new Array()
+    propertiesDescriptions: new Array(),
+    properties: new Array(),
   }
 
-  componentDidMount() {
-    const {user} = this.context;
-    this.user = this.props.navigation.dangerouslyGetParent().getParam("user")
+  constructor(props:  any, context: any) {
+    super(props, context)
+
+    this.user = this.context
 
     this.getUsers()
+    this.getProperties()
+
     this.showDialog = this.showDialog.bind(this)
     this.hideDialog = this.hideDialog.bind(this)
     this.updateIndex = this.updateIndex.bind(this)
+    this.getTenantsIds = this.getTenantsIds.bind(this)
+    this.broadcast = this.broadcast.bind(this)
   }
 
   showDialog() {
@@ -78,45 +70,70 @@ export default class ViewMessagesScreen extends Component {
 
   getProperties() {
     getPropertiesByUserId(this.user.id).then((propertyList: any)  => {
-      let propertyDescriptions = []
+      let propertyDescriptions = ["All Properties"]
       propertyList.forEach(property => {
         propertyDescriptions.push(property.description)
       })
-      this.setState({properties: propertyDescriptions})
+      this.setState({propertiesDescriptions: propertyDescriptions})
+      this.setState({properties: propertyList})
       this.forceUpdate()
     })
   }
 
+  getTenantsIds = async(index: number) => {
+    let contactIds: String [] = new Array()
+
+    if(index == 0) {
+      this.contacts && this.contacts.forEach(contact => {
+        contactIds.push(contact.id)
+      })
+    } else {
+      index--
+      let propertyId = this.state.properties && this.state.properties[index] && this.state.properties[index].id
+
+      let contacts = await getTenantsInProperty(propertyId)
+
+      contacts.forEach(contact => {
+        contactIds.push(contact.id)
+      })
+    }
+
+    return contactIds
+  }
+
   broadcast = async() => {
-    if(this.state.broadcast = "") {
-      this.hideDialog()
+    if(this.state.broadcast == "") {
       return
     }
 
-    let contactIds = []
-    this.contacts && this.contacts.forEach(contact => {
-      contactIds.push(contact.id)
-    })
+    let contactIds = await this.getTenantsIds(this.state.selectedIndex)
 
     const message = {
       text: "BROADCAST: " + this.state.broadcast,
       user: {
         _id: this.user.id,
-        name: this.user.firstName + this.user.lastName,
+        name: this.user.first_name + this.user.last_name,
       }
     }
+
     BroadcastService.sendBroadcast(this.user.id, contactIds, message)
 
-    this.hideDialog()
-
-    //this sleep is need due to a bug where dialogVisible is set to false and it closes the alert as a result
-    await this.sleep(500);
-    alert("Broadcast successfully sent")
+    await this.close()
   }
 
   sleep(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
+
+  close = async() => {
+    this.hideDialog()
+
+    //this sleep is need due to a bug where dialogVisible is set to false and it closes the alert as a result
+    await this.sleep(500);
+    alert("Broadcast successfully sent")
+    this.handleStateChange("broadcast", "")
+  }
+
 
   render() {
     const { selectedIndex } = this.state
@@ -153,7 +170,7 @@ export default class ViewMessagesScreen extends Component {
               <ButtonGroup
                 onPress={this.updateIndex}
                 selectedIndex={selectedIndex}
-                buttons={this.state.properties}
+                buttons={this.state.propertiesDescriptions}
                 containerStyle={{height: 50}}
               />
               <TextInput
@@ -162,7 +179,7 @@ export default class ViewMessagesScreen extends Component {
                 multiline={true}
                 numberOfLines={5}
                 value={this.state.broadcast}
-                textAlignVertical= 'top'
+                textAlignVertical='top'
               />
               <Dialog.Button label="OK" onPress={this.broadcast} />
           </Dialog.Container>
