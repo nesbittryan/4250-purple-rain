@@ -6,6 +6,8 @@ import { ListItem } from "react-native-elements";
 import { Property } from "../../../common/models/property";
 import { Colours } from "../../../res/Colours";
 
+const url = 'https://maps.googleapis.com/maps/api/streetview?size=300x200&location='
+const key = '&key=AIzaSyCO4E3Yhrq01Y56FCm_bbj2dhF73PyzJiE'
 
 export default class PropertyList extends React.Component<{navigation: Navigator,properties: Property[], refreshList:()=>void},{}> {
   
@@ -22,17 +24,15 @@ export default class PropertyList extends React.Component<{navigation: Navigator
           data={properties}
           renderItem={({item}) =>
             <TouchableOpacity
-              
               onPress={() => this.props.navigation.navigate("View", {
                 property: item,
                 refreshList: this.props.refreshList
-              })}
-            >
+              })}>
               <ListItem
                 titleStyle={{fontWeight:'bold'}}
                 title={item.address}
                 subtitle={item.description}
-                leftAvatar={{rounded: false, source: {uri: 'https://i.imgur.com/uZpj0B6.jpg'}}}
+                leftAvatar={{rounded: false, source: {uri: url + item.address + ', ' + item.city + ', ' + item.state + ', ' + item.country + key }}}
               />
             </TouchableOpacity>
           }

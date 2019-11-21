@@ -72,35 +72,39 @@ export default class ViewPropertyScreen extends Component<{navigation:Navigator}
     return (
       <View style={Style.full_container}>
         <ButtonlessHeader text={this.state.address}></ButtonlessHeader>
+        
         <Avatar rounded size="xlarge" source={{ uri: url + this.state.address + ', ' + this.state.city + ', ' + this.state.state + ', ' + this.state.country + key }}></Avatar>
+        
         { this.state.isLandlord && 
           <Icon raised reverse name='save' type='font-awesome' color={Colours.accent_green} 
-            containerStyle={{position: 'absolute', right:'0%', top:'40%'}}
+            containerStyle={{position: 'absolute', right:'0%', top:'35%'}}
             onPress={() => this.handleUpdateProperty() } />
         }
+        <View style={{width:'95%'}}>
+          <Input disabled={!this.state.isLandlord}
+            value={this.state.address}
+            onChangeText={ (txt) => { this.setState({ address: txt })}}
+            label="Address"></Input>
+          <Input disabled={!this.state.isLandlord}
+            value={this.state.city}
+            onChangeText={ (txt) => { this.setState({ city: txt })}}
+            label="City"></Input>
+          <Input disabled={!this.state.isLandlord}
+            value={this.state.state}
+            onChangeText={ (txt) => { this.setState({ state: txt })}}
+            label="Province/State"></Input>
+          <Input disabled={!this.state.isLandlord}
+            value={this.state.country}
+            onChangeText={ (txt) => { this.setState({ country: txt })}}
+            label="Country"></Input>
+          <Input disabled={!this.state.isLandlord}
+            value={this.state.description}
+            onChangeText={ (txt) => { this.setState({ description: txt })}}
+            label="Description"></Input>
+        </View>
+        
           { this.state.isLandlord &&  //landlord view
             <View style={{width:'95%'}}>
-              <Input
-                value={this.state.address}
-                onChangeText={ (txt) => { this.setState({ address: txt })}}
-                label="Address"></Input>
-              <Input
-                value={this.state.city}
-                onChangeText={ (txt) => { this.setState({ city: txt })}}
-                label="City"></Input>
-              <Input
-                value={this.state.state}
-                onChangeText={ (txt) => { this.setState({ state: txt })}}
-                label="Province/State"></Input>
-              <Input
-                value={this.state.country}
-                onChangeText={ (txt) => { this.setState({ country: txt })}}
-                label="Country"></Input>
-              <Input
-                value={this.state.description}
-                onChangeText={ (txt) => { this.setState({ description: txt })}}
-                label="Description"></Input>
-
               <Button
                 style={{marginVertical: '2%'}}
                 buttonStyle={{backgroundColor:Colours.accent_green}}
@@ -129,13 +133,7 @@ export default class ViewPropertyScreen extends Component<{navigation:Navigator}
           }
           
           { !this.state.isLandlord && //tenant view
-            <View style={{width:'95%'}}>
-                <Text style={Style.normal_text}>{"Address: " + this.state.address}</Text>
-                <Text style={Style.normal_text}>{"City: " + this.state.city}</Text>
-                <Text style={Style.normal_text}>{"Province/State: " + this.state.state}</Text>
-                <Text style={Style.normal_text}>{"Country: " + this.state.country}</Text>
-                <Text style={Style.normal_text}>{"Description: " + this.state.description}</Text>
-             
+            <View style={{width:'95%'}}>   
               <Button
                 style={{marginVertical: '2%'}}
                 title="Maintenance Requests"
