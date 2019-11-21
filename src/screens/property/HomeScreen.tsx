@@ -10,6 +10,7 @@ import { Colours } from '../../res/Colours';
 import UserContext from '../../context/UserContext';
 import ButtonlessHeader from '../../common/components/ButtonlessHeader';
 import { Style } from '../../res/Styles';
+import PropertyList from './components/PropertyList';
 
 export default class HomeScreen extends Component<{navigation: Navigator, wentBack: boolean}, { properties: Property[]  }>  {
 
@@ -41,60 +42,20 @@ export default class HomeScreen extends Component<{navigation: Navigator, wentBa
       <View style={Style.full_container}>
                   
         <ButtonlessHeader text="My Properties"/>
-        <View style={{width:'100%'}}>
-          <PropertyList
-            properties={this.state.properties}
-            refreshList={this.fetchData}
-            navigation={this.props.navigation}/>
-        </View>
-        
+
+        <PropertyList
+          properties={this.state.properties}
+          refreshList={this.fetchData}
+          navigation={this.props.navigation}/>
         
         <View style={{width:'95%'}}>
           <Button 
-            style={{marginBottom:'2%'}}
+            style={{marginVertical:'2%'}}
             title="Register New Property" 
             onPress={ () => { this.props.navigation.navigate("Register", {refreshList: this.fetchData }) }}></Button>
         </View>
       </View>
     );
-  }
-}
-
-class PropertyList extends React.Component<{navigation: Navigator,properties: Property[], refreshList:()=>void},{}> {
-  
-  constructor(props: any) {
-    super(props)
-  }
-
-  render() {
-    const properties = this.props.properties;
-    return (
-      <FlatList
-        onRefresh={ () => { this.props.refreshList() }}
-        refreshing={false}
-        style={{
-          backgroundColor:Colours.light_blue
-        }}
-        data={properties}
-        renderItem={({item}) =>
-          <TouchableOpacity
-            
-            onPress={() => this.props.navigation.navigate("View", {
-              property: item,
-              refreshList: this.props.refreshList
-            })}
-          >
-            <ListItem
-              titleStyle={{fontWeight:'bold'}}
-              title={item.address}
-              subtitle={item.description}
-              leftAvatar={{rounded: false, source: {uri: 'https://i.imgur.com/uZpj0B6.jpg'}}}
-            />
-          </TouchableOpacity>
-        }
-        keyExtractor={item=>item.id}
-      />
-    )
   }
 }
 

@@ -4,7 +4,7 @@ import { Input, Button, Text } from 'react-native-elements';
 
 import { createUser } from '../../service/APIService'
 
-import { MainApp } from '../../res/Styles'
+import { MainApp, Style } from '../../res/Styles'
 import { Colours } from '../../res/Colours';
 
 interface State {
@@ -63,31 +63,29 @@ export default class AccountCreationScreen extends React.Component {
       <View style={MainApp.container} >
         <View style={MainApp.form}>
           <Text h3 style={{color: Colours.accent_green}}>Account Creation</Text>
-          <Input style={ MainApp.input }
+          <Input
             value={ this.state.firstName }
             onChangeText={(txt) => this.handleStateChange("firstName", txt)}
             placeholder="First Name"
             returnKeyType="next"/>
-          <Input style={ MainApp.input }
+          <Input
             value={ this.state.lastName }
             onChangeText={(txt) => this.handleStateChange("lastName", txt)}
             placeholder="Last Name"
             returnKeyType="next"/>
-          <Input style={ MainApp.input }
+          <Input
             value={ this.state.email }
             onChangeText={(txt) => this.handleStateChange("email", txt)}
             placeholder="Email"
             returnKeyType="next"/>
-          <Text style={MainApp.tooltip}>Password must be at least 8 characters</Text>
-          <Input 
-            style={ MainApp.input }
+          <Text style={[Style.normal_text,{ fontStyle:'italic'}]}>Password must be at least 8 characters</Text>
+          <Input
             value={ this.state.password }
             onChangeText={(txt) => this.handleStateChange("password", txt)}
             placeholder="Password"
             returnKeyType="next"
             secureTextEntry={ true }/>   
           <Input 
-            style={ MainApp.input }
             value={ this.state.confirmPassword }
             onChangeText={(txt) => this.handleStateChange("confirmPassword", txt)}
             placeholder="Confirm Password"

@@ -58,5 +58,16 @@ const Style = StyleSheet.create({
     height:'100%', 
     justifyContent:'space-between', 
   },
+  normal_text: {
+    fontSize: 20,
+    color: Colours.darker_blue
+  },
+  row_container: {
+      display: 'flex',
+      flexDirection: 'row',
+      textAlignVertical: 'center',
+      justifyContent: 'space-between',
+      width: '95%'
+  },
 })
 export { MainApp, Style }

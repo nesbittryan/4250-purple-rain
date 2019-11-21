@@ -145,7 +145,7 @@ export default class NewPaymentScreen extends React.Component {
 
     render() {
         return (
-            <View style={Style.full_container}>
+            <View style={[Style.full_container, {paddingTop:'15%'}]}>
                 <Overlay isVisible={this.state.isPopupVisible}
                     containerStyle={{display:'flex', alignContent:'stretch', flexDirection:'column'}}>
                     <View>
@@ -183,61 +183,54 @@ export default class NewPaymentScreen extends React.Component {
                         
                     </View>
                 </Overlay>
-                <View style={ MainApp.form }>
-                    <ButtonGroup 
-                        buttons={ ['Send Money', 'Request Money']}
-                        onPress={this.handleUpdateIndexForButtonGroup}
-                        selectedIndex={(this.state.isSelfPaying) ? 0 : 1}
-                    />
-                    <Input
-                        label= "Memo"
-                        style= { MainApp.input }
-                        value={ this.state.description }
-                        onChangeText={(txt) => this.setState({ description: txt })}></Input>
-                    <Input
-                        label= "Amount"
-                        style= { MainApp.input }
-                        keyboardType='numeric'
-                        onChangeText={(text)=> this.setState({ amount: text })}
-                        value={this.state.amount.toString()}></Input>
 
-                    <View>
-                        <Picker
-                            itemStyle={{height: 120, color: Colours.accent_blue}}
-                            mode="dropdown"
-                            selectedValue={this.state.selectedUserId}
-                            onValueChange={ (text) => this.setState({ selectedUserId: text})}>
-                                {this.state.connectedUsers.map((item, index) => {
-                                return (<Picker.Item label={item.name} value={item.id} key={index}/>) 
-                            })}
-                        </Picker>
-                    </View>
-                    
-                    <View style={ MainApp.horizontal_container }>
-                        <Text style={{ color: Colours.darker_green, fontSize: 24, fontWeight: '400'}}>Add a Due Date</Text>
-                        <Switch
-                            value={this.state.createDueDate}
-                            onValueChange={ (val) => { this.setState({ createDueDate: val})}}></Switch>
-                    </View>
-                    <View style={ MainApp.horizontal_container }>
-                        <Text style={{ color: Colours.darker_green, fontSize: 24, fontWeight: '400'}}>Create Reccuring Payment</Text>
-                        <Switch
-                            disabled={!this.state.createDueDate}
-                            value={this.state.createReccuringPayment}
-                            onValueChange={ (val) => { this.setState({ createReccuringPayment: val})}}></Switch>
-                    </View>
-                    
-                    <View>
-                        <Button
-                            style={{margin: '0.5%', marginTop: '1%'}}
-                            title={ (this.state.createDueDate) ? "Select Due Date" : "Create Payment" }
-                            onPress={ () => { this.handleButtonPress() }}></Button>
-                        <Button
-                            style={{margin: '0.5%', marginTop: '1%'}}
-                            type="outline"
-                            title="Cancel"
-                            onPress={ () => { this.props.navigation.goBack() }}></Button>
-                    </View>
+                <ButtonGroup 
+                    buttons={ ['Send Money', 'Request Money']}
+                    onPress={this.handleUpdateIndexForButtonGroup}
+                    selectedIndex={(this.state.isSelfPaying) ? 0 : 1}
+                />
+                <Input
+                    label= "Memo"
+                    value={ this.state.description }
+                    onChangeText={(txt) => this.setState({ description: txt })}></Input>
+                <Input
+                    label= "Amount"
+                    keyboardType='numeric'
+                    onChangeText={(text)=> this.setState({ amount: text })}
+                    value={this.state.amount.toString()}></Input>
+
+                <View style={{width:'95%'}}>
+                    <Picker
+                        itemStyle={{color: Colours.accent_blue}}
+                        mode="dropdown"
+                        selectedValue={this.state.selectedUserId}
+                        onValueChange={ (text) => this.setState({ selectedUserId: text})}>
+                            {this.state.connectedUsers.map((item, index) => {
+                            return (<Picker.Item label={item.name} value={item.id} key={index}/>) 
+                        })}
+                    </Picker>
+                </View>
+                
+                <View style={ Style.row_container }>
+                    <Text style={{ color: Colours.darker_green, fontSize: 24, fontWeight: '400'}}>Add a Due Date</Text>
+                    <Switch value={this.state.createDueDate}
+                        onValueChange={ (val) => { this.setState({ createDueDate: val})}}></Switch>
+                </View>
+
+                <View style={ Style.row_container }>
+                    <Text style={{ color: Colours.darker_green, fontSize: 24, fontWeight: '400'}}>Create Reccuring Payment</Text>
+                    <Switch disabled={!this.state.createDueDate} value={this.state.createReccuringPayment}
+                        onValueChange={ (val) => { this.setState({ createReccuringPayment: val})}}></Switch>
+                </View>
+                
+                <View style={{width:'95%'}}>
+                    <Button
+                        style={{marginVertical:'2%'}}
+                        title={ (this.state.createDueDate) ? "Select Due Date" : "Create Payment" }
+                        onPress={ () => { this.handleButtonPress() }}></Button>
+                    <Button
+                        style={{marginBottom: '2%'}} type="outline" title="Cancel"
+                        onPress={ () => { this.props.navigation.goBack() }}></Button>
                 </View>
             </View>
         )

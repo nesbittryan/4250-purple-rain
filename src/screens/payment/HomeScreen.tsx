@@ -137,7 +137,7 @@ export default class HomeScreen extends React.Component {
         return (
             <View style={Style.full_container}>
                 
-                <ButtonlessHeader text="Maintenance Requests"/>
+                <ButtonlessHeader text="Payments"/>
 
                 <SearchBar
                     inputContainerStyle={{backgroundColor: Colours.white}}

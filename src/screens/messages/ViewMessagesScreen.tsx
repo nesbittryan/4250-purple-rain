@@ -8,6 +8,7 @@ import { getRelatedUsers, getPropertiesByUserId, getTenantsInProperty } from '..
 import UserContext from '../../context/UserContext';
 import Dialog from "react-native-dialog";
 import BroadcastService from '../../service/BroadcastService';
+import { Style } from '../../res/Styles';
 
 export default class ViewMessagesScreen extends Component {
 
@@ -141,8 +142,9 @@ export default class ViewMessagesScreen extends Component {
       onBackdropPress: this.hideDialog,
     };
     return (
-      <View>
+      <View style={Style.full_container}>
         <FlatList
+          style={{width:'100%'}}
           data={this.contacts}
           extraData={this.state.refresh}
           renderItem={({item}) =>
@@ -160,10 +162,15 @@ export default class ViewMessagesScreen extends Component {
           }
           keyExtractor={item=>item.id}
         />
-        <Button
-          title="BROADCAST"
-          onPress={ this.showDialog }
-        />
+
+        <View style={{width:'95%'}}>
+          <Button
+            style={{marginVertical:'2%'}}
+            title="Send Broadcast"
+            onPress={ this.showDialog }
+          />
+        </View>
+       
         <View>
           <Dialog.Container visible={this.state.dialogVisible} {...reactNativeModalProps}>
               <Dialog.Title>Send Broadcast</Dialog.Title>
@@ -181,7 +188,8 @@ export default class ViewMessagesScreen extends Component {
                 value={this.state.broadcast}
                 textAlignVertical='top'
               />
-              <Dialog.Button label="OK" onPress={this.broadcast} />
+              <Dialog.Button label="Cancel" onPress={this.hideDialog} />
+              <Dialog.Button label="Send" onPress={this.broadcast} />
           </Dialog.Container>
         </View>
       </View>

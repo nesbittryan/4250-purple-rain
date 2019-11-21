@@ -105,12 +105,12 @@ export default class ViewUserScreen extends Component {
             title="Update Profile"
             onPress={ () => { this.handleUserUpdate() } } />
           <Button
-            type="outline"
+            buttonStyle={{backgroundColor: Colours.accent_green}}
             style={{marginBottom:'5%'}}
             title="Change Password"
             onPress={ () => { this.props.navigation.navigate("ChangePassword", { user_id: this.state.id, email: this.state.email })} }/>
           <Button
-            buttonStyle={{backgroundColor:Colours.accent_green}}
+            buttonStyle={{backgroundColor:Colours.light_red}}
             style={{marginBottom:'2%'}}
             title="Log Out"
             onPress={ this.handleLogOut }
