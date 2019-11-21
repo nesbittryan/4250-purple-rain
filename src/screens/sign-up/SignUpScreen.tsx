@@ -4,7 +4,7 @@ import { Input, Button, Text } from 'react-native-elements';
 
 import { createUser } from '../../service/APIService'
 
-import { MainApp, Style } from '../../res/Styles'
+import { Style } from '../../res/Styles'
 import { Colours } from '../../res/Colours';
 
 interface State {
@@ -60,9 +60,9 @@ export default class AccountCreationScreen extends React.Component {
 
   render() {
     return (
-      <View style={MainApp.container} >
-        <View style={MainApp.form}>
-          <Text h3 style={{color: Colours.accent_green}}>Account Creation</Text>
+      <View style={[Style.full_container,{justifyContent:'space-evenly'}]} >
+        <Text h3 style={{color: Colours.accent_green}}>Account Creation</Text>
+        <View style={{width:'95%'}}>
           <Input
             value={ this.state.firstName }
             onChangeText={(txt) => this.handleStateChange("firstName", txt)}
@@ -78,7 +78,9 @@ export default class AccountCreationScreen extends React.Component {
             onChangeText={(txt) => this.handleStateChange("email", txt)}
             placeholder="Email"
             returnKeyType="next"/>
-          <Text style={[Style.normal_text,{ fontStyle:'italic'}]}>Password must be at least 8 characters</Text>
+        </View>
+        <Text style={[Style.normal_text,{ fontStyle:'italic'}]}>Password must be at least 8 characters</Text>
+        <View style={{width:'95%'}}>
           <Input
             value={ this.state.password }
             onChangeText={(txt) => this.handleStateChange("password", txt)}
@@ -91,19 +93,20 @@ export default class AccountCreationScreen extends React.Component {
             placeholder="Confirm Password"
             returnKeyType="go"
             secureTextEntry={ true }/>
-          <View>
-            <Button 
-              style={{margin: '0.5%', marginTop:'5%'}}
-              onPress={ this.handleCreateAccountPress }
-              title="Sign Up"/>
-            <Button 
-              type='outline'
-              style={{margin: '0.5%', marginTop:'1%'}}
-              onPress={ this.handleToLoginPress }
-              title="Cancel"/>
-          </View>
-          
         </View>
+        
+
+        <View style={{width:'95%'}}>
+          <Button 
+            style={{marginVertical:'2%'}} title='Sign Up'
+            onPress={ this.handleCreateAccountPress }
+            />
+          <Button 
+            type='outline' title='Cancel' style={{marginBottom:'2%'}}
+            onPress={ this.handleToLoginPress }
+            />
+        </View>
+        
       </View>
     );      
   }

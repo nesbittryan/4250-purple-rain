@@ -10,7 +10,7 @@ import NotificationService from '../../service/NotificationService'
 
 import { Payment } from '../../common/models/payment';
 
-import { MainApp, Style } from '../../res/Styles'
+import { Style } from '../../res/Styles'
 import { Colours } from '../../res/Colours';
 
 interface State {

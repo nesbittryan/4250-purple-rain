@@ -1,14 +1,13 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { View } from 'react-native';
-import { Input, Button, Image } from 'react-native-elements';
+import { Input, Button, Avatar, Text } from 'react-native-elements';
 import AsyncStorage from '@react-native-community/async-storage'
-import { MainApp } from '../../res/Styles';
+import { Style } from '../../res/Styles';
 import { loginUser } from '../../service/APIService'
-import { User } from '../../common/models/user';
-import { getDocument, addDocument } from '../../service/S3';
 import UserContext from '../../context/UserContext';
 import { getCurrentUser } from '../../../App';
+import { Colours } from '../../res/Colours';
 
 interface State {
   email: string,
@@ -67,32 +66,38 @@ export default class LoginScreen extends Component {
 
   render() {
     return (
-      <View style={MainApp.container}>
-        <View style={[MainApp.form, { marginTop: '50%' }]}>
-          <Image
-            source={require('../../res/img/logo.jpg')}
-            style={{ height: '60%', }} />
+      <View style={[Style.full_container,{justifyContent:'center'}]}>
+       
+        <Avatar size='xlarge'
+          source={require('../../res/img/logo.jpg')} />
+        <Text style={{fontSize:35, fontStyle:'italic', marginTop:'-5%', marginBottom:'5%', 
+          color:Colours.accent_green, fontWeight:'700'}}>manager</Text>
+        
+        <View style={{width:'80%'}}>
           <Input
+            containerStyle={{marginTop:'5%'}}
             value={this.state.email}
             onChangeText={(txt) => this.handleStateChange("email", txt)}
             placeholder="Email"
             returnKeyType="next" />
           <Input
+            containerStyle={{marginVertical:'5%'}}
             value={this.state.password}
             onChangeText={(txt) => this.handleStateChange("password", txt)}
             placeholder="Password"
             returnKeyType="go"
             secureTextEntry={true} />
           <Button
-            style={{ margin: '0.5%', marginTop: '5%' }}
+            style={{ marginVertical: '2%' }}
             onPress={this.handleLoginPress}
             title="Login" />
           <Button
             type="outline"
-            style={{ margin: '0.5%', marginTop: '1%' }}
+            style={{ marginBottom: '2%' }}
             onPress={this.handleSignupPress}
             title="Sign Up" />
         </View>
+        
       </View>
     );
   }

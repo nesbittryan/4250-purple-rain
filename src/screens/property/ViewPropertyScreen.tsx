@@ -1,8 +1,8 @@
 import React from "react";
 import { Component } from "react";
-import { Button, Input, Image, Text, Avatar, Icon } from 'react-native-elements';
+import { Button, Input, Text, Avatar, Icon } from 'react-native-elements';
 import { View } from "react-native";
-import { MainApp, Style } from '../../res/Styles';
+import { Style } from '../../res/Styles';
 import { User } from "../../common/models/user";
 import { isLandlordByPropertyId, updateProperty } from '../../service/APIService';
 import { Colours } from "../../res/Colours";

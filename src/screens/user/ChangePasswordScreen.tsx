@@ -2,7 +2,7 @@ import React from "react";
 import { View } from "react-native";
 import { Button, Input, Text } from 'react-native-elements';
 
-import { MainApp, Style } from "../../res/Styles";
+import { Style } from "../../res/Styles";
 import { updateUserPassword } from "../../service/APIService";
 import ButtonlessHeader from "../../common/components/ButtonlessHeader";
 

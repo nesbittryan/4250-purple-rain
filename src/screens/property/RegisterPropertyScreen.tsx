@@ -6,7 +6,7 @@ Icon.loadFont()
 
 import { PropertyInterface } from '../../common/models/Property';
 
-import { MainApp, Style } from '../../res/Styles';
+import { Style } from '../../res/Styles';
 import { createProperty } from '../../service/APIService';
 import UserContext from '../../context/UserContext';
 import ButtonlessHeader from '../../common/components/ButtonlessHeader';
