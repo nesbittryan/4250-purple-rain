@@ -10,7 +10,7 @@ import NotificationService from '../../service/NotificationService'
 
 import { Payment } from '../../common/models/payment';
 
-import { MainApp } from '../../res/Styles'
+import { MainApp, Style } from '../../res/Styles'
 import { Colours } from '../../res/Colours';
 
 interface State {
@@ -145,7 +145,7 @@ export default class NewPaymentScreen extends React.Component {
 
     render() {
         return (
-            <View style={ MainApp.container}>
+            <View style={Style.full_container}>
                 <Overlay isVisible={this.state.isPopupVisible}
                     containerStyle={{display:'flex', alignContent:'stretch', flexDirection:'column'}}>
                     <View>

@@ -8,6 +8,8 @@ import PaymentTabView from './components/PaymentTabView';
 import { Colours } from '../../res/Colours';
 import { AxiosResponse } from 'axios';
 import UserContext from '../../context/UserContext';
+import ButtonlessHeader from '../../common/components/ButtonlessHeader';
+import { Style } from '../../res/Styles';
 
 interface State {
     filterValue: string
@@ -133,27 +135,29 @@ export default class HomeScreen extends React.Component {
 
     render() {
         return (
-            <View style={{backgroundColor:Colours.accent_blue}}>
-                <Text style={{textAlign:'center',fontSize:20, color:Colours.accent_green, marginBottom:'3%', marginTop:'12%'}}>Payments</Text>
-                <View style={{backgroundColor:Colours.white, width:'100%'}}>
+            <View style={Style.full_container}>
+                
+                <ButtonlessHeader text="Maintenance Requests"/>
+
                 <SearchBar
                     inputContainerStyle={{backgroundColor: Colours.white}}
                     inputStyle={{color: Colours.accent_green}}
-                    containerStyle={{backgroundColor: Colours.accent_blue}}
+                    containerStyle={{backgroundColor: Colours.light_blue, width:'100%'}}
                     placeholder="Filter payments..."
                     onChangeText={(txt) => this.onFilter(txt) }
                     value={this.state.filterValue}/>
-                <View style={{height: '78%', width:'100%'}}>
-                    <PaymentTabView
-                        userId={this.userId}
-                        payedPayments={ this.state.filteredPayedPayments} 
-                        requestedPayments={ this.state.filteredRequestedPayments}
-                        onCallBack={ () => { this.fetchData() } }></PaymentTabView>   
-                </View>
-                <Button
-                    style={{marginHorizontal:'5%', marginTop:'2%'}}
-                    title="New Payment" 
-                    onPress={ () => { this.props.navigation.navigate("New", { userId: this.userId, onGoBack: () => this.fetchData(), connectedUsers: this.state.userIdList })}}></Button>
+                
+                <PaymentTabView
+                    userId={this.userId}
+                    payedPayments={ this.state.filteredPayedPayments} 
+                    requestedPayments={ this.state.filteredRequestedPayments}
+                    onCallBack={ () => { this.fetchData() } }></PaymentTabView>   
+
+                <View style={{width:'95%'}}>
+                    <Button
+                        style={{marginVertical:'2%'}}
+                        title="New Payment" 
+                        onPress={ () => { this.props.navigation.navigate("New", { userId: this.userId, onGoBack: () => this.fetchData(), connectedUsers: this.state.userIdList })}}></Button>
                 </View>
             </View>   
         )

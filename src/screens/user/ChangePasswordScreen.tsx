@@ -2,8 +2,9 @@ import React from "react";
 import { View } from "react-native";
 import { Button, Input, Text } from 'react-native-elements';
 
-import { MainApp } from "../../res/Styles";
+import { MainApp, Style } from "../../res/Styles";
 import { updateUserPassword } from "../../service/APIService";
+import ButtonlessHeader from "../../common/components/ButtonlessHeader";
 
 interface State {
     oldPassword: string,
@@ -42,33 +43,35 @@ export default class ChangePasswordScreen extends React.Component {
 
     render() {
         return (
-          <View style={ MainApp.container }>
-            <View style={ MainApp.form }>
-              <View>
-                <Text style={[MainApp.title, { textAlign: 'center'}]}>Change Password for {this.state.email}</Text>  
-              </View>
-              <View>
-                <Input
-                  label="Old Password"
-                  value={ this.state.oldPassword }
-                  onChangeText={(txt) => this.handleStateChange("oldPassword", txt)}
-                  returnKeyType="next"/>
-                <Input 
-                  label="New Password"
-                  value={ this.state.password }
-                  onChangeText={(txt) => this.handleStateChange("password", txt)}
-                  returnKeyType="next"/>
-                <Input 
-                  label="Confirm New Password"
-                  value={ this.state.confirmPassword }
-                  onChangeText={(txt) => this.handleStateChange("confirmPassword", txt)}
-                  returnKeyType="next"/>
-              </View>
-              <View>
-                <Button style={{margin: '0.5%', marginTop:'5%'}} title="Confirm Change Password" onPress={ () => { this.handlePasswordChange() } } />
-                <Button style={{margin: '0.5%', marginTop:'1%'}} type="outline" title="Cancel" onPress={ () => { this.props.navigation.goBack() } } />
-              </View>
+          <View style={Style.full_container}>
+                
+            <ButtonlessHeader text="Changing Password"/>
+
+            <Input
+              label="Old Password"
+              value={ this.state.oldPassword }
+              onChangeText={(txt) => this.handleStateChange("oldPassword", txt)}
+              returnKeyType="next"/>
+
+            <Input 
+              label="New Password"
+              value={ this.state.password }
+              onChangeText={(txt) => this.handleStateChange("password", txt)}
+              returnKeyType="next"/>
+
+            <Input 
+              label="Confirm New Password"
+              value={ this.state.confirmPassword }
+              onChangeText={(txt) => this.handleStateChange("confirmPassword", txt)}
+              returnKeyType="next"/>
+
+            <View style={{width:'95%'}}>
+              <Button style={{marginBottom:'1%'}} 
+                title="Confirm Change Password" onPress={ () => { this.handlePasswordChange() } } />
+              <Button style={{marginBottom:'2%'}} type="outline" title="Cancel" 
+                onPress={ () => { this.props.navigation.goBack() } } />
             </View>
+
           </View>
         );
       }

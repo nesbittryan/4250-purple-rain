@@ -50,4 +50,13 @@ const MainApp = StyleSheet.create({
     }
   })
 
-export { MainApp }
+const Style = StyleSheet.create({
+  full_container: {
+    alignItems:'center',
+    display:'flex', 
+    flexDirection:'column', 
+    height:'100%', 
+    justifyContent:'space-between', 
+  },
+})
+export { MainApp, Style }

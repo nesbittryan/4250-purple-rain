@@ -72,7 +72,7 @@ export async function getMaintenanceRequestsByProperty(propertyId: string): Prom
 }
 
 export async function getPaymentsByUserId(userId: string): Promise<AxiosResponse | undefined> {
-  let endpoint = url + endpoints.payment + '?user_id=' + userId
+  let endpoint = url + endpoints.payment + userId
 
   return await get(endpoint);
 }
