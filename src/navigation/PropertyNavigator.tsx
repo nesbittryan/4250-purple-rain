@@ -6,6 +6,7 @@ import LandlordOptionsScreen from '../screens/property/LandlordOptionsScreen'
 import MaintenanceRequestsScreen from '../screens/maintenance/MaintenanceRequestsScreen'
 import RegisterPropertyScreen from '../screens/property/RegisterPropertyScreen'
 import ViewPropertyScreen from '../screens/property/ViewPropertyScreen'
+import ViewMaintenanceRequest from '../screens/maintenance/ViewMaintenanceRequest'
 
 const PropertyNavigator = createStackNavigator(
     {
@@ -13,7 +14,8 @@ const PropertyNavigator = createStackNavigator(
         Register: RegisterPropertyScreen,
         View: ViewPropertyScreen,
         LandlordOptions: LandlordOptionsScreen,
-        MaintenanceRequests: MaintenanceRequestsScreen
+        MaintenanceRequests: MaintenanceRequestsScreen,
+        ViewMaintenanceRequest: ViewMaintenanceRequest
     },
     {   
         headerMode:'none',

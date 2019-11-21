@@ -1,12 +1,10 @@
 import React from 'react';
 import { Component } from 'react';
-import { TouchableOpacity, View, FlatList } from 'react-native';
-import { Button, Text } from 'react-native-elements';
+import { View } from 'react-native';
+import { Button } from 'react-native-elements';
 import { Property } from '../../common/models/Property';
 import { getPropertiesByUserId } from '../../service/APIService';
 import { User } from '../../common/models/user';
-import { ListItem } from 'react-native-elements'
-import { Colours } from '../../res/Colours';
 import UserContext from '../../context/UserContext';
 import ButtonlessHeader from '../../common/components/ButtonlessHeader';
 import { Style } from '../../res/Styles';

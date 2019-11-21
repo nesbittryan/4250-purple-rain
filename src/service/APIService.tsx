@@ -230,7 +230,8 @@ export async function updateMaintenanceRequest(requestId: string, action: string
   let endpoint = url + endpoints.maintenance + 'update/' + requestId
 
   let body = new FormData()
-  body.append("estimated_complete_date", estCompletionDate)
+  if (estCompletionDate != '')
+    body.append("estimated_complete_date", estCompletionDate)
   body.append("action", action)
   body.append("description", description)
 

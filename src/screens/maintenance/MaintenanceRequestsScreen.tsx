@@ -1,12 +1,11 @@
 import React from "react";
-import { View, FlatList } from "react-native"
-import { Button, Overlay, Input } from "react-native-elements";
+import { View, FlatList, TouchableOpacity } from "react-native"
+import { Button, Overlay, Input, ListItem, Text } from "react-native-elements";
 import { AxiosResponse } from "axios";
 import { getMaintenanceRequestsByProperty, createMaintenanceRequest } from '../../service/APIService'
 import UserContext from "../../context/UserContext";
 import { MaintenanceRequest } from "../../common/models/maintenanceRequest";
 import ButtonlessHeader from "../../common/components/ButtonlessHeader";
-import MRListItem from "./components/MRListItem";
 import { Style } from "../../res/Styles";
 
 interface State {
@@ -69,11 +68,11 @@ export default class MaintenanceRequestScreen extends React.Component<{navigatio
                         property: request.property_id,
                         response: request.action,
                         status: request.status,
-                        acknowledgedDate: request.acknowledged_date,
-                        cancelledDate: request.cancelled_date,
-                        createdDate: request.created_date,
-                        estimatedResolvedDate: request.estimated_complete_date,
-                        resolvedDate: request.complete_date
+                        acknowledgedDate: (request.acknowledged_date == null) ? '' : request.acknowledged_date.substring(0,10),
+                        cancelledDate: (request.cancelled_date == null) ? '' : request.cancelled_date.substring(0,10),
+                        createdDate: (request.created_date == null) ? '' : request.created_date.substring(0,10),
+                        estimatedResolvedDate: (request.estimated_complete_date == null) ? '' : request.estimated_complete_date.substring(0,10),
+                        resolvedDate: (request.complete_date == null) ? '' : request.complete_date.substring(0,10),
                     })
                 })
 
@@ -87,13 +86,25 @@ export default class MaintenanceRequestScreen extends React.Component<{navigatio
             <View style={Style.full_container}>
                 
                 <ButtonlessHeader text="Maintenance Requests"/>
-
+                
                 <FlatList
                     style={{width:'100%'}}
-                    onRefresh={ () => {}}
+                    onRefresh={ () => { this.fetchData() }}
                     refreshing={false}
                     data={this.state.maintenanceRequests}
-                    renderItem={({ item, index }) => (<MRListItem index={index} maintenanceRequest={item} onCallBack={this.fetchData}/>)}
+                    renderItem={({item}) =>
+                        <TouchableOpacity
+                            onPress={() => this.props.navigation.navigate("ViewMaintenanceRequest", {
+                                isLandlord: this.state.isUserLandlord,
+                                request: item,
+                                refreshList: this.fetchData,
+                                userId: this.userId
+                            })}>
+                            <ListItem
+                                titleStyle={{fontWeight:'bold'}} title={item.description}
+                                subtitle={item.createdDate} />
+                        </TouchableOpacity>
+                    }
                     keyExtractor={item => item.id}/>
                 
                 <View style={{width:'95%'}}>
