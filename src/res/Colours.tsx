@@ -3,7 +3,7 @@ export const Colours = {
     accent_green: "#94C11E",
     black: "#000000",
     light_blue: "#D3E7f0",
-    light_red: "#FFB3B3",
+    light_red: "#FF6767",
     darker_blue: "#0F4963",
     darker_green: "#577311",
     status_paid:"#94C11E",

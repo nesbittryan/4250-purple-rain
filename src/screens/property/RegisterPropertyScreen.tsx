@@ -6,9 +6,10 @@ Icon.loadFont()
 
 import { PropertyInterface } from '../../common/models/Property';
 
-import { MainApp } from '../../res/Styles';
+import { Style } from '../../res/Styles';
 import { createProperty } from '../../service/APIService';
 import UserContext from '../../context/UserContext';
+import ButtonlessHeader from '../../common/components/ButtonlessHeader';
 
 interface State {
   property: PropertyInterface
@@ -80,41 +81,40 @@ export default class RegisterPropertyScreen extends React.Component<{navigation:
 
   render() {
     return (
-      <View style={ MainApp.container }>
-        <View style={ MainApp.form }>
-          <Text>Property Registration</Text>
-          <Input 
-            style= { MainApp.input }
+      <View style={Style.full_container}>
+        <ButtonlessHeader text="Register Property"></ButtonlessHeader>
+          <Input
             value={ this.state.property.address }
             onChangeText={(txt) => this.handlePropertyChange("address", txt)}
             placeholder="address"
             returnKeyType="next"/>
-          <Input 
-            style= { MainApp.input }
+          <Input
             value={ this.state.property.city }
             onChangeText={(txt) => this.handlePropertyChange("city", txt)}
             placeholder="city"
             returnKeyType="next"/>
-          <Input 
-            style= { MainApp.input }
+          <Input
             value={ this.state.property.state }
             onChangeText={(txt) => this.handlePropertyChange("state", txt)}
             placeholder="state"
             returnKeyType="next"/>
-          <Input 
-            style= { MainApp.input }
+          <Input
             value={ this.state.property.country }
             onChangeText={(txt) => this.handlePropertyChange("country", txt)}
             placeholder="country"
             returnKeyType="next"/>
-          <Input 
-            style= { MainApp.input }
+          <Input
             value={ this.state.property.description }
             onChangeText={(txt) => this.handlePropertyChange("description", txt)}
             placeholder="description"
             returnKeyType="next"/>
-          <Text>Max Occupancy:</Text>
+          <CheckBox
+            title="Are you the landlord?" containerStyle={{width:'95%'}}
+            onPress={ () => this.setState({ isLandlord: !this.state.isLandlord }) }
+            checked={ this.state.isLandlord}></CheckBox>
+          <Text style={[Style.normal_text,{ alignSelf:'flex-start', marginLeft:'5%'}]}>Max Occupancy:</Text>
           <Picker
+            style={{width:'95%'}}
             selectedValue={ this.state.property.maxOccupancy}
             onValueChange={(num) => this.handlePropertyChange("maxOccupancy", num)}>
               <Picker.Item label="1" value="1"></Picker.Item>
@@ -128,19 +128,15 @@ export default class RegisterPropertyScreen extends React.Component<{navigation:
               <Picker.Item label="9" value="9"></Picker.Item>
               <Picker.Item label="10" value="10"></Picker.Item>
           </Picker>
-          <CheckBox
-            title="Are you the landlord?"
-            onPress={ () => this.setState({ isLandlord: !this.state.isLandlord }) }
-            checked={ this.state.isLandlord}></CheckBox>
-          <Button 
-            onPress={ this.handleRegisterProperty }
-            title="Register Property"/>
-          <Button 
-            onPress={ () => this.props.navigation.popToTop() }
-            type="outline"
-            title="Back"/>
+          <View style={{width:'95%'}}>
+            <Button 
+              style={{marginVertical:'2%'}}  title="Register Property"
+              onPress={ this.handleRegisterProperty } />
+            <Button 
+              style={{marginBottom:'2%'}} type="outline" title="Back"
+              onPress={ () => this.props.navigation.popToTop() } />
+          </View>
         </View>
-      </View>
     );
   }
 }

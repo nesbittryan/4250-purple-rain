@@ -25,7 +25,7 @@ export default class PaymentTabView extends React.Component<{
               indicatorStyle={{ backgroundColor: Colours.accent_green }}
               style={{ backgroundColor: Colours.accent_blue }}/>
           }
-          style={{width: '100%', height:'100%', borderBottomColor: Colours.darker_blue, borderBottomWidth:1}}
+          style={{width: '100%', height:'100%'}}
           navigationState={this.state}
           renderScene={SceneMap({
             first: () => <PaymentList userId={this.props.userId} payments={this.props.payedPayments} onCallBack={this.props.onCallBack}/> ,

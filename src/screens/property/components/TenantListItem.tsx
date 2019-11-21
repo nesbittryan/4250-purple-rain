@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { View, Text } from "react-native";
-import { Button } from 'react-native-elements';
-import { User } from "../models/user";
+import { Button, Icon } from 'react-native-elements';
+import { User } from "../../../common/models/user";
 import { StyleSheet } from 'react-native';
-import { removeTenantFromProperty } from "../../service/APIService";
+import { removeTenantFromProperty } from "../../../service/APIService";
+import { Colours } from "../../../res/Colours";
 
 interface State {
   propertyId: string,
@@ -48,51 +49,11 @@ export default class TenantListItem extends Component {
 
   render() {
     return (
-      <View style={TenantListItemStyles.container}>
-        <View style={TenantListItemStyles.item}>
-          <Text>{this.user.email}</Text> 
-        </View>
-        
-        <View style={TenantListItemStyles.deleteButton}>
-          <Button
-            onPress={ this.removeTenant }
-            title="remove Tenant"
-          />
-        </View>
+      <View style={{display:'flex', flexDirection:'row', justifyContent:'space-between', padding:'5%', alignItems:'center'}}>
+        <Text style={{fontSize:20, color:Colours.darker_blue}}>{this.user.email}</Text> 
+        <Icon raised reverse name='minus' type='font-awesome' color={Colours.light_red}
+          onPress={ this.removeTenant } />
       </View>
     )
   }
 }
-const TenantListItemStyles = StyleSheet.create({
-  item: {
-    width: "50%"
-  },
-  container: {
-    flexDirection: "row",
-    borderWidth:5,
-    borderColor:'transparent',
-    width:'100%',
-  },
-  deleteButton:{
-
-  },
-  buttonBackground:{ 
-    width: "25%",
-    backgroundColor: "#1B80AE",
-    alignItems: "center",
-    justifyContent: "center",
-    height: 40
-  },
-  buttonText:{
-    color: "#ffffff"
-  },
-  button:{
-    width: "50%",
-    alignSelf: 'stretch',
-  },
-  buttonContainer: {
-    
-    flexDirection: "row",
-    justifyContent: "space-evenly"
-  }
-})

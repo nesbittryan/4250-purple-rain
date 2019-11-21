@@ -1,13 +1,12 @@
 import React from "react";
-import { View,Text, FlatList } from "react-native"
-import { Button, Overlay, Input } from "react-native-elements";
-
-import { getMaintenanceRequestsByProperty, createMaintenanceRequest } from '../../service/APIService'
-import MRListItem from "./MRListItem";
-import { Colours } from "../../res/Colours";
-import { MaintenanceRequest } from "../../common/models/maintenanceRequest";
-import UserContext from "../../context/UserContext";
+import { View, FlatList, TouchableOpacity } from "react-native"
+import { Button, Overlay, Input, ListItem, Text } from "react-native-elements";
 import { AxiosResponse } from "axios";
+import { getMaintenanceRequestsByProperty, createMaintenanceRequest } from '../../service/APIService'
+import UserContext from "../../context/UserContext";
+import { MaintenanceRequest } from "../../common/models/maintenanceRequest";
+import ButtonlessHeader from "../../common/components/ButtonlessHeader";
+import { Style } from "../../res/Styles";
 
 interface State {
     isCreatingRequest: boolean
@@ -48,7 +47,7 @@ export default class MaintenanceRequestScreen extends React.Component<{navigatio
                 alert("Unable to create maintenance request. Please try again")
             } else {
                 this.fetchData()
-                this.setState({ isCreatingRequest: false })
+                this.setState({ isCreatingRequest: false, newRequestDescription: '' })
             }
         })
     }
@@ -69,11 +68,11 @@ export default class MaintenanceRequestScreen extends React.Component<{navigatio
                         property: request.property_id,
                         response: request.action,
                         status: request.status,
-                        acknowledgedDate: request.acknowledged_date,
-                        cancelledDate: request.cancelled_date,
-                        createdDate: request.created_date,
-                        estimatedResolvedDate: request.estimated_complete_date,
-                        resolvedDate: request.complete_date
+                        acknowledgedDate: (request.acknowledged_date == null) ? '' : request.acknowledged_date.substring(0,10),
+                        cancelledDate: (request.cancelled_date == null) ? '' : request.cancelled_date.substring(0,10),
+                        createdDate: (request.created_date == null) ? '' : request.created_date.substring(0,10),
+                        estimatedResolvedDate: (request.estimated_complete_date == null) ? '' : request.estimated_complete_date.substring(0,10),
+                        resolvedDate: (request.complete_date == null) ? '' : request.complete_date.substring(0,10),
                     })
                 })
 
@@ -84,7 +83,41 @@ export default class MaintenanceRequestScreen extends React.Component<{navigatio
 
     render() {
         return (
-            <View style={{backgroundColor:Colours.accent_blue}}>
+            <View style={Style.full_container}>
+                
+                <ButtonlessHeader text="Maintenance Requests"/>
+                
+                <FlatList
+                    style={{width:'100%'}}
+                    onRefresh={ () => { this.fetchData() }}
+                    refreshing={false}
+                    data={this.state.maintenanceRequests}
+                    renderItem={({item}) =>
+                        <TouchableOpacity
+                            onPress={() => this.props.navigation.navigate("ViewMaintenanceRequest", {
+                                isLandlord: this.state.isUserLandlord,
+                                request: item,
+                                refreshList: this.fetchData,
+                                userId: this.userId
+                            })}>
+                            <ListItem
+                                titleStyle={{fontWeight:'bold'}} title={item.description}
+                                subtitle={item.createdDate} />
+                        </TouchableOpacity>
+                    }
+                    keyExtractor={item => item.id}/>
+                
+                <View style={{width:'95%'}}>
+                    { !this.state.isUserLandlord && 
+                        <Button
+                            style={{marginBottom:'1%'}} title="Create New Request"
+                            onPress={ () => { this.setState({ isCreatingRequest: true}) }} />
+                    }
+                    <Button 
+                        style={{marginBottom:'2%'}} type="outline" title="Back"
+                        onPress={ () => { this.props.navigation.goBack()}} />
+                </View>
+
                 <Overlay isVisible={this.state.isCreatingRequest}>
                     <View>
                         <Input 
@@ -102,25 +135,6 @@ export default class MaintenanceRequestScreen extends React.Component<{navigatio
                             onPress={() => { this.setState({ isCreatingRequest: false, newRequestDescription: ''})}}></Button>
                     </View>
                 </Overlay>
-                <Text style={{textAlign:'center',fontSize:20, color:Colours.accent_green, marginBottom:'3%', marginTop:'12%'}}>Maintenance Request</Text>
-                <View style={{backgroundColor:Colours.white, width:'100%', display:'flex', 
-                    flexDirection:'column', justifyContent:'center', paddingHorizontal:'5%', paddingTop:'2%'}}>
-                    <FlatList
-                        style={{borderColor:'red', borderWidth:1}}
-                        onRefresh={ () => {}}
-                        refreshing={false}
-                        data={this.state.maintenanceRequests}
-                        renderItem={({ item, index }) => (<MRListItem index={index} maintenanceRequest={item} onCallBack={this.fetchData}/>)}
-                        keyExtractor={item => item.id}/>
-                    { !this.state.isUserLandlord && 
-                        <Button
-                            title="Create New Request"
-                            onPress={ () => { this.setState({ isCreatingRequest: true}) }} />
-                    }
-                    <Button
-                        style={{marginTop: '1%'}} type="outline" title="Back"
-                        onPress={ () => { this.props.navigation.goBack()}} />
-                </View>
             </View>
         )
     }
