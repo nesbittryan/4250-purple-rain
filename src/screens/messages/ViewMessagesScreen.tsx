@@ -1,7 +1,7 @@
 import React from 'react'
 import { Component } from 'react';
-import { View, TouchableOpacity} from 'react-native';
-import { ListItem, Button, colors, ButtonGroup } from 'react-native-elements'
+import { View, TouchableOpacity, Text, StyleSheet, Image} from 'react-native';
+import { ListItem, Button, colors } from 'react-native-elements'
 import { Contact } from '../../common/models/contact';
 import { FlatList, TextInput } from 'react-native-gesture-handler';
 import { getRelatedUsers, getPropertiesByUserId, getTenantsInProperty } from '../../service/APIService';
@@ -9,6 +9,8 @@ import UserContext from '../../context/UserContext';
 import Dialog from "react-native-dialog";
 import BroadcastService from '../../service/BroadcastService';
 import { Style } from '../../res/Styles';
+import { Colours } from '../../res/Colours';
+import { Property } from '../../common/models/property';
 
 export default class ViewMessagesScreen extends Component {
 
@@ -20,7 +22,6 @@ export default class ViewMessagesScreen extends Component {
     dialogVisible: false,
     broadcast: "",
     selectedIndex: 0,
-    propertiesDescriptions: new Array(),
     properties: new Array(),
   }
 
@@ -44,14 +45,14 @@ export default class ViewMessagesScreen extends Component {
   }
 
   hideDialog() {
-    this.setState({ dialogVisible: false })
+    this.setState({ dialogVisible: false, selectedIndex: 0 })
   }
 
   handleStateChange = async (name: string, input: string) => {
     this.setState(() => ({ [name]: input }));
   }
 
-  updateIndex (selectedIndex) {
+  updateIndex (selectedIndex: any) {
     this.setState({selectedIndex})
   }
 
@@ -71,11 +72,16 @@ export default class ViewMessagesScreen extends Component {
 
   getProperties() {
     getPropertiesByUserId(this.user.id).then((propertyList: any)  => {
-      let propertyDescriptions = ["All Properties"]
-      propertyList.forEach(property => {
-        propertyDescriptions.push(property.description)
+      let allPoperties = new Property({
+        address: 'All Properties',
+        city: '',
+        country: '',
+        state: '',
+        id: '',
+        maxOccupancy: 0,
+        description: '',
       })
-      this.setState({propertiesDescriptions: propertyDescriptions})
+      propertyList.unshift(allPoperties)
       this.setState({properties: propertyList})
       this.forceUpdate()
     })
@@ -89,10 +95,7 @@ export default class ViewMessagesScreen extends Component {
         contactIds.push(contact.id)
       })
     } else {
-      index--
-      let propertyId = this.state.properties && this.state.properties[index] && this.state.properties[index].id
-
-      let contacts = await getTenantsInProperty(propertyId)
+      let contacts = await getTenantsInProperty(index.toString())
 
       contacts.forEach(contact => {
         contactIds.push(contact.id)
@@ -135,9 +138,30 @@ export default class ViewMessagesScreen extends Component {
     this.handleStateChange("broadcast", "")
   }
 
+  getStyle(id: any) {
+    if(this.isSelected(id)){
+      return styles.selected
+    } else {
+      return styles.list
+    }
+  }
+
+  renderItem = data =>
+    <TouchableOpacity
+      style={[styles.list, this.getStyle(data.id)]}
+      onPress={() => this.updateIndex(data.id)}
+    >
+      <Image source={{ uri: 'https://placeimg.com/180/180/any' }}
+        style={{ width: 40, height: 40, margin: 6 }}
+      />
+      <Text style={styles.lightText}>{data.address + '\n' + data.description}</Text>
+    </TouchableOpacity>
+
+  isSelected(id: any) {
+    return id == this.state.selectedIndex
+  }
 
   render() {
-    const { selectedIndex } = this.state
     const reactNativeModalProps = {
       onBackdropPress: this.hideDialog,
     };
@@ -170,15 +194,15 @@ export default class ViewMessagesScreen extends Component {
             onPress={ this.showDialog }
           />
         </View>
-       
         <View>
           <Dialog.Container visible={this.state.dialogVisible} {...reactNativeModalProps}>
               <Dialog.Title>Send Broadcast</Dialog.Title>
-              <ButtonGroup
-                onPress={this.updateIndex}
-                selectedIndex={selectedIndex}
-                buttons={this.state.propertiesDescriptions}
-                containerStyle={{height: 50}}
+              <FlatList
+                data={this.state.properties}
+                renderItem={({item}) =>
+                  this.renderItem(item)
+                }
+                extraData={this.state.selectedIndex}
               />
               <TextInput
                 style={{height: 80, margin: 5, backgroundColor: colors.grey5, borderRadius:5}}
@@ -196,5 +220,24 @@ export default class ViewMessagesScreen extends Component {
     )
   }
 }
+
+const styles = StyleSheet.create({
+  list: {
+    margin: 3,
+    flexDirection: "row",
+    backgroundColor: "#A9A9A9",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    zIndex: -1,
+    borderRadius: 5,
+  },
+  lightText: {
+    color: "#f7f7f7",
+    width: 200,
+    paddingLeft: 15,
+    fontSize: 16
+   },
+  selected: {backgroundColor: Colours.accent_blue},
+});
 
 ViewMessagesScreen.contextType = UserContext;
