@@ -24,7 +24,8 @@ interface State {
   id: string,
   maxOccupancy: number,
   state: string,
-  isLandlord: any
+  isLandlord: any,
+  landlordId:string
 }
 
 export default class ViewPropertyScreen extends Component<{navigation:Navigator}> {
@@ -36,7 +37,8 @@ export default class ViewPropertyScreen extends Component<{navigation:Navigator}
     id: "",
     maxOccupancy: 1,
     state: "",
-    isLandlord: false
+    isLandlord: false,
+    landlordId: ""
   }
 
   callBackRefresh: ()=> void
@@ -54,6 +56,8 @@ export default class ViewPropertyScreen extends Component<{navigation:Navigator}
     this.state.city = property.city
     this.state.country = property.country
     this.state.state = property.state
+    this.setState({landlordId: property.landlordId})
+    console.log("landlord ID: " + this.state.landlordId )
   }
 
   componentDidMount(){
@@ -180,7 +184,7 @@ const propertyStyles = StyleSheet.create({
     //display: 'flex',
     flexDirection: 'column',
     height: '90%',
-    marginTop: '10%',
+    //marginTop: '10%',
     justifyContent: 'space-between',
     width: "90%",
   },

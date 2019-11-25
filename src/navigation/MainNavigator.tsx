@@ -40,7 +40,7 @@ const MainTabNav = createBottomTabNavigator(
             } else if (routeName === 'User') {
               iconName = 'user';
             }
-            return <Icon name={iconName} size={45} color={tintColor} />;
+            return <Icon name={iconName} size={30} color={tintColor} />;
           },
         }),
         tabBarOptions: {
@@ -49,11 +49,11 @@ const MainTabNav = createBottomTabNavigator(
           inactiveBackgroundColor: Colours.accent_blue,
           inactiveTintColor: Colours.white,
           labelStyle: {
-            fontSize: 20,
+            fontSize: 15,
             fontWeight: '300',
           },
           style: {
-            height:80,
+            height:60,
             backgroundColor: Colours.accent_blue,
           }
         }
