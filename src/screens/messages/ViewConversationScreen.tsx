@@ -30,7 +30,7 @@ export default class ViewConversationScreen extends Component {
 
     ChatService.setUid(user.id)
     ChatService.setUserName(
-      user.firstName + user.lastName
+      user.first_name + user.last_name
     )
     ChatService.setConversationUid(user.id, this.contact.id)
 
