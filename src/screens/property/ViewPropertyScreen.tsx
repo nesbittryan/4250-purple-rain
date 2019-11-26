@@ -182,31 +182,23 @@ export default class ViewPropertyScreen extends Component<{navigation:Navigator}
 
 const propertyStyles = StyleSheet.create({
   container: {
-    //alignItems: "center",
     flex: 1,
-    maxHeight: "100%",
-    //position: "relative"
-    //justifyContent: "center",*/
-    
+    maxHeight: "100%",  
   },
   contentContainer: {
-    //justifyContent: "center",
     alignItems: "center",
     flexGrow: 1,
   },
   form: {
     flex: 1,
-    //display: 'flex',
     flexDirection: 'column',
     height: '90%',
-    //marginTop: '10%',
     justifyContent: 'space-between',
     width: "90%",
   },
   scrollView: { 
     width: "100%",
     height:20,
-    //flex: 1
   }
 })
 ViewPropertyScreen.contextType = UserContext;
