@@ -35,7 +35,6 @@ export default class DocumentsScreen extends Component<{propertyId: string}> {
     super(props)
     this.propertyId =  this.props.navigation.getParam('propertyId', 'error')
     this.isLandlord = this.props.navigation.getParam('isLandlord', false)
-    console.log("is Landlord: " + this.isLandlord)
   }
 
   componentDidMount() {
@@ -54,7 +53,6 @@ export default class DocumentsScreen extends Component<{propertyId: string}> {
         
         addDocument(this.userId, this.propertyId, this.state.newDocumentName, exportedFileContent);
         let url = `https://purple-rain-documents.s3.amazonaws.com/${this.userId}-${this.propertyId}/${this.state.newDocumentName}`
-        console.log(url)
         createDocument(this.userId, this.propertyId,  url, this.state.newDocumentName)
         alert("Your document has been uploaded!")
         this.fetchData()
@@ -110,7 +108,6 @@ export default class DocumentsScreen extends Component<{propertyId: string}> {
             }  
           })
           this.setState({ landlordDocuments: UDocuments })
-          //console.log(this.state.userDocuments)
         }
       })
     }
@@ -138,14 +135,12 @@ export default class DocumentsScreen extends Component<{propertyId: string}> {
       })
       
       getLandlordByPropertyId(this.propertyId).then((landlords)=>{
-        console.log("here")
         var LLDocuments: Document[] = new Array()
         landlords.forEach((LL: any)=>{
           getUsersDocuments(LL).then((response: any)=>{
             if(response === undefined) {
               return
             } else if (response.status === 200) { 
-              console.log("status: " + response.status)
               response.data.forEach((document:any)=> {
                 if(document.property_id == this.propertyId) {
                   
@@ -162,12 +157,8 @@ export default class DocumentsScreen extends Component<{propertyId: string}> {
             }
           })
         })
-        console.log(LLDocuments)
-        
       })
-      
     }
-  
   }
 
   handleStateChange(name: string, input: string) {
