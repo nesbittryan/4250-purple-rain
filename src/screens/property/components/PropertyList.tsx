@@ -23,10 +23,10 @@ export default class PropertyList extends React.Component<{navigation: Navigator
           data={properties}
           renderItem={({item}) =>
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("View", {
+              onPress={() => {console.log("HERE");this.props.navigation.navigate("View", {
                 property: item,
                 refreshList: this.props.refreshList
-              })}>
+              })}}>
               <ListItem
                 titleStyle={{fontWeight:'bold'}}
                 title={item.address}
