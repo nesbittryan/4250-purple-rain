@@ -23,13 +23,13 @@ export default class DocumentListItem extends Component {
   readonly state: State = {
     
   }
-  //userId: string
-  //propertyId: string
+  
+  
   doc: Document
   fetchData: () => void
   constructor(props: any) {
     super(props)
-    //this.setState({document: props.document})
+   
     this.doc = props.document
     this.fetchData = props.fetchData
     console.log(this.doc.userId)
@@ -39,24 +39,23 @@ export default class DocumentListItem extends Component {
    
   }
   downloadFile() {
-    console.log(this.doc)
+    
     getDocument(this.doc.userId, this.doc.propertyId, this.doc.name).then((response: AxiosResponse<any> | undefined)=>{
       if(response === undefined) {
         return
       } else if (response.status === 200) { 
-        //console.log(response.data) 
+        
         let path = ExternalStorageDirectoryPath + "/" + this.doc.name
-        //console.log(path)
+        
         RNFS.writeFile(path, response.data, 'base64')
         .then((success:any) => {
-          console.log('FILE WRITTEN!');
+          
           alert("File has been downloaded to device")
         })
         .catch((err:any) => {
           console.log(err.message);
         });
       }
-      //console.log("here")
     })
   } 
   
@@ -65,9 +64,7 @@ export default class DocumentListItem extends Component {
       if(response === undefined) {
         return
       } else if (response.status === 200) { 
-        //console.log(response.data)
         alert("File has been deleted from the system")
-        console.log('FILE DELETED!');
         this.fetchData()
       }
     })
