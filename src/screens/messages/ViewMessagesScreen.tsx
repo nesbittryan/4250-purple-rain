@@ -10,7 +10,7 @@ import Dialog from "react-native-dialog";
 import BroadcastService from '../../service/BroadcastService';
 import { Style } from '../../res/Styles';
 import { Colours } from '../../res/Colours';
-import { Property } from '../../common/models/property';
+import { User } from '../../common/models/user';
 
 export default class ViewMessagesScreen extends Component {
 
@@ -21,7 +21,7 @@ export default class ViewMessagesScreen extends Component {
     refresh: true,
     dialogVisible: false,
     broadcast: "",
-    selectedIndex: 0,
+    selectedIndexs: new Array(),
     properties: new Array(),
   }
 
@@ -35,7 +35,7 @@ export default class ViewMessagesScreen extends Component {
 
     this.showDialog = this.showDialog.bind(this)
     this.hideDialog = this.hideDialog.bind(this)
-    this.updateIndex = this.updateIndex.bind(this)
+    this.updateIndexs = this.updateIndexs.bind(this)
     this.getTenantsIds = this.getTenantsIds.bind(this)
     this.broadcast = this.broadcast.bind(this)
   }
@@ -45,15 +45,28 @@ export default class ViewMessagesScreen extends Component {
   }
 
   hideDialog() {
-    this.setState({ dialogVisible: false, selectedIndex: 0 })
+    this.setState({ dialogVisible: false, selectedIndexs: [] })
   }
 
   handleStateChange = async (name: string, input: string) => {
     this.setState(() => ({ [name]: input }));
   }
 
-  updateIndex (selectedIndex: any) {
-    this.setState({selectedIndex})
+  arrayRemove(arr: any, value: any) {
+    return arr.filter(function(ele: any){
+        return ele != value;
+    });
+ }
+
+  updateIndexs (selectedIndex: any) {
+    let selectedIndexs = []
+    if(this.state.selectedIndexs.includes(selectedIndex)) {
+      selectedIndexs = this.arrayRemove(this.state.selectedIndexs, selectedIndex)
+    } else {
+      selectedIndexs = this.state.selectedIndexs
+      selectedIndexs.push(selectedIndex)
+    }
+    this.setState({selectedIndexs})
   }
 
   getUsers = async() => {
@@ -72,37 +85,37 @@ export default class ViewMessagesScreen extends Component {
 
   getProperties() {
     getPropertiesByUserId(this.user.id).then((propertyList: any)  => {
-      let allPoperties = new Property({
-        address: 'All Properties',
-        city: '',
-        country: '',
-        state: '',
-        id: '',
-        maxOccupancy: 0,
-        description: '',
-      })
-      propertyList.unshift(allPoperties)
       this.setState({properties: propertyList})
       this.forceUpdate()
     })
   }
 
-  getTenantsIds = async(index: number) => {
-    let contactIds: String [] = new Array()
-
-    if(index == 0) {
-      this.contacts && this.contacts.forEach(contact => {
-        contactIds.push(contact.id)
-      })
-    } else {
-      let contacts = await getTenantsInProperty(index.toString())
-
-      contacts.forEach(contact => {
-        contactIds.push(contact.id)
-      })
+  asyncForEach = async(array: any, callback: any) => {
+    for (let index = 0; index < array.length; index++) {
+      await callback(array[index], index, array);
     }
+  }
+
+  getTenantsIds = async(indexs: []) => {
+    let contactIds: String [] = new Array()
+    let contacts: User[] = new Array()
+
+    await this.asyncForEach(indexs, async(index) => {
+      let contactList = await getTenantsInProperty(index.toString())
+      contactList.forEach((contact: any) => {
+        contacts.push(contact)
+      })
+    })
+
+    contacts.forEach(contact => {
+      contactIds.push(contact.id)
+    })
 
     return contactIds
+  }
+
+  sanitizeIds(contactIds: any) {
+    return new Set(contactIds)
   }
 
   broadcast = async() => {
@@ -110,7 +123,9 @@ export default class ViewMessagesScreen extends Component {
       return
     }
 
-    let contactIds = await this.getTenantsIds(this.state.selectedIndex)
+    let contactIds = await this.getTenantsIds(this.state.selectedIndexs)
+
+    contactIds = this.sanitizeIds(contactIds)
 
     const message = {
       text: "BROADCAST: " + this.state.broadcast,
@@ -149,7 +164,7 @@ export default class ViewMessagesScreen extends Component {
   renderItem = data =>
     <TouchableOpacity
       style={[styles.list, this.getStyle(data.id)]}
-      onPress={() => this.updateIndex(data.id)}
+      onPress={() => this.updateIndexs(data.id)}
     >
       <Image source={{ uri: 'https://placeimg.com/180/180/any' }}
         style={{ width: 40, height: 40, margin: 6 }}
@@ -158,7 +173,7 @@ export default class ViewMessagesScreen extends Component {
     </TouchableOpacity>
 
   isSelected(id: any) {
-    return id == this.state.selectedIndex
+    return this.state.selectedIndexs.includes(id)
   }
 
   render() {
@@ -202,7 +217,7 @@ export default class ViewMessagesScreen extends Component {
                 renderItem={({item}) =>
                   this.renderItem(item)
                 }
-                extraData={this.state.selectedIndex}
+                extraData={this.state.selectedIndexs}
               />
               <TextInput
                 style={{height: 80, margin: 5, backgroundColor: colors.grey5, borderRadius:5}}
