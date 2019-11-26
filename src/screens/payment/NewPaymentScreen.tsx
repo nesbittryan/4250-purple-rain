@@ -21,6 +21,7 @@ interface State {
     dueDate: Date
     dueTime: Date
     description: string
+    mode: any
     isPopupVisible: boolean
     isSelfPaying: boolean
     periodDays: number
@@ -40,6 +41,7 @@ export default class NewPaymentScreen extends React.Component {
         dueDate: new Date(Date.now()),
         dueTime: new Date(Date.now()),
         description: '',
+        mode:'date',
         isPopupVisible: false,
         isSelfPaying: true,
         periodDays: 1,
@@ -51,6 +53,7 @@ export default class NewPaymentScreen extends React.Component {
         super(props)
         this.createPayment = this.createPayment.bind(this)
         this.handleButtonPress = this.handleButtonPress.bind(this)
+        this.handleDatePicked = this.handleDatePicked.bind(this)
         this.handleUpdateIndexForButtonGroup = this.handleUpdateIndexForButtonGroup.bind(this)
     }
 
@@ -118,6 +121,15 @@ export default class NewPaymentScreen extends React.Component {
         }
     }
 
+    handleDatePicked(value:any) {
+        if(this.state.mode === 'date') {
+            this.setState({ dueDate: value, mode: 'time'})
+        } else {
+            this.setState({ dueTime: value, isPopupVisible: false, mode: 'date'})
+            this.createPayment()
+        }
+    }
+
     handleUpdateIndexForButtonGroup (selectedIndex: number) {
         let boolVal = selectedIndex == 0
         this.setState({ isSelfPaying: boolVal})
@@ -142,48 +154,15 @@ export default class NewPaymentScreen extends React.Component {
         {cancelable: false},)
     }
 
-
     render() {
         return (
             <View style={[Style.full_container, {paddingTop:'15%'}]}>
-                <Overlay isVisible={this.state.isPopupVisible}
-                    containerStyle={{display:'flex', alignContent:'stretch', flexDirection:'column'}}>
-                    <View>
-                        <DateTimePicker
-                            onChange={ (event, val) => { this.setState({ dueDate: val })}}
-                            value={this.state.dueDate}
-                            mode="date"/>
-                        <Divider style={{marginHorizontal:'2%',marginVertical:'2%'}}/>
-                        <DateTimePicker
-                            onChange={ (event, val) => { this.setState({ dueTime: val })}}
-                            value={this.state.dueTime}
-                            is24Hour={false}
-                            mode="time"/>
-                        <Divider style={{marginHorizontal:'2%',marginVertical:'2%'}}/>
-                        <Picker
-                            itemStyle={{height: 130, color: Colours.accent_blue}}
-                            mode="dropdown"
-                            selectedValue={this.state.periodDays}
-                            onValueChange={ (val) => this.setState({ periodDays: val })}>
-                            <Picker.Item label="Daily" value={1}></Picker.Item>
-                            <Picker.Item label="Weekly" value={7}></Picker.Item>
-                            <Picker.Item label="Monthly" value={30}></Picker.Item>
-                            <Picker.Item label="Yearly" value={365}></Picker.Item>
-                        </Picker>
-                        <Divider style={{marginHorizontal:'2%',marginVertical:'2%'}}/>
-                        <Button 
-                            containerStyle={{marginHorizontal:'2%'}}
-                            title='Create' 
-                            onPress={ () => this.createPayment() }></Button>
-                        <Button 
-                            containerStyle={{marginHorizontal:'2%', marginTop:'1%'}}
-                            type="outline"
-                            title='Cancel' 
-                            onPress={ () => this.setState({ isPopupVisible: false})}></Button>
-                        
-                    </View>
-                </Overlay>
-
+                { this.state.isPopupVisible && 
+                    <DateTimePicker
+                        onChange={ (event, val) => { this.handleDatePicked(val)}}
+                        value={this.state.dueDate}
+                        mode={this.state.mode}/>
+                }
                 <ButtonGroup 
                     buttons={ ['Send Money', 'Request Money']}
                     onPress={this.handleUpdateIndexForButtonGroup}
