@@ -2,6 +2,7 @@ import { AxiosResponse } from 'axios';
 import { get, post, put } from './axios-wrapper';
 import { Property, PropertyInterface } from '../common/models/property';
 import { User } from '../common/models/user';
+import { DocumentInterface } from '../common/models/document';
 
 
 const url = "http://ec2-18-234-27-166.compute-1.amazonaws.com"
@@ -12,7 +13,8 @@ const endpoints = {
   landlord: "/landlord/",
   tenant: "/tenant/",
   payment: "/payment/",
-  maintenance: "/maintenance/"
+  maintenance: "/maintenance/", 
+  document: "/document/"
 }
 
 export async function createMaintenanceRequest(propertyId: string, userId: string, description: string): Promise<AxiosResponse | undefined> {
@@ -66,6 +68,33 @@ export async function createUser(email: string, password: string, firstName: str
   return await post(endpoint, body)
 }
 
+export async function createDocument(userId: string, propertyId: string, docUrl: string, docName: string): Promise<AxiosResponse | undefined> {
+  let endpoint = url + endpoints.document 
+
+  let body = new FormData()
+  body.append("user_id", userId)
+  body.append("document_name", docName)
+  body.append("document_url", docUrl)
+  body.append("property_id", propertyId)
+  return await post(endpoint, body)
+  }
+export async function deleteDocument(documentId: string): Promise<AxiosResponse | undefined>{
+  let endpoint = url + endpoints.document + "delete"
+  let body = new FormData()
+  body.append("document_id", documentId)
+  return await post(endpoint, body)
+}
+
+export async function getLandlordsTenantsDocuments(userId: string){
+  let endpoint = url + endpoints.document + 'landlord/' + userId
+  return await get(endpoint)
+}
+
+export async function getUsersDocuments(userId : string) {
+  let endpoint = url + endpoints.document + 'user/' + userId
+  return await get(endpoint)
+}
+
 export async function getMaintenanceRequestsByProperty(propertyId: string): Promise<AxiosResponse | undefined> {
   let endpoint = url + endpoints.maintenance + 'property/' + propertyId
   return await get(endpoint)
@@ -75,6 +104,19 @@ export async function getPaymentsByUserId(userId: string): Promise<AxiosResponse
   let endpoint = url + endpoints.payment + userId
 
   return await get(endpoint);
+}
+
+export async function getLandlordByPropertyId(propertyId : string)
+{
+  let endpoint = url + endpoints.property + propertyId
+  let response = await get(endpoint)
+  if(response === undefined) {
+    return
+  }
+  else if (response.status === 200) {
+    return response.data.landlords
+  }
+  
 }
 
 export async function getPropertiesByUserId(userId: string): any {
