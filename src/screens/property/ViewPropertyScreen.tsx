@@ -1,13 +1,17 @@
 import React from "react";
 import { Component } from "react";
 import { Button, Input, Text, Avatar, Icon } from 'react-native-elements';
-import { View } from "react-native";
 import { Style } from '../../res/Styles';
-import { User } from "../../common/models/user";
-import { isLandlordByPropertyId, updateProperty } from '../../service/APIService';
 import { Colours } from "../../res/Colours";
 import UserContext from "../../context/UserContext";
 import ButtonlessHeader from "../../common/components/ButtonlessHeader";
+import { StyleSheet, View, ScrollView } from "react-native";
+import AsyncStorage from '@react-native-community/async-storage'
+import { User } from "../../common/models/user";
+import { isLandlordByPropertyId, updateProperty } from '../../service/APIService';
+import { relative } from "path";
+
+
 
 const url = 'https://maps.googleapis.com/maps/api/streetview?size=300x200&location='
 const key = '&key=AIzaSyCO4E3Yhrq01Y56FCm_bbj2dhF73PyzJiE'
@@ -20,7 +24,8 @@ interface State {
   id: string,
   maxOccupancy: number,
   state: string,
-  isLandlord: any
+  isLandlord: any,
+  landlordId:string
 }
 
 export default class ViewPropertyScreen extends Component<{navigation:any}> {
@@ -56,6 +61,7 @@ export default class ViewPropertyScreen extends Component<{navigation:any}> {
     })
   }
 
+  
   handleUpdateProperty() {
     updateProperty(this.state.id, this.state.address, this.state.city, 
       this.state.state, this.state.country, this.state.description)
@@ -73,28 +79,30 @@ export default class ViewPropertyScreen extends Component<{navigation:any}> {
             containerStyle={{position: 'absolute', right:'0%', top:'35%'}}
             onPress={() => this.handleUpdateProperty() } />
         }
-        <View style={{width:'95%'}}>
-          <Input disabled={!this.state.isLandlord}
-            value={this.state.address}
-            onChangeText={ (txt) => { this.setState({ address: txt })}}
-            label="Address"></Input>
-          <Input disabled={!this.state.isLandlord}
-            value={this.state.city}
-            onChangeText={ (txt) => { this.setState({ city: txt })}}
-            label="City"></Input>
-          <Input disabled={!this.state.isLandlord}
-            value={this.state.state}
-            onChangeText={ (txt) => { this.setState({ state: txt })}}
-            label="Province/State"></Input>
-          <Input disabled={!this.state.isLandlord}
-            value={this.state.country}
-            onChangeText={ (txt) => { this.setState({ country: txt })}}
-            label="Country"></Input>
-          <Input disabled={!this.state.isLandlord}
-            value={this.state.description}
-            onChangeText={ (txt) => { this.setState({ description: txt })}}
-            label="Description"></Input>
-        </View>
+          <View style={{width:'95%'}}>
+            <Input disabled={!this.state.isLandlord}
+              value={this.state.address}
+              onChangeText={ (txt) => { this.setState({ address: txt })}}
+              label="Address"></Input>
+            <Input disabled={!this.state.isLandlord}
+              value={this.state.city}
+              onChangeText={ (txt) => { this.setState({ city: txt })}}
+              label="City"></Input>
+            <Input disabled={!this.state.isLandlord}
+              value={this.state.state}
+              onChangeText={ (txt) => { this.setState({ state: txt })}}
+              label="Province/State"></Input>
+            <Input disabled={!this.state.isLandlord}
+              value={this.state.country}
+              onChangeText={ (txt) => { this.setState({ country: txt })}}
+              label="Country"></Input>
+            <Input disabled={!this.state.isLandlord}
+              value={this.state.description}
+              onChangeText={ (txt) => { this.setState({ description: txt })}}
+              label="Description"></Input>
+          </View>
+
+        
         
           { this.state.isLandlord &&  //landlord view
             <View style={{width:'95%'}}>
@@ -107,10 +115,17 @@ export default class ViewPropertyScreen extends Component<{navigation:any}> {
                   refreshList: this.callBackRefresh,
                   propertyId: this.state.id,
                 }) }}/>
-               <Button
+              <Button
                 style={{marginBottom: '2%'}}
                 title="Maintenance Requests"
                 onPress={ () => { this.props.navigation.navigate("MaintenanceRequests", {
+                  propertyId: this.state.id,
+                  isUserLandlord: true
+                }) }}/>
+              <Button
+                style={{marginBottom: '2%'}}
+                title="Documents"
+                onPress={ () => { this.props.navigation.navigate("Documents", {
                   propertyId: this.state.id,
                   isUserLandlord: true
                 }) }}/>
@@ -136,6 +151,13 @@ export default class ViewPropertyScreen extends Component<{navigation:any}> {
                 }) }}/>
               <Button
                 style={{marginBottom: '2%'}}
+                title="Documents"
+                onPress={ () => { this.props.navigation.navigate("Documents", {
+                  propertyId: this.state.id,
+                  isLandlord: false
+                }) }}/>
+              <Button
+                style={{marginBottom: '2%'}}
                 type="outline"
                 title="Back"
                 onPress={ () => {
@@ -148,4 +170,25 @@ export default class ViewPropertyScreen extends Component<{navigation:any}> {
   }
 }
 
+const propertyStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    maxHeight: "100%",  
+  },
+  contentContainer: {
+    alignItems: "center",
+    flexGrow: 1,
+  },
+  form: {
+    flex: 1,
+    flexDirection: 'column',
+    height: '90%',
+    justifyContent: 'space-between',
+    width: "90%",
+  },
+  scrollView: { 
+    width: "100%",
+    height:20,
+  }
+})
 ViewPropertyScreen.contextType = UserContext;

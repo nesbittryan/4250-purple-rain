@@ -8,7 +8,7 @@ import AppNavigator from './src/navigation/MainNavigator'
 import { Colours } from './src/res/Colours';
 import { UserProvider } from './src/context/UserContext';
 import AuthLoadingScreen from './src/screens/auth-loading/AuthLoadingScreen';
-
+import {PermissionsAndroid} from 'react-native';
 
 const theme = {
     colors: {
@@ -27,6 +27,24 @@ export const getCurrentUser = async () => {
 }
 
 
+// Ask permission to access the files system 
+export const requestCameraPermission = async () => {
+  try {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+      {
+        title: 'My App Storage Permission',
+        message: 'My App needs access to your storage ' +
+          'so you can save your photos',
+        buttonPositive: "yes"
+      },
+    );
+    return granted;
+  } catch (err) {
+    console.error('Failed to request permission ', err);
+    return null;
+  }
+}
 export default class App extends React.Component {
 
   constructor(props:any) {
@@ -37,10 +55,12 @@ export default class App extends React.Component {
         this.setState(state => state.user = user);
       }
     }
+    
   }
 
   async componentDidMount() {
     const user = await getCurrentUser()
+    await requestCameraPermission()
     this.setState({user})
   }
 

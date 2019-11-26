@@ -7,9 +7,20 @@ export const get = async function (url: string): Promise<AxiosResponse | undefin
     return await handleAxiosError(axios.get(url, await getHeaders()))
 }
 
+export const getNoHeaders = async function (url: string): Promise<AxiosResponse | undefined> {
+    console.log(url)
+    return await handleAxiosError(axios.get(url))
+}
+
 export const post = async function (url: string, data?: any): Promise<AxiosResponse | undefined> {
     console.log(url)
     return await handleAxiosError(axios.post(url, data, await getHeaders()))
+}
+
+export const postS3Headers = async function (url: string, data: any, headers:any): Promise<AxiosResponse | undefined> {
+    console.log("url posting to: " + url)
+    console.log("headers sent along: " + headers)
+    return await handleAxiosError(axios.post(url, data, headers))
 }
 
 export const put = async function (url: string, data?: any): Promise<AxiosResponse | undefined> {

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Component } from 'react';
-import { View, TouchableOpacity} from 'react-native';
-import { ListItem, Button, colors, ButtonGroup } from 'react-native-elements'
+import { View, TouchableOpacity, Text, StyleSheet, Image} from 'react-native';
+import { ListItem, Button, colors } from 'react-native-elements'
 import { Contact } from '../../common/models/contact';
 import { FlatList, TextInput } from 'react-native-gesture-handler';
 import { getRelatedUsers, getPropertiesByUserId, getTenantsInProperty } from '../../service/APIService';
@@ -9,6 +9,8 @@ import UserContext from '../../context/UserContext';
 import Dialog from "react-native-dialog";
 import BroadcastService from '../../service/BroadcastService';
 import { Style } from '../../res/Styles';
+import { Colours } from '../../res/Colours';
+import { User } from '../../common/models/user';
 
 export default class ViewMessagesScreen extends Component {
 
@@ -19,8 +21,7 @@ export default class ViewMessagesScreen extends Component {
     refresh: true,
     dialogVisible: false,
     broadcast: "",
-    selectedIndex: 0,
-    propertiesDescriptions: new Array(),
+    selectedIndexs: new Array(),
     properties: new Array(),
   }
 
@@ -34,7 +35,7 @@ export default class ViewMessagesScreen extends Component {
 
     this.showDialog = this.showDialog.bind(this)
     this.hideDialog = this.hideDialog.bind(this)
-    this.updateIndex = this.updateIndex.bind(this)
+    this.updateIndexs = this.updateIndexs.bind(this)
     this.getTenantsIds = this.getTenantsIds.bind(this)
     this.broadcast = this.broadcast.bind(this)
   }
@@ -44,15 +45,28 @@ export default class ViewMessagesScreen extends Component {
   }
 
   hideDialog() {
-    this.setState({ dialogVisible: false })
+    this.setState({ dialogVisible: false, selectedIndexs: [] })
   }
 
   handleStateChange = async (name: string, input: string) => {
     this.setState(() => ({ [name]: input }));
   }
 
-  updateIndex (selectedIndex) {
-    this.setState({selectedIndex})
+  arrayRemove(arr: any, value: any) {
+    return arr.filter(function(ele: any){
+        return ele != value;
+    });
+ }
+
+  updateIndexs (selectedIndex: any) {
+    let selectedIndexs = []
+    if(this.state.selectedIndexs.includes(selectedIndex)) {
+      selectedIndexs = this.arrayRemove(this.state.selectedIndexs, selectedIndex)
+    } else {
+      selectedIndexs = this.state.selectedIndexs
+      selectedIndexs.push(selectedIndex)
+    }
+    this.setState({selectedIndexs})
   }
 
   getUsers = async() => {
@@ -71,35 +85,37 @@ export default class ViewMessagesScreen extends Component {
 
   getProperties() {
     getPropertiesByUserId(this.user.id).then((propertyList: any)  => {
-      let propertyDescriptions = ["All Properties"]
-      propertyList.forEach(property => {
-        propertyDescriptions.push(property.description)
-      })
-      this.setState({propertiesDescriptions: propertyDescriptions})
       this.setState({properties: propertyList})
       this.forceUpdate()
     })
   }
 
-  getTenantsIds = async(index: number) => {
-    let contactIds: String [] = new Array()
-
-    if(index == 0) {
-      this.contacts && this.contacts.forEach(contact => {
-        contactIds.push(contact.id)
-      })
-    } else {
-      index--
-      let propertyId = this.state.properties && this.state.properties[index] && this.state.properties[index].id
-
-      let contacts = await getTenantsInProperty(propertyId)
-
-      contacts.forEach(contact => {
-        contactIds.push(contact.id)
-      })
+  asyncForEach = async(array: any, callback: any) => {
+    for (let index = 0; index < array.length; index++) {
+      await callback(array[index], index, array);
     }
+  }
+
+  getTenantsIds = async(indexs: []) => {
+    let contactIds: String [] = new Array()
+    let contacts: User[] = new Array()
+
+    await this.asyncForEach(indexs, async(index) => {
+      let contactList = await getTenantsInProperty(index.toString())
+      contactList.forEach((contact: any) => {
+        contacts.push(contact)
+      })
+    })
+
+    contacts.forEach(contact => {
+      contactIds.push(contact.id)
+    })
 
     return contactIds
+  }
+
+  sanitizeIds(contactIds: any) {
+    return new Set(contactIds)
   }
 
   broadcast = async() => {
@@ -107,7 +123,9 @@ export default class ViewMessagesScreen extends Component {
       return
     }
 
-    let contactIds = await this.getTenantsIds(this.state.selectedIndex)
+    let contactIds = await this.getTenantsIds(this.state.selectedIndexs)
+
+    contactIds = this.sanitizeIds(contactIds)
 
     const message = {
       text: "BROADCAST: " + this.state.broadcast,
@@ -135,9 +153,30 @@ export default class ViewMessagesScreen extends Component {
     this.handleStateChange("broadcast", "")
   }
 
+  getStyle(id: any) {
+    if(this.isSelected(id)){
+      return styles.selected
+    } else {
+      return styles.list
+    }
+  }
+
+  renderItem = data =>
+    <TouchableOpacity
+      style={[styles.list, this.getStyle(data.id)]}
+      onPress={() => this.updateIndexs(data.id)}
+    >
+      <Image source={{ uri: 'https://placeimg.com/180/180/any' }}
+        style={{ width: 40, height: 40, margin: 6 }}
+      />
+      <Text style={styles.lightText}>{data.address + '\n' + data.description}</Text>
+    </TouchableOpacity>
+
+  isSelected(id: any) {
+    return this.state.selectedIndexs.includes(id)
+  }
 
   render() {
-    const { selectedIndex } = this.state
     const reactNativeModalProps = {
       onBackdropPress: this.hideDialog,
     };
@@ -170,15 +209,15 @@ export default class ViewMessagesScreen extends Component {
             onPress={ this.showDialog }
           />
         </View>
-       
         <View>
           <Dialog.Container visible={this.state.dialogVisible} {...reactNativeModalProps}>
               <Dialog.Title>Send Broadcast</Dialog.Title>
-              <ButtonGroup
-                onPress={this.updateIndex}
-                selectedIndex={selectedIndex}
-                buttons={this.state.propertiesDescriptions}
-                containerStyle={{height: 50}}
+              <FlatList
+                data={this.state.properties}
+                renderItem={({item}) =>
+                  this.renderItem(item)
+                }
+                extraData={this.state.selectedIndexs}
               />
               <TextInput
                 style={{height: 80, margin: 5, backgroundColor: colors.grey5, borderRadius:5}}
@@ -196,5 +235,24 @@ export default class ViewMessagesScreen extends Component {
     )
   }
 }
+
+const styles = StyleSheet.create({
+  list: {
+    margin: 3,
+    flexDirection: "row",
+    backgroundColor: "#A9A9A9",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    zIndex: -1,
+    borderRadius: 5,
+  },
+  lightText: {
+    color: "#f7f7f7",
+    width: 200,
+    paddingLeft: 15,
+    fontSize: 16
+   },
+  selected: {backgroundColor: Colours.accent_blue},
+});
 
 ViewMessagesScreen.contextType = UserContext;
