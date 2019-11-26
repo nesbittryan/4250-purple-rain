@@ -1,6 +1,6 @@
 import React from "react";
 import { View } from "react-native";
-import { Text, Button, Input, Icon } from "react-native-elements";
+import { Text, Button, Input } from "react-native-elements";
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { Style } from "../../res/Styles";
@@ -13,7 +13,7 @@ interface State {
     estDate: Date
     newDescription: string
     newResponse: string
-
+    showDatePicker: boolean
     isLandlord: boolean
     request: MaintenanceRequest
     userId: string
@@ -25,7 +25,7 @@ export default class ViewMaintenanceRequest extends React.Component  {
         estDate: new Date(),
         newDescription: this.props.navigation.state.params.request.description,
         newResponse: this.props.navigation.state.params.request.response,
-        
+        showDatePicker: false,
         isLandlord: this.props.navigation.state.params.isLandlord,
         request: this.props.navigation.state.params.request,
         userId: this.props.navigation.state.params.userId,
@@ -36,15 +36,25 @@ export default class ViewMaintenanceRequest extends React.Component  {
         this.handleAcknowledgeRequest = this.handleAcknowledgeRequest.bind(this)
         this.handleCancelRequest = this.handleCancelRequest.bind(this)
         this.handleCompleteRequest = this.handleCompleteRequest.bind(this)
-        this.handleUpdate = this.handleUpdate.bind(this)
     }
 
-    handleAcknowledgeRequest() {
+    handleAcknowledgeRequest(value: any) {
+        console.log(value)
+        this.setState({ estDate: value, showDatePicker: false })
         markMaintenanceRequestAcknowledged(this.state.request.id)
         .then((response: any) => {
             if(response != undefined && response.status == 200) {
                 if (this.state.newResponse != '') {
-                    this.handleUpdate()
+                    updateMaintenanceRequest(this.state.request.id, this.state.newResponse, !this.state.isLandlord ? '' : value.toISOString(), this.state.newDescription)
+                    .then((response: any) => {
+                        if(response != undefined && response.status == 200) {
+                            this.props.navigation.state.params.refreshList()
+                            this.props.navigation.goBack()
+                            alert("Request was successfully Updated")
+                        } else {
+                            alert("Invalid request, check date")
+                        }
+                    }) 
                 } else {
                     this.props.navigation.state.params.refreshList()
                     this.props.navigation.goBack()
@@ -76,19 +86,6 @@ export default class ViewMaintenanceRequest extends React.Component  {
         })
     }
 
-    handleUpdate() {
-        updateMaintenanceRequest(this.state.request.id, this.state.newResponse, (this.state.isLandlord) ? '' : this.state.estDate.toISOString(), this.state.newDescription)
-        .then((response: any) => {
-            if(response != undefined && response.status == 200) {
-                this.props.navigation.state.params.refreshList()
-                this.props.navigation.goBack()
-                alert("Request was successfully Updated")
-            } else {
-                alert("Invalid request, check date")
-            }
-        }) 
-    }
-
     render() {
         return(
             <View style={Style.full_container}>
@@ -110,16 +107,16 @@ export default class ViewMaintenanceRequest extends React.Component  {
                 {
                     this.state.isLandlord &&
                     <View style={{width:'95%'}}>
-
-                    <DateTimePicker
-                        onChange={ (event, val) => { this.setState({ estDate: val })}}
-                        value={this.state.estDate}
-                        mode="date"/>
-                    
+                    { this.state.showDatePicker &&
+                        <DateTimePicker
+                            onChange={ (event, val) => { this.handleAcknowledgeRequest(val)}}
+                            value={this.state.estDate}
+                            mode="date"/>
+                    }
                     <Button disabled={this.state.request.status != 'requested'}
                         buttonStyle={{backgroundColor:Colours.accent_blue}}
                         style={{marginBottom:'2%'}} title='Acknowledge Request'
-                        onPress={ this.handleAcknowledgeRequest }
+                        onPress={ () => this.setState({ showDatePicker: true }) }
                     />
                     <Button disabled={this.state.request.status != 'acknowledged'}
                         buttonStyle={{backgroundColor:Colours.accent_green}}

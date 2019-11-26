@@ -183,8 +183,6 @@ export async function getTenantsInProperty(propertyId: string): any {
       firstName: user.first_name,
       id: user.id,
       lastName: user.last_name,
-      password: "",
-      token: ""
     }))
   })
 
@@ -282,11 +280,11 @@ export async function updateMaintenanceRequest(requestId: string, action: string
   let endpoint = url + endpoints.maintenance + 'update/' + requestId
 
   let body = new FormData()
+  console.log(estCompletionDate)
   if (estCompletionDate != '')
     body.append("estimated_complete_date", estCompletionDate)
   body.append("action", action)
   body.append("description", description)
-
   return await put(endpoint, body);
 }
 
