@@ -56,8 +56,8 @@ export default class DocumentsScreen extends Component<{propertyId: string}> {
         let url = `https://purple-rain-documents.s3.amazonaws.com/${this.userId}-${this.propertyId}/${this.state.newDocumentName}`
         console.log(url)
         createDocument(this.userId, this.propertyId,  url, this.state.newDocumentName)
-
-       
+        alert("Your document has been uploaded!")
+        this.fetchData()
       } catch (err) {
         if (DocumentPicker.isCancel(err)) {
           // User cancelled the picker, exit any dialogs or menus and move on
@@ -116,6 +116,7 @@ export default class DocumentsScreen extends Component<{propertyId: string}> {
     }
     else 
     {
+      console.log("user ID: " + this.userId)
       getUsersDocuments(this.userId).then((response: AxiosResponse<any> | undefined)=>{
         if(response === undefined) {
           return
@@ -135,15 +136,17 @@ export default class DocumentsScreen extends Component<{propertyId: string}> {
           this.setState({ userDocuments: UDocuments })
         }
       })
+      
       getLandlordByPropertyId(this.propertyId).then((landlords)=>{
+        console.log("here")
         var LLDocuments: Document[] = new Array()
         landlords.forEach((LL: any)=>{
           getUsersDocuments(LL).then((response: any)=>{
             if(response === undefined) {
               return
             } else if (response.status === 200) { 
+              console.log("status: " + response.status)
               response.data.forEach((document:any)=> {
-                
                 if(document.property_id == this.propertyId) {
                   
                   LLDocuments.push({
@@ -187,13 +190,13 @@ export default class DocumentsScreen extends Component<{propertyId: string}> {
             <Text style={DocumentsScreenStyles.subHeading}>Tenant Files</Text>
             <LandlordTenantDocList
               documentList={this.state.userDocuments}
-              fetchData={this.fetchData}
+              fetchData={this.fetchData.bind(this)}
             >
             </LandlordTenantDocList> 
             <Text style={DocumentsScreenStyles.subHeading}>My Files</Text>
             <LandlordTenantDocList
               documentList={this.state.landlordDocuments}
-              fetchData={this.fetchData}
+              fetchData={this.fetchData.bind(this)}
             >
             </LandlordTenantDocList> 
           </View>
@@ -203,13 +206,13 @@ export default class DocumentsScreen extends Component<{propertyId: string}> {
               <Text style={DocumentsScreenStyles.subHeading}>Landlord Files</Text>
               <LandlordTenantDocList
                 documentList={this.state.landlordDocuments}
-                fetchData={this.fetchData}
+                fetchData={this.fetchData.bind(this)}
               >
               </LandlordTenantDocList>
               <Text style={DocumentsScreenStyles.subHeading}>My Documents</Text>
               <LandlordTenantDocList
               documentList={this.state.userDocuments}
-              fetchData={this.fetchData}
+              fetchData={this.fetchData.bind(this)}
               >
               </LandlordTenantDocList>
             </View>
