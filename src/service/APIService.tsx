@@ -109,6 +109,16 @@ export async function getPropertiesByUserId(userId: string): any {
     }))
   });
 
+  // Filter duplicate property ids
+  propertyList = propertyList.reduce((acc, current) => {
+    const x = acc.find(p => p.id === current.id);
+    if (!x) {
+      return acc.concat([current]);
+    } else {
+      return acc;
+    }
+  }, []);
+
   return propertyList
 }
 
