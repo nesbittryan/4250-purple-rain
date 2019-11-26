@@ -89,6 +89,29 @@ export default class ViewPropertyScreen extends Component<{navigation:Navigator}
             containerStyle={{position: 'absolute', right:'0%', top:'35%'}}
             onPress={() => this.handleUpdateProperty() } />
         }
+          <View style={{width:'95%'}}>
+            <Input disabled={!this.state.isLandlord}
+              value={this.state.address}
+              onChangeText={ (txt) => { this.setState({ address: txt })}}
+              label="Address"></Input>
+            <Input disabled={!this.state.isLandlord}
+              value={this.state.city}
+              onChangeText={ (txt) => { this.setState({ city: txt })}}
+              label="City"></Input>
+            <Input disabled={!this.state.isLandlord}
+              value={this.state.state}
+              onChangeText={ (txt) => { this.setState({ state: txt })}}
+              label="Province/State"></Input>
+            <Input disabled={!this.state.isLandlord}
+              value={this.state.country}
+              onChangeText={ (txt) => { this.setState({ country: txt })}}
+              label="Country"></Input>
+            <Input disabled={!this.state.isLandlord}
+              value={this.state.description}
+              onChangeText={ (txt) => { this.setState({ description: txt })}}
+              label="Description"></Input>
+          </View>
+
         
         
           { this.state.isLandlord &&  //landlord view
