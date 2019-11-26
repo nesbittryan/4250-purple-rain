@@ -1,6 +1,5 @@
 import * as React from 'react'
-import { FlatList } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { FlatList, TouchableOpacity } from "react-native";
 import { ListItem } from "react-native-elements";
 
 import { Property } from "../../../common/models/property";
@@ -24,10 +23,10 @@ export default class PropertyList extends React.Component<{navigation: Navigator
           data={properties}
           renderItem={({item}) =>
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("View", {
+              onPress={() => {console.log("HERE");this.props.navigation.navigate("View", {
                 property: item,
                 refreshList: this.props.refreshList
-              })}>
+              })}}>
               <ListItem
                 titleStyle={{fontWeight:'bold'}}
                 title={item.address}

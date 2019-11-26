@@ -23,15 +23,15 @@ interface State {
   isLandlord: any
 }
 
-export default class ViewPropertyScreen extends Component<{navigation:Navigator}> {
+export default class ViewPropertyScreen extends Component<{navigation:any}> {
   readonly state: State = {
-    address: "",
-    city: "",
-    country: "",
-    description: "",
-    id: "",
-    maxOccupancy: 1,
-    state: "",
+    address: this.props.navigation.state.params.property.address,
+    city: this.props.navigation.state.params.property.city,
+    country: this.props.navigation.state.params.property.country,
+    description: this.props.navigation.state.params.property.description,
+    id: this.props.navigation.state.params.property.id,
+    maxOccupancy: this.props.navigation.state.params.property.maxOccupancy,
+    state: this.props.navigation.state.params.property.state,
     isLandlord: false
   }
 
@@ -42,14 +42,7 @@ export default class ViewPropertyScreen extends Component<{navigation:Navigator}
     super(props)
 
     this.handleUpdateProperty = this.handleUpdateProperty.bind(this)
-    let property = this.props.navigation.getParam('property', 'error')
     this.callBackRefresh = this.props.navigation.getParam('refreshList', null)
-    this.state.address = property.address
-    this.state.description = property.description
-    this.state.id = property.id
-    this.state.city = property.city
-    this.state.country = property.country
-    this.state.state = property.state
   }
 
   componentDidMount(){
