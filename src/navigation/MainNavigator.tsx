@@ -1,4 +1,5 @@
 import React from 'react';
+import { Platform } from 'react-native'
 import { createAppContainer } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
 import { createBottomTabNavigator } from 'react-navigation-tabs';
@@ -28,6 +29,9 @@ const MainTabNav = createBottomTabNavigator(
     {
         defaultNavigationOptions: ({ navigation }) => ({
           tabBarIcon: ({ focused, tintColor }) => {
+            if(Platform.OS === 'android')
+              return null
+            
             const { routeName } = navigation.state;
             let iconName = "";
             if (routeName === 'Property') {
@@ -53,7 +57,7 @@ const MainTabNav = createBottomTabNavigator(
             fontWeight: '300',
           },
           style: {
-            height:80,
+            height: (Platform.OS === 'android') ? 60 : 80,
             backgroundColor: Colours.accent_blue,
           }
         }
