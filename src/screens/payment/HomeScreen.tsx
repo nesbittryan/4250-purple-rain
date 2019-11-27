@@ -1,6 +1,6 @@
 import React from 'react'
 import { View } from 'react-native';
-import { Button, SearchBar, Text } from 'react-native-elements';
+import { Button, SearchBar, Text, Icon } from 'react-native-elements';
 
 import { Payment } from '../../common/models/payment';
 import { getRelatedUsers, getPaymentsByUserId } from '../../service/APIService';
@@ -154,13 +154,9 @@ export default class HomeScreen extends React.Component {
                     payedPayments={ this.state.filteredPayedPayments} 
                     requestedPayments={ this.state.filteredRequestedPayments}
                     onCallBack={ () => { this.fetchData() } }></PaymentTabView>   
-
-                <View style={{width:'95%'}}>
-                    <Button
-                        style={{marginVertical:'2%'}}
-                        title="New Payment" 
-                        onPress={ () => { this.props.navigation.navigate("New", { userId: this.userId, onGoBack: () => this.fetchData(), connectedUsers: this.state.userIdList })}}></Button>
-                </View>
+                <Icon raised reverse name='plus' type='font-awesome' color={Colours.accent_green} 
+                    containerStyle={{position: 'absolute', right:'0%', bottom:'5%'}} 
+                    onPress={ () => { this.props.navigation.navigate("New", { userId: this.userId, onGoBack: () => this.fetchData(), connectedUsers: this.state.userIdList })}}/>
             </View>   
         )
     }
