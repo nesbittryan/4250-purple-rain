@@ -56,6 +56,7 @@ export default class ChangePasswordScreen extends React.Component {
 
             <Input
               label="Old Password"
+              secureTextEntry={true}
               value={ this.state.oldPassword }
               onChangeText={(txt) => this.handleStateChange("oldPassword", txt)}
               returnKeyType="next"/>
