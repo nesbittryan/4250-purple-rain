@@ -79,7 +79,7 @@ export default class ViewMaintenanceRequest extends React.Component  {
     }
 
     handleUpdate() {
-        updateMaintenanceRequest(this.state.request.id, this.state.newResponse, !this.state.isLandlord ? '' : value.toISOString(), this.state.newDescription)
+        updateMaintenanceRequest(this.state.request.id, this.state.newResponse, !this.state.isLandlord ? '' : this.state.estDate.toISOString(), this.state.newDescription)
         .then((response: any) => {
             if(response != undefined && response.status == 200) {
                 this.props.navigation.state.params.refreshList()
