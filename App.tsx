@@ -53,7 +53,7 @@ export default class App extends React.Component {
     this.state = { 
       user: undefined,
       remove: () => {
-        this.setState(state => state.user = new User({ email: '', firstName: '', lastName: '', id:''}))
+        this.setState(state => state.user = undefined)
       },
       update: (user) => {
         this.setState(state => state.user = user);
