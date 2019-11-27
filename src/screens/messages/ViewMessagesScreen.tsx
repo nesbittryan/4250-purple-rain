@@ -73,10 +73,14 @@ export default class ViewMessagesScreen extends Component {
     const response = await getRelatedUsers(this.user.id)
 
     response.data.forEach((user: any) => {
+      // Magic property transformations
+      user.property.address = user.property.street_address;
+
       this.contacts.push(new Contact({
         name: user.first_name + ' ' + user.last_name,
         id: user.id.toString(),
         relationship: user.relation,
+        property: user.property,
       }))
     })
 
@@ -194,7 +198,7 @@ export default class ViewMessagesScreen extends Component {
             >
               <ListItem
                 title={item.name}
-                subtitle={item.relationship}
+                subtitle={`${item.relationship} at ${item.property.address}, ${item.property.city}`}
                 leftAvatar={{source: {uri: 'https://placeimg.com/180/180/animals'}}}
               />
             </TouchableOpacity>
