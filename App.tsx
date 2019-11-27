@@ -9,6 +9,7 @@ import { Colours } from './src/res/Colours';
 import { UserProvider } from './src/context/UserContext';
 import AuthLoadingScreen from './src/screens/auth-loading/AuthLoadingScreen';
 import {PermissionsAndroid} from 'react-native';
+import { User } from './src/common/models/user';
 
 const theme = {
     colors: {
@@ -51,6 +52,9 @@ export default class App extends React.Component {
     super(props);
     this.state = { 
       user: undefined,
+      remove: () => {
+        this.setState(state => state.user = new User({ email: '', firstName: '', lastName: '', id:''}))
+      },
       update: (user) => {
         this.setState(state => state.user = user);
       }
