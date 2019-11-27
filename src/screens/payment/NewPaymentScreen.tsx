@@ -71,7 +71,7 @@ export default class NewPaymentScreen extends React.Component {
         if (this.state.createDueDate) {
             dateString = this.state.dueDate.getFullYear() + "-" +
                 (this.state.dueDate.getMonth() <9 ? '0' : '' ) + (this.state.dueDate.getMonth() + 1) + "-" +
-                (this.state.dueDate.getDate() <9 ? '0' : '' ) + (this.state.dueDate.getDate() + 1) + "T" +
+                (this.state.dueDate.getDate() <9 ? '0' : '' ) + this.state.dueDate.getDate() + "T" +
                 (this.state.dueTime.getUTCHours() <10 ? '0' : '' ) + this.state.dueTime.getUTCHours() + ":" +
               (this.state.dueTime.getUTCMinutes() <10 ? '0' : '' ) + this.state.dueTime.getUTCMinutes() + ":00.000Z"
         }
@@ -140,11 +140,11 @@ export default class NewPaymentScreen extends React.Component {
         [
             { text: 'OK', onPress: () => {
                 let date = new Date(Date.now())
-                date.setMinutes(date.getMinutes() + notif.data.periodInDays)
-                createPayment(notif.data.payment.payer, notif.data.payment.requester, notif.data.payment.description, notif.data.payment.amount, date.toISOString())
+                date.setMinutes(date.getMinutes() + notif.userInfo.periodInDays)
+                createPayment(notif.userInfo.payment.payer, notif.userInfo.payment.requester, notif.userInfo.payment.description, notif.userInfo.payment.amount, date.toISOString())
                 .then((response: AxiosResponse<any> | undefined) => {
                     if (response.status === 200) {
-                        this.notifService.schedulePaymentNotification(date, notif.data.periodInDays, notif.data.payment)
+                        this.notifService.schedulePaymentNotification(date, notif.userInfo.periodInDays, notif.userInfo.payment)
                         this.props.navigation.state.params.onGoBack()
                     }
                 })

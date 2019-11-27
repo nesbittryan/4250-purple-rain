@@ -63,22 +63,28 @@ export default class PaymentListRow extends React.Component<{ index: number, use
         let statusColour = (this.props.payment.status == 'REQUESTED') ? Colours.status_requested : 
             ((this.props.payment.status == 'PAID') ? Colours.status_paid : Colours.status_recieved)
         
-        if (this.props.payment.due_date != null && Date.now() > Date.parse(this.props.payment.due_date) && this.props.payment.status != 'RECEIVED')
-        {   
-            bgColour = Colours.light_red
+       
+        if (this.props.payment.due_date != null) {
+            let now = new Date(Date.now())
+            let due = new Date(Date.parse(this.props.payment.due_date))
+            if (now.getTime() > due.getTime() && this.props.payment.status != 'RECEIVED')
+            {   
+                bgColour = Colours.light_red
+            }
         }
-
+    
         return (
             <View style={{ alignItems:'center', flexDirection:'row',  alignContent:'center',
                 justifyContent:'space-between', display:'flex', backgroundColor: bgColour}}>
                 <View style={{flex:1.4}}>
-                    <Text style={{fontSize:14, fontWeight:'500'}}>{this.props.payment.description}</Text>
+                    <Text style={{fontSize:14, fontWeight:'800'}}>{this.props.payment.description}</Text>
                     <Text style={{fontSize:14, fontWeight:'300'}}>{this.props.payment.other_name}</Text>
                     <Text style={{fontSize:13, fontWeight:'300'}}>{this.props.payment.amount}</Text>
                 </View>
                 
                 <View style={{flex:1}}>
-                    <Text style={{fontSize:13, textAlign:'right'}}>{(this.props.payment.due_date == null) ? "Requested: " + this.props.payment.requested_at.slice(0,10) : "Due: " + this.props.payment.due_date.slice(0,10)}</Text>
+                    <Text style={{fontSize:13, textAlign:'right'}}>{(this.props.payment.due_date == null) ? "Requested: " + this.props.payment.requested_at : "Date: " + this.props.payment.due_date.slice(0,10)}</Text>
+                    <Text style={{fontSize:13, textAlign:'right'}}>{(this.props.payment.due_date == null) ? "" : "Time: " + this.props.payment.due_date.slice(11,19)}</Text>
                 </View>
                 
                 <View style={{flex:1}}>
