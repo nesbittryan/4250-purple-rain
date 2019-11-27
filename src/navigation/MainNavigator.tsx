@@ -29,9 +29,6 @@ const MainTabNav = createBottomTabNavigator(
     {
         defaultNavigationOptions: ({ navigation }) => ({
           tabBarIcon: ({ focused, tintColor }) => {
-            if(Platform.OS === 'android')
-              return null
-            
             const { routeName } = navigation.state;
             let iconName = "";
             if (routeName === 'Property') {
