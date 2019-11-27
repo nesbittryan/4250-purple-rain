@@ -72,6 +72,8 @@ export default class ViewUserScreen extends Component {
 
   handleLogOut = async () => {
     await AsyncStorage.removeItem('token')
+    const { remove } = this.context;
+    remove()
     this.props.navigation.navigate('Login');
   }
 

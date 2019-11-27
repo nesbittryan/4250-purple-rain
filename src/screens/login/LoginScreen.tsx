@@ -38,7 +38,6 @@ export default class LoginScreen extends Component {
 
   setUserContext = async () => {
     const user = await getCurrentUser();
-
     const { update } = this.context;
     update(user);
   }
@@ -53,8 +52,7 @@ export default class LoginScreen extends Component {
       alert("Please check your email and password are correct")
     }
 
-    this.setUserContext();
-
+    await this.setUserContext();
     this.props.navigation.navigate("Tabs")
   }
 

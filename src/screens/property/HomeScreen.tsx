@@ -34,6 +34,7 @@ export default class HomeScreen extends Component<{navigation: Navigator, wentBa
   async componentDidMount() {
     const {user} = this.context;
     this.user = user;
+    console.log(this.user)
     await this.fetchData()
   }
 
