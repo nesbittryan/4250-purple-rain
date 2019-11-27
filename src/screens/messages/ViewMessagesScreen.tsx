@@ -119,7 +119,7 @@ export default class ViewMessagesScreen extends Component {
   }
 
   broadcast = async() => {
-    if(this.state.broadcast == "") {
+    if(this.state.broadcast == "" || this.state.selectedIndexs == undefined || this.state.selectedIndexs.length == 0) {
       return
     }
 
