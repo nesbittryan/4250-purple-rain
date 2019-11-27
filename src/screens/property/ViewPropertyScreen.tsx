@@ -132,7 +132,7 @@ export default class ViewPropertyScreen extends Component<{navigation:any}> {
                 title="Documents"
                 onPress={ () => { this.props.navigation.navigate("Documents", {
                   propertyId: this.state.id,
-                  isUserLandlord: true
+                  isLandlord: true
                 }) }}/>
               <Button
                 style={{marginBottom: '2%'}}
