@@ -41,6 +41,8 @@ export default class HomeScreen extends React.Component {
 
     componentDidMount() {
         const {user} = this.context;
+        console.log("CURRENT USER")
+        console.log(user)
         this.userId = user.id;
         this.fetchData()
     }
