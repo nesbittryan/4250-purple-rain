@@ -59,20 +59,20 @@ export default class NewPaymentScreen extends React.Component {
 
     componentDidMount() {
         this.state.connectedUsers = this.props.navigation.state.params.connectedUsers
-        
+
         this.setState({ userId: this.props.navigation.state.params.userId })
         this.setState({ connectedUsers: this.props.navigation.state.params.connectedUsers })
-        this.setState({ selectedUserId: this.state.connectedUsers[0].id })
+        if (this.state.connectedUsers[0]) this.setState({ selectedUserId: this.state.connectedUsers[0].id })
     }
 
     createPayment() {
         let dateString = ''
 
         if (this.state.createDueDate) {
-            dateString = this.state.dueDate.getFullYear() + "-" + 
-                (this.state.dueDate.getMonth() <9 ? '0' : '' ) + (this.state.dueDate.getMonth() + 1) + "-" + 
-                (this.state.dueDate.getDate() <9 ? '0' : '' ) + (this.state.dueDate.getDate() + 1) + "T" + 
-                (this.state.dueTime.getUTCHours() <10 ? '0' : '' ) + this.state.dueTime.getUTCHours() + ":" + 
+            dateString = this.state.dueDate.getFullYear() + "-" +
+                (this.state.dueDate.getMonth() <9 ? '0' : '' ) + (this.state.dueDate.getMonth() + 1) + "-" +
+                (this.state.dueDate.getDate() <9 ? '0' : '' ) + (this.state.dueDate.getDate() + 1) + "T" +
+                (this.state.dueTime.getUTCHours() <10 ? '0' : '' ) + this.state.dueTime.getUTCHours() + ":" +
                 (this.state.dueTime.getUTCMinutes() <10 ? '0' : '' ) + this.state.dueTime.getUTCMinutes() + ":00.000Z"
         }
 

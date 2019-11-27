@@ -133,7 +133,7 @@ export default class RegisterPropertyScreen extends React.Component<{navigation:
               style={{marginVertical:'2%'}}  title="Register Property"
               onPress={ this.handleRegisterProperty } />
             <Button 
-              style={{marginBottom:'2%'}} type="outline" title="Back"
+              style={{marginBottom:'2%'}} type="outline" title="Cancel"
               onPress={ () => this.props.navigation.popToTop() } />
           </View>
         </View>
