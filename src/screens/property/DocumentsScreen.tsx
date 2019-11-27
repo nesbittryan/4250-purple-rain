@@ -35,6 +35,7 @@ export default class DocumentsScreen extends Component<{propertyId: string}> {
     super(props)
     this.propertyId =  this.props.navigation.getParam('propertyId', 'error')
     this.isLandlord = this.props.navigation.getParam('isLandlord', false)
+    
   }
 
   componentDidMount() {
@@ -270,7 +271,7 @@ const DocumentsScreenStyles = StyleSheet.create({
   subHeading: {
     fontSize: 15,
     marginTop:5,
-    textDecorationLine: "underline" 
+    textDecorationLine: "underline",
   }
 })
 DocumentsScreen.contextType = UserContext;
