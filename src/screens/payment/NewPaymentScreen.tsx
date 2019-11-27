@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Picker, Alert, } from 'react-native';
-import { Button, Input, Text, ButtonGroup, } from 'react-native-elements';
+import { Button, Input, Text, ButtonGroup } from 'react-native-elements';
 import { Switch } from 'react-native-gesture-handler';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
@@ -73,7 +73,7 @@ export default class NewPaymentScreen extends React.Component {
                 (this.state.dueDate.getMonth() <9 ? '0' : '' ) + (this.state.dueDate.getMonth() + 1) + "-" +
                 (this.state.dueDate.getDate() <9 ? '0' : '' ) + (this.state.dueDate.getDate() + 1) + "T" +
                 (this.state.dueTime.getUTCHours() <10 ? '0' : '' ) + this.state.dueTime.getUTCHours() + ":" +
-                (this.state.dueTime.getUTCMinutes() <10 ? '0' : '' ) + this.state.dueTime.getUTCMinutes() + ":00.000Z"
+              (this.state.dueTime.getUTCMinutes() <10 ? '0' : '' ) + this.state.dueTime.getUTCMinutes() + ":00.000Z"
         }
 
         let payment: Payment = new Payment({
@@ -201,7 +201,21 @@ export default class NewPaymentScreen extends React.Component {
                     <Switch disabled={!this.state.createDueDate} value={this.state.createReccuringPayment}
                         onValueChange={ (val) => { this.setState({ createReccuringPayment: val})}}></Switch>
                 </View>
-                
+                { this.state.createReccuringPayment && 
+                    <View style={{width:'95%'}}>
+                        <Picker
+                            itemStyle={{color: Colours.accent_blue}}
+                            mode="dropdown"
+                            selectedValue={this.state.periodDays}
+                            onValueChange={ (val) => this.setState({ periodDays: val })}>
+                            <Picker.Item label="Daily" value={1}></Picker.Item>
+                            <Picker.Item label="Weekly" value={7}></Picker.Item>
+                            <Picker.Item label="Monthly" value={30}></Picker.Item>
+                            <Picker.Item label="Yearly" value={365}></Picker.Item>
+                        </Picker>
+                    </View>
+                }
+
                 <View style={{width:'95%'}}>
                     <Button
                         style={{marginVertical:'2%'}}
