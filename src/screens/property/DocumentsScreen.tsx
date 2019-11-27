@@ -35,7 +35,7 @@ export default class DocumentsScreen extends Component<{propertyId: string}> {
     super(props)
     this.propertyId =  this.props.navigation.getParam('propertyId', 'error')
     this.isLandlord = this.props.navigation.getParam('isLandlord', false)
-    console.log("is landlord: " + this.isLandlord)
+    
   }
 
   componentDidMount() {
