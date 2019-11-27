@@ -33,7 +33,14 @@ export default class ChangePasswordScreen extends React.Component {
     handlePasswordChange() {
       if (this.state.password == this.state.confirmPassword && this.state.password.length > 7) {
           updateUserPassword(this.state.userId,this.state.email, this.state.password, this.state.oldPassword)
-          this.props.navigation.goBack()
+          .then((response: any) => {
+            if (response != undefined && response.status === 200) {
+              this.props.navigation.goBack()
+            } else {
+              alert("Error, change did not occur")
+            }
+          })
+          
       }
     }
 
