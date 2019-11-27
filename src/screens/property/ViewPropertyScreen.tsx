@@ -65,6 +65,11 @@ export default class ViewPropertyScreen extends Component<{navigation:any}> {
   handleUpdateProperty() {
     updateProperty(this.state.id, this.state.address, this.state.city, 
       this.state.state, this.state.country, this.state.description)
+      .then((response:any) => {
+        if(response != undefined && response.status == 200) {
+          alert("Update was successful")
+        }
+      })
   }
 
   render() {
@@ -161,6 +166,7 @@ export default class ViewPropertyScreen extends Component<{navigation:any}> {
                 type="outline"
                 title="Back"
                 onPress={ () => {
+                  this.callBackRefresh()
                   this.props.navigation.popToTop()}
                 }/>
             </View>

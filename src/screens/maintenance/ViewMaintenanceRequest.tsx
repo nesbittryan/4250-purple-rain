@@ -36,6 +36,7 @@ export default class ViewMaintenanceRequest extends React.Component  {
         this.handleAcknowledgeRequest = this.handleAcknowledgeRequest.bind(this)
         this.handleCancelRequest = this.handleCancelRequest.bind(this)
         this.handleCompleteRequest = this.handleCompleteRequest.bind(this)
+        this.handleUpdate = this.handleUpdate.bind(this)
     }
 
     handleAcknowledgeRequest(value: any) {
@@ -45,16 +46,7 @@ export default class ViewMaintenanceRequest extends React.Component  {
         .then((response: any) => {
             if(response != undefined && response.status == 200) {
                 if (this.state.newResponse != '') {
-                    updateMaintenanceRequest(this.state.request.id, this.state.newResponse, !this.state.isLandlord ? '' : value.toISOString(), this.state.newDescription)
-                    .then((response: any) => {
-                        if(response != undefined && response.status == 200) {
-                            this.props.navigation.state.params.refreshList()
-                            this.props.navigation.goBack()
-                            alert("Request was successfully Updated")
-                        } else {
-                            alert("Invalid request, check date")
-                        }
-                    }) 
+                    this.handleUpdate()
                 } else {
                     this.props.navigation.state.params.refreshList()
                     this.props.navigation.goBack()
@@ -84,6 +76,19 @@ export default class ViewMaintenanceRequest extends React.Component  {
                 alert("Request was successfully completed")
             }
         })
+    }
+
+    handleUpdate() {
+        updateMaintenanceRequest(this.state.request.id, this.state.newResponse, !this.state.isLandlord ? '' : value.toISOString(), this.state.newDescription)
+        .then((response: any) => {
+            if(response != undefined && response.status == 200) {
+                this.props.navigation.state.params.refreshList()
+                this.props.navigation.goBack()
+                alert("Request was successfully Updated")
+            } else {
+                alert("Invalid request, check date")
+            }
+        }) 
     }
 
     render() {

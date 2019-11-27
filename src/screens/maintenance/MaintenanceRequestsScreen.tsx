@@ -102,7 +102,7 @@ export default class MaintenanceRequestScreen extends React.Component<{navigatio
                             })}>
                             <ListItem
                                 titleStyle={{fontWeight:'bold'}} title={item.description}
-                                subtitle={item.createdDate} />
+                                subtitle={"Status: [" +item.status + "] created on: [" + item.createdDate + "]"} />
                         </TouchableOpacity>
                     }
                     keyExtractor={item => item.id}/>
