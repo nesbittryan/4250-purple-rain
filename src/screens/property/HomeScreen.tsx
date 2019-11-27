@@ -1,7 +1,7 @@
 import React from 'react';
 import { Component } from 'react';
 import { View } from 'react-native';
-import { Button } from 'react-native-elements';
+import { Button, Icon } from 'react-native-elements';
 import { Property } from '../../common/models/Property';
 import { getPropertiesByUserId } from '../../service/APIService';
 import { User } from '../../common/models/user';
@@ -49,12 +49,9 @@ export default class HomeScreen extends Component<{navigation: Navigator, wentBa
           refreshList={this.fetchData}
           navigation={this.props.navigation}/>
         
-        <View style={{width:'95%'}}>
-          <Button 
-            style={{marginVertical:'2%'}}
-            title="Register New Property" 
-            onPress={ () => { this.props.navigation.navigate("Register", {refreshList: this.fetchData }) }}></Button>
-        </View>
+        <Icon raised reverse name='plus' type='font-awesome' color={Colours.accent_green} 
+            containerStyle={{position: 'absolute', right:'0%', bottom:'5%'}} 
+            onPress={ () => { this.props.navigation.navigate("Register", {refreshList: this.fetchData }) }}/>
       </View>
     );
   }

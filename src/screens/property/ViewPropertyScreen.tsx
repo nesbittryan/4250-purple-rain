@@ -1,17 +1,13 @@
 import React from "react";
 import { Component } from "react";
-import { Button, Input, Text, Avatar, Icon } from 'react-native-elements';
+import { Button, Input, Avatar, Icon } from 'react-native-elements';
 import { Style } from '../../res/Styles';
 import { Colours } from "../../res/Colours";
 import UserContext from "../../context/UserContext";
 import ButtonlessHeader from "../../common/components/ButtonlessHeader";
-import { StyleSheet, View, ScrollView } from "react-native";
-import AsyncStorage from '@react-native-community/async-storage'
+import { StyleSheet, View } from "react-native";
 import { User } from "../../common/models/user";
 import { isLandlordByPropertyId, updateProperty } from '../../service/APIService';
-import { relative } from "path";
-
-
 
 const url = 'https://maps.googleapis.com/maps/api/streetview?size=300x200&location='
 const key = '&key=AIzaSyCO4E3Yhrq01Y56FCm_bbj2dhF73PyzJiE'
@@ -25,7 +21,6 @@ interface State {
   maxOccupancy: number,
   state: string,
   isLandlord: any,
-  landlordId:string
 }
 
 export default class ViewPropertyScreen extends Component<{navigation:any}> {
@@ -41,6 +36,7 @@ export default class ViewPropertyScreen extends Component<{navigation:any}> {
   }
 
   callBackRefresh: ()=> void
+  
   user: User | any
 
   constructor(props: any) {
@@ -51,7 +47,7 @@ export default class ViewPropertyScreen extends Component<{navigation:any}> {
   }
 
   componentDidMount(){
-    const {user} = this.context;
+    const { user } = this.context;
     this.user = user;
     isLandlordByPropertyId(this.user.id, this.state.id)
     .then((isLandlord: boolean)  => {
